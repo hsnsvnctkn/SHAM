@@ -9,8 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Repository\SHAM.Repository.csproj" />
     <ProjectReference Include="..\SHAM.Domain\SHAM.Domain.csproj" />
+    <ProjectReference Include="..\SHAM.Repository\SHAM.Repository.csproj" />
   </ItemGroup>
 
 </Project>
