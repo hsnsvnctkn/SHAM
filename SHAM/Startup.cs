@@ -32,7 +32,10 @@ namespace SHAM
 
             services.AddControllersWithViews();
 
-            services.AddDbContext<SHAMDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SAMDbConnectionString")));
+            services.AddDbContext<SHAMDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("SHAMDbConnectionString"));
+            });
 
 
 
