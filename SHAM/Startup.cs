@@ -5,8 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Repository.Context;
-
+using SHAM.Repository.Context;
 
 namespace SHAM
 {
@@ -31,13 +30,10 @@ namespace SHAM
             });
 
             services.AddControllersWithViews();
-
             services.AddDbContext<SHAMDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("SHAMDbConnectionString"));
             });
-
-
 
         }
 

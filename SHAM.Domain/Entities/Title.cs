@@ -9,12 +9,17 @@ namespace SHAM.Domain.Entities
     [Table("TITLE")]
     public class Title
     {
-        [Required]
-        public int TITLE_NUMBER { get; set; }//PK
+        public Title()
+        {
+            EMPLOYEES = new HashSet<Employee>();
+        }
 
-        [Required]
+        [Key,Required]
+        public int ID { get; set; } //PK
+
+        [Required,StringLength(30)]
         public string TITLE_NAME { get; set; }
 
-        public virtual ICollection<Employee> Employee { get; set; }
+        public virtual ICollection<Employee> EMPLOYEES { get; set; }
     }
 }

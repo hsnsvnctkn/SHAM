@@ -9,43 +9,41 @@ namespace SHAM.Domain.Entities
     [Table("EMPLOYEES")]
     public class Employee
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }//PK
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; } //PK
 
-        [Required]
+        [Required, StringLength(50)]
         public string EMPLOYEE_NAME { get; set; }
 
-        [Required]
+        [Required, StringLength(50)]
         public string EMPLOYEE_SURNAME { get; set; }
 
-        [Required]
+        [Required, StringLength(13)]
         public string EMPLOYEE_PHONE_NO { get; set; }
-        
-        [Required]
+
+        [Required, StringLength(100)]
         public string EMPLOYEE_ADRESS { get; set; }
-        
-        [Required]
+
+        [Required, StringLength(50)]
         public string EMPLOYEE_MAIL { get; set; }
 
         [Required]
         public bool EMPLOYEE_STATUS { get; set; }
 
         [Required]
-        public int EMPLOYEE_TITLE { get; set; }//FK ---
+        public int EMPLOYEE_TITLE { get; set; } //FK
 
         [Required]
-        public int EMPLOYEE_CREATOR { get; set; }//FK ---
+        public int EMPLOYEE_CREATOR { get; set; } //FK
 
         [Required]
-        public DateTime CREATED_DATE { get; set; }
+        public DateTime CREATED_DATE { get; set; } = DateTime.Now;
 
         [Required]
-        public TimeSpan CREATED_TIME { get; set; }
+        public TimeSpan CREATED_TIME { get; set; } = DateTime.Now.TimeOfDay;
 
-        public virtual ICollection<Project> Projects { get; set; }
-        public virtual ICollection<Activity> Activities { get; set; }
-        public virtual ICollection<Employee> Employees { get; set; }
-        public virtual Title Title { get; set; }
-        public virtual Employee EmployeeID { get; set; }
+
+        public virtual Title TITLE { get; set; }
+
     }
 }
