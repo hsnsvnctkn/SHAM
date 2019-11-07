@@ -13,5 +13,8 @@ namespace SHAM.Domain.Entities
         
         [Required,StringLength(50)]
         public string TYPE_NAME { get; set; }
+
+
+        public virtual ICollection<Project> PROJECTS { get; set; }
     }
 }

@@ -30,12 +30,17 @@ namespace SHAM.Domain.Entities
         public bool CUSTOMER_STATUS { get; set; }
         
         [Required]
-        public int CUSTOMER_CREATOR { get; set; }//FK
+        public int CUSTOMER_CREATOR { get; set; }//FK --
 
         [Required]
         public DateTime CREATED_DATE { get; set; } = DateTime.Now;
 
         [Required]
         public TimeSpan CREATED_TIME { get; set; } = DateTime.Now.TimeOfDay;
+
+
+        public virtual Employee CREATED_CUSTOMER { get; set; }
+
+        public virtual ICollection<Project> PROJECTS { get; set; }
     }
 }

@@ -9,10 +9,14 @@ namespace SHAM.Domain.Entities
     [Table("ACTIVITIES")]
     public class Activity
     {
+        //public Activity()
+        //{
+        //    EMPLOYEES = new HashSet<Employee>();
+        //}
         public int ID { get; set; }//PK
         
         [Required]
-        public int PROJECT_NUMBER { get; set; }//FK
+        public int PROJECT_NUMBER { get; set; }//FK --
 
         [Required,StringLength(100)]
         public string ACTIVITY_DETAIL { get; set; }
@@ -21,7 +25,7 @@ namespace SHAM.Domain.Entities
         public int EMPLOYEE_NUMBER { get; set; }//FK
 
         [Required]
-        public int ACTIVITY_CREATOR { get; set; }//FK
+        public int ACTIVITY_CREATOR { get; set; }//FK--
 
         [Required]
         public DateTime ESTIMATE_START_DATE { get; set; }
@@ -38,7 +42,7 @@ namespace SHAM.Domain.Entities
         public bool ACTIVITY_STATUS { get; set; }
 
         [Required]
-        public int ACTIVITY_PRIORITY { get; set; }//FK
+        public int ACTIVITY_PRIORITY { get; set; }//FK--
 
         [Required]
         public DateTime CREATED_DATE { get; set; } = DateTime.Now;
@@ -48,5 +52,14 @@ namespace SHAM.Domain.Entities
 
         [Required]
         public bool INVOICE { get; set; }
+
+
+        public virtual Project PROJECT { get; set; }
+
+        //public virtual ICollection<Employee> EMPLOYEES { get; set; } //????
+
+        public virtual Employee CREATED_EMPLOYEE { get; set; }
+
+        public virtual Priority PRIORITY { get; set; }
     }
 }

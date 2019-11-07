@@ -13,5 +13,8 @@ namespace SHAM.Domain.Entities
 
         [Required,StringLength(20)]
         public string PRIORITY_NAME { get; set; }
+
+
+        public virtual ICollection<Activity> ACTIVITIES { get; set; }
     }
 }

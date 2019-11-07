@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,7 +10,7 @@ namespace SHAM.Domain.Entities
     {
         public Employee()
         {
-            TITLE = new Title();
+            CREATED_ACTIVITY = new HashSet<Activity>();
         }
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -34,10 +35,10 @@ namespace SHAM.Domain.Entities
         public bool EMPLOYEE_STATUS { get; set; }
 
         [Required]
-        public int EMPLOYEE_TITLE { get; set; } //FK
+        public int EMPLOYEE_TITLE { get; set; } //FK --
 
         [Required]
-        public int EMPLOYEE_CREATOR { get; set; } //FK
+        public int EMPLOYEE_CREATOR { get; set; } //FK ~~~~~~
 
         [Required]
         public DateTime CREATED_DATE { get; set; } = DateTime.Now;
@@ -47,6 +48,20 @@ namespace SHAM.Domain.Entities
 
 
         public virtual Title TITLE { get; set; }
+
+        public virtual ICollection<Employee> CREATED_EMPLOYEES { get; set; }
+        public virtual Employee CREATED_EMPLOYEE { get; set; }
+
+        //public virtual ICollection<Activity> ACTIVITIES { get; set; } //????
+
+        public virtual ICollection<Activity> CREATED_ACTIVITY { get; set; }
+
+        public virtual ICollection<Customer> CUSTOMERS { get; set; }
+
+        //public virtual ICollection<Project> PROJECTS { get; set; }
+        
+        public virtual ICollection<Project> CREATED_PROJECTS { get; set; }
+
 
     }
 }
