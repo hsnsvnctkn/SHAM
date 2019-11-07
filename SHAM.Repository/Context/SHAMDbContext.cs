@@ -1,15 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SHAM.Domain.Entities;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SHAM.Repository.Context
 {
     public class SHAMDbContext : DbContext
     {
-        public SHAMDbContext(DbContextOptions option)
-            : base(option)
+        public SHAMDbContext(DbContextOptions options)
+            : base(options)
         {
 
         }
@@ -36,7 +34,6 @@ namespace SHAM.Repository.Context
                 new Title { ID = 1, TITLE_NAME = "Junior" },
                 new Title { ID = 2, TITLE_NAME = "Senior" },
             };
-
             modelBuilder.Entity<Title>().HasData(titles);
         }
     }

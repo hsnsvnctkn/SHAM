@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SHAM.Repository.Context;
 
-namespace SHAM
+namespace SHAM.UI
 {
     public class Startup
     {

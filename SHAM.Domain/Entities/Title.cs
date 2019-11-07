@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace SHAM.Domain.Entities
 {
-    [Table("TITLE")]
+    [Table("TITLES")]
     public class Title
     {
-        public Title()
+        /*public Title()
         {
             EMPLOYEES = new HashSet<Employee>();
         }
-
-        [Key,Required]
+        */
         public int ID { get; set; } //PK
 
         [Required,StringLength(30)]
