@@ -9,6 +9,7 @@ namespace SHAM.Domain.Entities
     [Table("PROJECT_TYPE")]
     public class Project_Type
     {
+        [Key]
         public int ID { get; set; }
         
         [Required,StringLength(50)]

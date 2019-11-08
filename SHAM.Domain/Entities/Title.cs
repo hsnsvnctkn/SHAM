@@ -12,6 +12,7 @@ namespace SHAM.Domain.Entities
             EMPLOYEES = new HashSet<Employee>();
         }
         */
+        [Key]
         public int ID { get; set; } //PK
 
         [Required,StringLength(30)]

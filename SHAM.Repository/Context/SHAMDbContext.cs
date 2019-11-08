@@ -19,6 +19,8 @@ namespace SHAM.Repository.Context
         public DbSet<Project_Type> Project_Types { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Title> Titles { get; set; }
+        public DbSet<ActivityEmployee> ActivityEmployees { get; set; }
+        public DbSet<ProjectEmployee> ProjectEmployees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -50,6 +52,21 @@ namespace SHAM.Repository.Context
                 .WithMany(priority => priority.ACTIVITIES)
                 .HasForeignKey(activity => activity.ACTIVITY_PRIORITY);
 
+            modelBuilder.Entity<ActivityEmployee>(entity =>
+            {
+                entity.HasKey(ae => new { ae.ActivityID, ae.EmployeeID });
+
+                entity
+                .HasOne(ae => ae.ACTIVITY)
+                .WithMany(e => e.EMPLOYEES)
+                .HasForeignKey(ae => ae.ActivityID);
+
+                entity
+                .HasOne(ae => ae.EMPLOYEE)
+                .WithMany(a => a.ACTIVITIES)
+                .HasForeignKey(ae => ae.EmployeeID);
+            });
+
             modelBuilder.Entity<Customer>()
                 .HasOne(customer => customer.CREATED_CUSTOMER)
                 .WithMany(employee => employee.CUSTOMERS)
@@ -74,6 +91,21 @@ namespace SHAM.Repository.Context
                 .HasOne(project => project.CREATED_EMPLOYEE)
                 .WithMany(employee => employee.CREATED_PROJECTS)
                 .HasForeignKey(project => project.PROJECT_CREATOR);
+
+            modelBuilder.Entity<ProjectEmployee>(entity =>
+            {
+                entity.HasKey(pe => new { pe.ProjectID, pe.EmployeeID });
+
+                entity
+                .HasOne(pe => pe.PROJECT)
+                .WithMany(e => e.EMPLOYEES)
+                .HasForeignKey(pe => pe.ProjectID);
+
+                entity
+                .HasOne(pe => pe.EMPLOYEE)
+                .WithMany(p => p.PROJECTS)
+                .HasForeignKey(pe => pe.EmployeeID);
+            });
 
             seedData(modelBuilder);
         }

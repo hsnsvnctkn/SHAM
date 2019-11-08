@@ -9,6 +9,7 @@ namespace SHAM.Domain.Entities
     [Table("LEVELS")]
     public class Level
     {
+        [Key]
         public int ID { get; set; }
 
         [Required,StringLength(15)]

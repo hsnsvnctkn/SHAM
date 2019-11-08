@@ -13,6 +13,7 @@ namespace SHAM.Domain.Entities
         //{
         //    EMPLOYEES = new HashSet<Employee>();
         //}
+        [Key]
         public int ID { get; set; }//PK
         
         [Required]
@@ -22,7 +23,7 @@ namespace SHAM.Domain.Entities
         public string ACTIVITY_DETAIL { get; set; }
         
         [Required]
-        public int EMPLOYEE_NUMBER { get; set; }//FK
+        public int EMPLOYEE_NUMBER { get; set; }//FK --
 
         [Required]
         public int ACTIVITY_CREATOR { get; set; }//FK--
@@ -56,7 +57,7 @@ namespace SHAM.Domain.Entities
 
         public virtual Project PROJECT { get; set; }
 
-        //public virtual ICollection<Employee> EMPLOYEES { get; set; } //????
+        public virtual ICollection<ActivityEmployee> EMPLOYEES { get; set; } //????
 
         public virtual Employee CREATED_EMPLOYEE { get; set; }
 

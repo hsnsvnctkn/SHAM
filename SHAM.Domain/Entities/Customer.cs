@@ -9,6 +9,7 @@ namespace SHAM.Domain.Entities
     [Table("CUSTOMERS")]
     public class Customer
     {
+        [Key]
         public int ID { get; set; }//PK
 
         [Required,StringLength(30)]

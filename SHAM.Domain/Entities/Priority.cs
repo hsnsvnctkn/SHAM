@@ -9,6 +9,7 @@ namespace SHAM.Domain.Entities
     [Table("PRIORITY")]
     public class Priority
     {
+        [Key]
         public int ID { get; set; }
 
         [Required,StringLength(20)]

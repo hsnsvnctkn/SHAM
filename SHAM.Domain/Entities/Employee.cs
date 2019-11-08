@@ -52,13 +52,13 @@ namespace SHAM.Domain.Entities
         public virtual ICollection<Employee> CREATED_EMPLOYEES { get; set; }
         public virtual Employee CREATED_EMPLOYEE { get; set; }
 
-        //public virtual ICollection<Activity> ACTIVITIES { get; set; } //????
+        public virtual ICollection<ActivityEmployee> ACTIVITIES { get; set; } //????
 
         public virtual ICollection<Activity> CREATED_ACTIVITY { get; set; }
 
         public virtual ICollection<Customer> CUSTOMERS { get; set; }
 
-        //public virtual ICollection<Project> PROJECTS { get; set; }
+        public virtual ICollection<ProjectEmployee> PROJECTS { get; set; }
         
         public virtual ICollection<Project> CREATED_PROJECTS { get; set; }
 

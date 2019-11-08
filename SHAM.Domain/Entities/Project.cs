@@ -13,6 +13,7 @@ namespace SHAM.Domain.Entities
         {
             ACTIVITIES = new HashSet<Activity>();
         }
+        [Key]
         public int ID { get; set; }
 
         [Required]
@@ -25,7 +26,7 @@ namespace SHAM.Domain.Entities
         public int CUSTOMER_NUMBER { get; set; }//FK --
 
         [Required]
-        public int EMPLOYEE_NUMBER { get; set; }//FK
+        public int EMPLOYEE_NUMBER { get; set; }//FK--
 
         [Required]
         public DateTime ESTIMATE_START_DATE { get; set; }
@@ -59,7 +60,7 @@ namespace SHAM.Domain.Entities
 
         public virtual Customer CUSTOMER { get; set; }
 
-        //public virtual ICollection<Employee> EMPLOYEES { get; set; }
+        public virtual ICollection<ProjectEmployee> EMPLOYEES { get; set; }
 
         public virtual Level LEVEL { get; set; }
 
