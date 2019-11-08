@@ -362,13 +362,13 @@ namespace SHAM.Repository.Migrations
                     b.HasOne("SHAM.Domain.Entities.Priority", "PRIORITY")
                         .WithMany("ACTIVITIES")
                         .HasForeignKey("ACTIVITY_PRIORITY")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SHAM.Domain.Entities.Employee", "CREATED_EMPLOYEE")
                         .WithMany("CREATED_ACTIVITY")
                         .HasForeignKey("EMPLOYEE_NUMBER")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SHAM.Domain.Entities.Project", "PROJECT")
@@ -383,13 +383,13 @@ namespace SHAM.Repository.Migrations
                     b.HasOne("SHAM.Domain.Entities.Activity", "ACTIVITY")
                         .WithMany("EMPLOYEES")
                         .HasForeignKey("ActivityID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SHAM.Domain.Entities.Employee", "EMPLOYEE")
                         .WithMany("ACTIVITIES")
                         .HasForeignKey("EmployeeID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -398,7 +398,7 @@ namespace SHAM.Repository.Migrations
                     b.HasOne("SHAM.Domain.Entities.Employee", "CREATED_CUSTOMER")
                         .WithMany("CUSTOMERS")
                         .HasForeignKey("CUSTOMER_CREATOR")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -407,13 +407,13 @@ namespace SHAM.Repository.Migrations
                     b.HasOne("SHAM.Domain.Entities.Employee", "CREATED_EMPLOYEE")
                         .WithMany("CREATED_EMPLOYEES")
                         .HasForeignKey("EMPLOYEE_CREATOR")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SHAM.Domain.Entities.Title", "TITLE")
                         .WithMany("EMPLOYEES")
                         .HasForeignKey("EMPLOYEE_TITLE")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -422,25 +422,25 @@ namespace SHAM.Repository.Migrations
                     b.HasOne("SHAM.Domain.Entities.Customer", "CUSTOMER")
                         .WithMany("PROJECTS")
                         .HasForeignKey("CUSTOMER_NUMBER")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SHAM.Domain.Entities.Employee", "CREATED_EMPLOYEE")
                         .WithMany("CREATED_PROJECTS")
                         .HasForeignKey("PROJECT_CREATOR")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SHAM.Domain.Entities.Level", "LEVEL")
                         .WithMany("PROJECTS")
                         .HasForeignKey("PROJECT_LEVEL")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SHAM.Domain.Entities.Project_Type", "PROJECT_TYPE_")
                         .WithMany("PROJECTS")
                         .HasForeignKey("PROJECT_TYPE")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -449,13 +449,13 @@ namespace SHAM.Repository.Migrations
                     b.HasOne("SHAM.Domain.Entities.Employee", "EMPLOYEE")
                         .WithMany("PROJECTS")
                         .HasForeignKey("EmployeeID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SHAM.Domain.Entities.Project", "PROJECT")
                         .WithMany("EMPLOYEES")
                         .HasForeignKey("ProjectID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

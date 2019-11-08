@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.29424.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SHAM.UI", "SHAM\SHAM.UI.csproj", "{E8F63057-0BE6-4B91-AC17-BE2A04A00773}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHAM.Domain", "SHAM.Domain\SHAM.Domain.csproj", "{CFB5AA8C-4F84-4AD9-B690-61DFDA814C39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SHAM.Domain", "SHAM.Domain\SHAM.Domain.csproj", "{CFB5AA8C-4F84-4AD9-B690-61DFDA814C39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHAM.Repository", "SHAM.Repository\SHAM.Repository.csproj", "{E8EC3C75-09AA-48C5-A7AC-E3847BF3DF10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SHAM.Repository", "SHAM.Repository\SHAM.Repository.csproj", "{E8EC3C75-09AA-48C5-A7AC-E3847BF3DF10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

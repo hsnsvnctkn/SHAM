@@ -93,14 +93,14 @@ namespace SHAM.Repository.Migrations
                         principalSchema: "SHAM",
                         principalTable: "EMPLOYEES",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_EMPLOYEES_TITLES_EMPLOYEE_TITLE",
                         column: x => x.EMPLOYEE_TITLE,
                         principalSchema: "SHAM",
                         principalTable: "TITLES",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -129,7 +129,7 @@ namespace SHAM.Repository.Migrations
                         principalSchema: "SHAM",
                         principalTable: "EMPLOYEES",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -162,28 +162,28 @@ namespace SHAM.Repository.Migrations
                         principalSchema: "SHAM",
                         principalTable: "CUSTOMERS",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PROJECTS_EMPLOYEES_PROJECT_CREATOR",
                         column: x => x.PROJECT_CREATOR,
                         principalSchema: "SHAM",
                         principalTable: "EMPLOYEES",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PROJECTS_LEVELS_PROJECT_LEVEL",
                         column: x => x.PROJECT_LEVEL,
                         principalSchema: "SHAM",
                         principalTable: "LEVELS",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PROJECTS_PROJECT_TYPE_PROJECT_TYPE",
                         column: x => x.PROJECT_TYPE,
                         principalSchema: "SHAM",
                         principalTable: "PROJECT_TYPE",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -216,14 +216,14 @@ namespace SHAM.Repository.Migrations
                         principalSchema: "SHAM",
                         principalTable: "PRIORITY",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ACTIVITIES_EMPLOYEES_EMPLOYEE_NUMBER",
                         column: x => x.EMPLOYEE_NUMBER,
                         principalSchema: "SHAM",
                         principalTable: "EMPLOYEES",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ACTIVITIES_PROJECTS_PROJECT_NUMBER",
                         column: x => x.PROJECT_NUMBER,
@@ -250,14 +250,14 @@ namespace SHAM.Repository.Migrations
                         principalSchema: "SHAM",
                         principalTable: "EMPLOYEES",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ProjectEmployees_PROJECTS_ProjectID",
                         column: x => x.ProjectID,
                         principalSchema: "SHAM",
                         principalTable: "PROJECTS",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -277,14 +277,14 @@ namespace SHAM.Repository.Migrations
                         principalSchema: "SHAM",
                         principalTable: "ACTIVITIES",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ActivityEmployees_EMPLOYEES_EmployeeID",
                         column: x => x.EmployeeID,
                         principalSchema: "SHAM",
                         principalTable: "EMPLOYEES",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
