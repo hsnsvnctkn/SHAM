@@ -1,0 +1,35 @@
+﻿@model List<TitleViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="text-center">
+    <h3>Ünvanlar</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Ünvanlar
+                </th>
+                <th>
+                    Düzenle
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.ID<a asp-action="Edit" asp-route-id="">Düzenle</a>
+                        <a>Sil</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+

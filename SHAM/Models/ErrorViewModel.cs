@@ -1,6 +1,4 @@
-using System;
-
-namespace SHAM.Models
+namespace SHAM.UI.Models
 {
     public class ErrorViewModel
     {

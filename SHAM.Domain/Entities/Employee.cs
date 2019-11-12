@@ -59,7 +59,7 @@ namespace SHAM.Domain.Entities
         public virtual ICollection<Customer> CUSTOMERS { get; set; }
 
         public virtual ICollection<ProjectEmployee> PROJECTS { get; set; }
-        
+
         public virtual ICollection<Project> CREATED_PROJECTS { get; set; }
 
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SHAM.Domain.Entities
+﻿namespace SHAM.Domain.Entities
 {
     public class ActivityEmployee
     {
@@ -10,7 +6,7 @@ namespace SHAM.Domain.Entities
         public int EmployeeID { get; set; }
 
 
-        public virtual Activity ACTIVITY  { get; set; }
+        public virtual Activity ACTIVITY { get; set; }
         public virtual Employee EMPLOYEE { get; set; }
     }
 }

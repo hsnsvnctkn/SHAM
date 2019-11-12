@@ -15,7 +15,7 @@ namespace SHAM.Domain.Entities
         [Key]
         public int ID { get; set; } //PK
 
-        [Required,StringLength(30)]
+        [Required, StringLength(30)]
         public string TITLE_NAME { get; set; }
 
         public virtual ICollection<Employee> EMPLOYEES { get; set; }

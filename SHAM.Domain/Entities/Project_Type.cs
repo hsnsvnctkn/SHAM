@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace SHAM.Domain.Entities
 {
@@ -11,8 +9,8 @@ namespace SHAM.Domain.Entities
     {
         [Key]
         public int ID { get; set; }
-        
-        [Required,StringLength(50)]
+
+        [Required, StringLength(50)]
         public string TYPE_NAME { get; set; }
 
 

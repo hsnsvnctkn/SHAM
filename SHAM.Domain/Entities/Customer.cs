@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace SHAM.Domain.Entities
 {
@@ -12,7 +11,7 @@ namespace SHAM.Domain.Entities
         [Key]
         public int ID { get; set; }//PK
 
-        [Required,StringLength(30)]
+        [Required, StringLength(30)]
         public string CUSTOMER_NAME { get; set; }
 
         [Required, StringLength(20)]
@@ -29,7 +28,7 @@ namespace SHAM.Domain.Entities
 
         [Required]
         public bool CUSTOMER_STATUS { get; set; }
-        
+
         [Required]
         public int CUSTOMER_CREATOR { get; set; }//FK --
 

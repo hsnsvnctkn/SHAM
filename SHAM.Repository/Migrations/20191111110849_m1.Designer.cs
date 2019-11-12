@@ -10,7 +10,7 @@ using SHAM.Repository.Context;
 namespace SHAM.Repository.Migrations
 {
     [DbContext(typeof(SHAMDbContext))]
-    [Migration("20191108121038_m1")]
+    [Migration("20191111110849_m1")]
     partial class m1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,6 +79,41 @@ namespace SHAM.Repository.Migrations
                     b.HasIndex("PROJECT_NUMBER");
 
                     b.ToTable("ACTIVITIES");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            ACTIVITY_CREATOR = 2,
+                            ACTIVITY_DETAIL = "Send to Shell when finished",
+                            ACTIVITY_PRIORITY = 3,
+                            ACTIVITY_STATUS = false,
+                            CREATED_DATE = new DateTime(2019, 11, 11, 14, 8, 49, 213, DateTimeKind.Local).AddTicks(6056),
+                            CREATED_TIME = new TimeSpan(509292136062),
+                            EMPLOYEE_NUMBER = 1,
+                            END_DATE = new DateTime(2019, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ESTIMATE_END_DATE = new DateTime(2019, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ESTIMATE_START_DATE = new DateTime(2019, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            INVOICE = false,
+                            PROJECT_NUMBER = 1,
+                            START_DATE = new DateTime(2019, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ID = 2,
+                            ACTIVITY_CREATOR = 2,
+                            ACTIVITY_DETAIL = "Notify Mr. Kaya when finished",
+                            ACTIVITY_PRIORITY = 3,
+                            ACTIVITY_STATUS = true,
+                            CREATED_DATE = new DateTime(2019, 11, 11, 14, 8, 49, 214, DateTimeKind.Local).AddTicks(1029),
+                            CREATED_TIME = new TimeSpan(509292141036),
+                            EMPLOYEE_NUMBER = 3,
+                            ESTIMATE_END_DATE = new DateTime(2019, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ESTIMATE_START_DATE = new DateTime(2019, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            INVOICE = false,
+                            PROJECT_NUMBER = 1,
+                            START_DATE = new DateTime(2019, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("SHAM.Domain.Entities.ActivityEmployee", b =>
@@ -145,6 +180,47 @@ namespace SHAM.Repository.Migrations
                     b.HasIndex("CUSTOMER_CREATOR");
 
                     b.ToTable("CUSTOMERS");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            CREATED_DATE = new DateTime(2019, 11, 11, 14, 8, 49, 212, DateTimeKind.Local).AddTicks(2614),
+                            CREATED_TIME = new TimeSpan(509292122620),
+                            CUSTOMER_ADRESS = "Maltepe/Istanbul",
+                            CUSTOMER_CREATOR = 2,
+                            CUSTOMER_MAIL = "shell123@shell.com.tr",
+                            CUSTOMER_NAME = "Shell",
+                            CUSTOMER_PHONE_NO = "021632145215",
+                            CUSTOMER_STATUS = true,
+                            CUSTOMER_TYPE = "Indirect"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            CREATED_DATE = new DateTime(2019, 11, 11, 14, 8, 49, 212, DateTimeKind.Local).AddTicks(6151),
+                            CREATED_TIME = new TimeSpan(509292126157),
+                            CUSTOMER_ADRESS = "Fatih/Istanbul",
+                            CUSTOMER_CREATOR = 3,
+                            CUSTOMER_MAIL = "hhhsssqqq@solen.com.tr",
+                            CUSTOMER_NAME = "Şölen",
+                            CUSTOMER_PHONE_NO = "02125422311",
+                            CUSTOMER_STATUS = true,
+                            CUSTOMER_TYPE = "Direct"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            CREATED_DATE = new DateTime(2019, 11, 11, 14, 8, 49, 212, DateTimeKind.Local).AddTicks(6227),
+                            CREATED_TIME = new TimeSpan(509292126228),
+                            CUSTOMER_ADRESS = "Kadıköy/Istanbul",
+                            CUSTOMER_CREATOR = 1,
+                            CUSTOMER_MAIL = "supppp@foriba.com.tr",
+                            CUSTOMER_NAME = "Foriba",
+                            CUSTOMER_PHONE_NO = "02163112400",
+                            CUSTOMER_STATUS = true,
+                            CUSTOMER_TYPE = "Direct"
+                        });
                 });
 
             modelBuilder.Entity("SHAM.Domain.Entities.Employee", b =>
@@ -201,6 +277,50 @@ namespace SHAM.Repository.Migrations
                     b.HasIndex("EMPLOYEE_TITLE");
 
                     b.ToTable("EMPLOYEES");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            CREATED_DATE = new DateTime(2019, 11, 11, 14, 8, 49, 210, DateTimeKind.Local).AddTicks(6979),
+                            CREATED_TIME = new TimeSpan(509292115477),
+                            EMPLOYEE_ADRESS = "Sancaktepe/İstanbul",
+                            EMPLOYEE_CREATOR = 1,
+                            EMPLOYEE_MAIL = "sevinctekin.hasan@gmail.com",
+                            EMPLOYEE_NAME = "Hasan",
+                            EMPLOYEE_PHONE_NO = "05363403660",
+                            EMPLOYEE_STATUS = true,
+                            EMPLOYEE_SURNAME = "Sevinçtekin",
+                            EMPLOYEE_TITLE = 1
+                        },
+                        new
+                        {
+                            ID = 2,
+                            CREATED_DATE = new DateTime(2019, 11, 11, 14, 8, 49, 212, DateTimeKind.Local).AddTicks(880),
+                            CREATED_TIME = new TimeSpan(509292120887),
+                            EMPLOYEE_ADRESS = "Kartal/İstanbul",
+                            EMPLOYEE_CREATOR = 1,
+                            EMPLOYEE_MAIL = "aaaaasssddn@gmail.com",
+                            EMPLOYEE_NAME = "Ömer Faruk",
+                            EMPLOYEE_PHONE_NO = "05322545362",
+                            EMPLOYEE_STATUS = true,
+                            EMPLOYEE_SURNAME = "Kaya",
+                            EMPLOYEE_TITLE = 1
+                        },
+                        new
+                        {
+                            ID = 3,
+                            CREATED_DATE = new DateTime(2019, 11, 11, 14, 8, 49, 212, DateTimeKind.Local).AddTicks(977),
+                            CREATED_TIME = new TimeSpan(509292120979),
+                            EMPLOYEE_ADRESS = "Üsküdar/İstanbul",
+                            EMPLOYEE_CREATOR = 2,
+                            EMPLOYEE_MAIL = "qwwwweeeqq@gmail.com",
+                            EMPLOYEE_NAME = "Fatih",
+                            EMPLOYEE_PHONE_NO = "05348796582",
+                            EMPLOYEE_STATUS = true,
+                            EMPLOYEE_SURNAME = "Balcıoğlu",
+                            EMPLOYEE_TITLE = 1
+                        });
                 });
 
             modelBuilder.Entity("SHAM.Domain.Entities.Level", b =>
@@ -218,6 +338,38 @@ namespace SHAM.Repository.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("LEVELS");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            LEVEL_NAME = "Accept"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            LEVEL_NAME = "Planning"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            LEVEL_NAME = "Design"
+                        },
+                        new
+                        {
+                            ID = 4,
+                            LEVEL_NAME = "Coding"
+                        },
+                        new
+                        {
+                            ID = 5,
+                            LEVEL_NAME = "Test"
+                        },
+                        new
+                        {
+                            ID = 6,
+                            LEVEL_NAME = "Completed"
+                        });
                 });
 
             modelBuilder.Entity("SHAM.Domain.Entities.Priority", b =>
@@ -235,6 +387,33 @@ namespace SHAM.Repository.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("PRIORITY");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            PRIORITY_NAME = "SO IMMEDIATE"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            PRIORITY_NAME = "IMMEDIATE"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            PRIORITY_NAME = "NORMAL"
+                        },
+                        new
+                        {
+                            ID = 4,
+                            PRIORITY_NAME = "NOT IMMEDIATE"
+                        },
+                        new
+                        {
+                            ID = 5,
+                            PRIORITY_NAME = "NOT IMPORTANT"
+                        });
                 });
 
             modelBuilder.Entity("SHAM.Domain.Entities.Project", b =>
@@ -296,6 +475,42 @@ namespace SHAM.Repository.Migrations
                     b.HasIndex("PROJECT_TYPE");
 
                     b.ToTable("PROJECTS");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            CREATED_DATE = new DateTime(2019, 11, 11, 14, 8, 49, 212, DateTimeKind.Local).AddTicks(8009),
+                            CREATED_TIME = new TimeSpan(509292128016),
+                            CUSTOMER_NUMBER = 3,
+                            EMPLOYEE_NUMBER = 2,
+                            END_DATE = new DateTime(2019, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ESTIMATE_END_DATE = new DateTime(2019, 8, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ESTIMATE_START_DATE = new DateTime(2019, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PROJECT_CREATOR = 2,
+                            PROJECT_LEVEL = 1,
+                            PROJECT_NAME = "Project Management",
+                            PROJECT_STATUS = true,
+                            PROJECT_TYPE = 2,
+                            START_DATE = new DateTime(2019, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ID = 2,
+                            CREATED_DATE = new DateTime(2019, 11, 11, 14, 8, 49, 213, DateTimeKind.Local).AddTicks(4384),
+                            CREATED_TIME = new TimeSpan(509292134390),
+                            CUSTOMER_NUMBER = 1,
+                            EMPLOYEE_NUMBER = 3,
+                            END_DATE = new DateTime(2019, 12, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ESTIMATE_END_DATE = new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ESTIMATE_START_DATE = new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PROJECT_CREATOR = 3,
+                            PROJECT_LEVEL = 3,
+                            PROJECT_NAME = "Game Simulator",
+                            PROJECT_STATUS = true,
+                            PROJECT_TYPE = 1,
+                            START_DATE = new DateTime(2019, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("SHAM.Domain.Entities.ProjectEmployee", b =>
@@ -328,6 +543,18 @@ namespace SHAM.Repository.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("PROJECT_TYPE");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            TYPE_NAME = "Visual"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            TYPE_NAME = "Object - Oriented"
+                        });
                 });
 
             modelBuilder.Entity("SHAM.Domain.Entities.Title", b =>

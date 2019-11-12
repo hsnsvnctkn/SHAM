@@ -5,7 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SHAM.Repository;
 using SHAM.Repository.Context;
+using SHAM.Repository.Contracts;
 
 namespace SHAM.UI
 {
@@ -30,11 +32,14 @@ namespace SHAM.UI
             });
 
             services.AddControllersWithViews();
+            services.AddScoped<DbContext, SHAMDbContext>();
             services.AddDbContext<SHAMDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("SHAMDbConnectionString"));
             });
 
+            services.AddScoped<ITitleRepository, TitleRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
