@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SHAM.Repository.Contracts;
-using SHAM.UI.Models;
-using System.Linq;
+using SHAM.Repository.Dto;
+using System.Threading.Tasks;
 
 namespace SHAM.UI.Controllers
 {
@@ -15,13 +15,63 @@ namespace SHAM.UI.Controllers
 
         public IActionResult Index()
         {
-            var list = _titleRepository.GetList();
-            var model = list.Select(x => new TitleViewModel { ID = x.ID, Name = x.TITLE_NAME }).ToList();
+            var model = _titleRepository.GetList();
             return View(model);
         }
-        public IActionResult Edit()
+
+        [ActionName("Delete")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id) 
+        {
+            var title = _titleRepository.Get(id);
+
+            if (title == null)
+                return NotFound("Silinecek birşey bulunamadı !");
+
+            _titleRepository.DeleteTitle(title);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Create()
         {
             return View();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create([Bind("ID,NAME")] TitleDto title)
+        {
+            if (title.NAME != null)
+            {
+                _titleRepository.Create(title);
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(title);
+
+        }
+        public IActionResult Edit(int id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, [Bind("ID,NAME")] TitleDto title)
+        {
+            if (id != title.ID)
+                return NotFound();
+
+            if(title!=null)
+            {
+                _titleRepository.Update(title);
+                return RedirectToAction(nameof(Index));
+                
+            }
+            return View(title);
+        }
+
     }
 }

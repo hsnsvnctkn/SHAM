@@ -1,18 +1,19 @@
-﻿@model List<TitleViewModel>
+﻿@model List<SHAM.Repository.Dto.TitleDto>
 @{
     ViewData["Title"] = "Index";
 }
 <div class="text-center">
     <h3>Ünvanlar</h3>
+        <h5>
+            <a asp-action="Create">Yeni Ünvan Ekle</a>
+        </h5>
     <table class="table">
         <thead>
             <tr>
                 <th>
                     Ünvanlar
                 </th>
-                <th>
-                    Düzenle
-                </th>
+
             </tr>
         </thead>
         <tbody>
@@ -20,11 +21,19 @@
             {
                 <tr>
                     <td>
-                        @item.Name
+                        @item.NAME
                     </td>
                     <td>
-                        @item.ID<a asp-action="Edit" asp-route-id="">Düzenle</a>
-                        <a>Sil</a>
+                        <form asp-action="Edit"  method="post">
+                            <input type="hidden" value="@item.ID" name="id" />
+                            <input type="submit" asp-route="@item.ID" value="Düzenle" class="btn btn-primary" />
+                        </form>
+                    </td>
+                        <td>
+                        <form asp-action="Delete" method="post">
+                            <input type="hidden" value="@item.ID" name="id" />
+                            <input type="submit" value="Sil" class="btn btn-danger" />
+                        </form>
                     </td>
                 </tr>
             }
