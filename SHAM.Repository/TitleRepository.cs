@@ -19,16 +19,18 @@ namespace SHAM.Repository
         {
             return _context.Titles.Select(t => new TitleDto { ID = t.ID, NAME = t.TITLE_NAME }).ToList();
         }
-        public void DeleteTitle(Title t)
+        public void DeleteTitle(TitleDto t)
         {
-            _context.Titles.Remove(t);
+            Title title = new Title { ID = t.ID, TITLE_NAME = t.NAME };
+            _context.Titles.Remove(title);
             _context.SaveChanges();
         }
 
 
-        public Title Get(int id)
+        public TitleDto Get(int id)
         {
-            return  _context.Titles.FirstOrDefault(t => t.ID == id);
+            var t = _context.Titles.FirstOrDefault(t => t.ID == id);
+            return new TitleDto { ID = t.ID, NAME = t.TITLE_NAME };
         }
 
         public void Create(TitleDto title)
@@ -39,7 +41,7 @@ namespace SHAM.Repository
 
         public void Update(TitleDto title)
         {
-            _context.Titles.Update(new Title { ID = title.ID, TITLE_NAME = title.NAME });
+            _context.Titles.Update(new Title {ID=title.ID, TITLE_NAME = title.NAME });
             _context.SaveChanges();
         }
     }

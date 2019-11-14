@@ -6,11 +6,11 @@ namespace SHAM.Repository.Contracts
 {
     public interface ITitleRepository : IGenericRepository<Title>
     {
-        Title Get(int id);
+        TitleDto Get(int id);
 
         List<TitleDto> GetList();
 
-        void DeleteTitle(Title title);
+        void DeleteTitle(TitleDto title);
         void Create(TitleDto title);
         void Update(TitleDto title);
     }

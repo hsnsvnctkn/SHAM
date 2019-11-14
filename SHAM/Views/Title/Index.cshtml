@@ -24,10 +24,10 @@
                         @item.NAME
                     </td>
                     <td>
-                        <form asp-action="Edit"  method="post">
-                            <input type="hidden" value="@item.ID" name="id" />
-                            <input type="submit" asp-route="@item.ID" value="Düzenle" class="btn btn-primary" />
+                        <form>
+                            <input type="submit" asp-action="Edit" asp-route-id="@item.ID" value="Düzenle" class="btn btn-primary" />
                         </form>
+                        
                     </td>
                         <td>
                         <form asp-action="Delete" method="post">

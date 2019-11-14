@@ -54,23 +54,25 @@ namespace SHAM.UI.Controllers
         }
         public IActionResult Edit(int id)
         {
-            return View();
+            var title = _titleRepository.Get(id);
+            return View(title);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind("ID,NAME")] TitleDto title)
         {
             if (id != title.ID)
-                return NotFound();
-
-            if(title!=null)
             {
+                return NotFound();
+            }
+            if (title != null)
+            {
+                
                 _titleRepository.Update(title);
                 return RedirectToAction(nameof(Index));
-                
+
             }
-            return View(title);
+            return RedirectToAction(nameof(Index));
         }
 
     }
