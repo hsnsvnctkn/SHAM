@@ -4,17 +4,18 @@ using SHAM.Repository.Dto;
 
 namespace SHAM.UI.Controllers
 {
-    public class TitleController : Controller
+    public class PriorityController : Controller
     {
-        readonly ITitleRepository _titleRepository;
-        public TitleController(ITitleRepository titleRepository)
+        readonly IPriorityRepository _priorityRepository;
+
+        public PriorityController(IPriorityRepository priorityRepository)
         {
-            _titleRepository = titleRepository;
+            _priorityRepository = priorityRepository;
         }
 
         public IActionResult Index()
         {
-            var model = _titleRepository.GetList();
+            var model = _priorityRepository.GetList();
             return View(model);
         }
 
@@ -23,12 +24,12 @@ namespace SHAM.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            var title = _titleRepository.Get(id);
+            var priority = _priorityRepository.Get(id);
 
-            if (title == null)
+            if (priority == null)
                 return NotFound("Silinecek birşey bulunamadı !");
 
-            _titleRepository.DeleteTitle(title.ID);
+            _priorityRepository.DeletePriority(priority.ID);
 
             return RedirectToAction(nameof(Index));
         }
@@ -40,39 +41,41 @@ namespace SHAM.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("ID,NAME")] ConstantDto title)
+        public IActionResult Create([Bind("ID,NAME")] ConstantDto priority)
         {
-            if (title.NAME != null)
+            if (priority.NAME != null)
             {
-                _titleRepository.Create(title);
+                _priorityRepository.Create(priority);
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(title);
+            return View(priority);
 
         }
+
         public IActionResult Edit(int id)
         {
-            var title = _titleRepository.Get(id);
+            var title = _priorityRepository.Get(id);
             return View(title);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("ID,NAME")] ConstantDto title)
+        public IActionResult Edit(int id, [Bind("ID,NAME")] ConstantDto priority)
         {
-            if (id != title.ID)
+            if (id != priority.ID)
             {
                 return NotFound();
             }
-            if (title != null)
+            if (priority != null)
             {
 
-                _titleRepository.Update(title);
+                _priorityRepository.Update(priority);
                 return RedirectToAction(nameof(Index));
 
             }
             return RedirectToAction(nameof(Index));
         }
+
 
     }
 }

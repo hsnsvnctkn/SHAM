@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SHAM.Repository.Dto
 {
-    public class TitleDto
+    public class ConstantDto
     {
         public int ID { get; set; }
         public string NAME { get; set; }

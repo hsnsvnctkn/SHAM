@@ -4,17 +4,18 @@ using SHAM.Repository.Dto;
 
 namespace SHAM.UI.Controllers
 {
-    public class TitleController : Controller
+    public class LevelController : Controller
     {
-        readonly ITitleRepository _titleRepository;
-        public TitleController(ITitleRepository titleRepository)
+        readonly ILevelRepository _levelRepository;
+
+        public LevelController(ILevelRepository levelRepository)
         {
-            _titleRepository = titleRepository;
+            _levelRepository = levelRepository;
         }
 
         public IActionResult Index()
         {
-            var model = _titleRepository.GetList();
+            var model = _levelRepository.GetList();
             return View(model);
         }
 
@@ -23,12 +24,12 @@ namespace SHAM.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            var title = _titleRepository.Get(id);
+            var level = _levelRepository.Get(id);
 
-            if (title == null)
+            if (level == null)
                 return NotFound("Silinecek birşey bulunamadı !");
 
-            _titleRepository.DeleteTitle(title.ID);
+            _levelRepository.DeleteLevel(level.ID);
 
             return RedirectToAction(nameof(Index));
         }
@@ -40,39 +41,41 @@ namespace SHAM.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("ID,NAME")] ConstantDto title)
+        public IActionResult Create([Bind("ID,NAME")] ConstantDto level)
         {
-            if (title.NAME != null)
+            if (level.NAME != null)
             {
-                _titleRepository.Create(title);
+                _levelRepository.Create(level);
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(title);
+            return View(level);
 
         }
+
         public IActionResult Edit(int id)
         {
-            var title = _titleRepository.Get(id);
-            return View(title);
+            var level = _levelRepository.Get(id);
+            return View(level);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("ID,NAME")] ConstantDto title)
+        public IActionResult Edit(int id, [Bind("ID,NAME")] ConstantDto level)
         {
-            if (id != title.ID)
+            if (id != level.ID)
             {
                 return NotFound();
             }
-            if (title != null)
+            if (level != null)
             {
 
-                _titleRepository.Update(title);
+                _levelRepository.Update(level);
                 return RedirectToAction(nameof(Index));
 
             }
-            return RedirectToAction(nameof(Index));
+            return NotFound();
         }
+
 
     }
 }

@@ -1,21 +1,23 @@
 ﻿@model SHAM.Repository.Dto.ConstantDto
 @{
-    ViewData["Title"] = "Yeni Ekle";
+    ViewData["Title"] = "Düzenle";
 }
 
-<h3>Yeni Ünvan Ekle</h3>
+<h2>Düzenle</h2>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
             <div class="form-group">
-                <label  class="control-label">Ünvan Adı</label>
+                <label class="control-label">Seviye Adı</label>
                 <input asp-for="NAME" class="form-control" />
                 <span asp-validation-for="NAME" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Ekle" class="btn btn-primary" />
+                <input type="submit" value="Kaydet" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -24,4 +26,3 @@
 <div>
     <a asp-action="Index">Geri Dön</a>
 </div>
-

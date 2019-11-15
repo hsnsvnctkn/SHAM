@@ -1,0 +1,48 @@
+﻿@model IEnumerable<SHAM.Repository.Dto.ConstantDto>
+@{
+    ViewData["Title"] = "Öncelik Seviyeleri";
+}
+
+    <div class="text-center">
+        <h3>Öncelik Seviyeleri</h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Seviye İsimleri
+                    </th>
+                    <th>
+                        <form>
+                            <input width="50" type="submit" asp-action="Create" value="Yeni Ekle" class="btn btn-success" />
+                        </form>
+
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.NAME
+                        </td>
+                        <td>
+                            <form>
+                                <input type="submit" asp-action="Edit" asp-route-id="@item.ID" value="Düzenle" class="btn btn-primary" />
+                            </form>
+                        </td>
+                        <td>
+                            <div class="col-sm-2">
+                                <form asp-action="Delete" method="post">
+                                    <input type="hidden" value="@item.ID" name="id" />
+                                    <input type="submit" value="Sil" class="btn btn-danger" />
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>

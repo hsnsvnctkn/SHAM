@@ -1,5 +1,4 @@
-﻿using SAM.Repository;
-using SHAM.Domain.Entities;
+﻿using SHAM.Domain.Entities;
 using SHAM.Repository.Contracts;
 using SHAM.Repository.Dto;
 using System.Collections.Generic;
@@ -15,31 +14,31 @@ namespace SHAM.Repository
 
         }
 
-        public List<TitleDto> GetList()
+        public List<ConstantDto> GetList()
         {
-            return _context.Titles.Select(t => new TitleDto { ID = t.ID, NAME = t.TITLE_NAME }).ToList();
+            return _context.Titles.Select(t => new ConstantDto { ID = t.ID, NAME = t.TITLE_NAME }).ToList();
         }
-        public void DeleteTitle(TitleDto t)
+        public void DeleteTitle(int id)
         {
-            Title title = new Title { ID = t.ID, TITLE_NAME = t.NAME };
+            var title = _context.Titles.FirstOrDefault(t => t.ID == id);
             _context.Titles.Remove(title);
             _context.SaveChanges();
         }
 
 
-        public TitleDto Get(int id)
+        public ConstantDto Get(int id)
         {
             var t = _context.Titles.FirstOrDefault(t => t.ID == id);
-            return new TitleDto { ID = t.ID, NAME = t.TITLE_NAME };
+            return new ConstantDto { ID = t.ID, NAME = t.TITLE_NAME };
         }
 
-        public void Create(TitleDto title)
+        public void Create(ConstantDto title)
         {
             _context.Titles.Add(new Title { ID = title.ID, TITLE_NAME = title.NAME });
             _context.SaveChanges();
         }
 
-        public void Update(TitleDto title)
+        public void Update(ConstantDto title)
         {
             _context.Titles.Update(new Title {ID=title.ID, TITLE_NAME = title.NAME });
             _context.SaveChanges();
