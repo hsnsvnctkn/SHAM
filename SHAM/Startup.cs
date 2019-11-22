@@ -43,6 +43,7 @@ namespace SHAM.UI
             services.AddScoped<IPriorityRepository, PriorityRepository>();
             services.AddScoped<ILevelRepository, LevelRepository>();
             services.AddScoped<IProjectTypeRepository, ProjectTypeRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

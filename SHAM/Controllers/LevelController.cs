@@ -34,10 +34,6 @@ namespace SHAM.UI.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Create()
-        {
-            return View();
-        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -53,29 +49,31 @@ namespace SHAM.UI.Controllers
 
         }
 
-        public IActionResult Edit(int id)
+        public IActionResult Edit(int id, ConstantDto level)
         {
-            var level = _levelRepository.Get(id);
-            return View(level);
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("ID,NAME")] ConstantDto level)
-        {
-            if (id != level.ID)
+            try
             {
-                return NotFound();
-            }
-            if (level != null)
-            {
+                if (id != level.ID)
+                {
+                    return NotFound();
+                }
+                if (level != null)
+                {
 
-                _levelRepository.Update(level);
+                    _levelRepository.Update(level);
+                    return RedirectToAction(nameof(Index));
+
+                }
                 return RedirectToAction(nameof(Index));
-
             }
-            return NotFound();
-        }
+            catch (System.Exception)
+            {
 
+                throw;
+            }
+
+        }
 
     }
 }
+

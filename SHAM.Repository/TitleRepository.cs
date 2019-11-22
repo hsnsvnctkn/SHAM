@@ -40,7 +40,7 @@ namespace SHAM.Repository
 
         public void Update(ConstantDto title)
         {
-            _context.Titles.Update(new Title {ID=title.ID, TITLE_NAME = title.NAME });
+            _context.Titles.Update(new Title { ID = title.ID, TITLE_NAME = title.NAME });
             _context.SaveChanges();
         }
     }

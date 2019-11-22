@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SHAM.Repository.Dto
+﻿namespace SHAM.Repository.Dto
 {
     public class ConstantDto
     {
