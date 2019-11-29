@@ -8,5 +8,8 @@ namespace SHAM.Repository.Contracts
     {
         EmpConsDto GetList();
         void Create(EmployeeDto employee);
+        EmployeeDto Get(int id);
+        void Delete(int id);
+        void Update(EmployeeDto employee);
     }
 }

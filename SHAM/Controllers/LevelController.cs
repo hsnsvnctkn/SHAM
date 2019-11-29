@@ -49,27 +49,17 @@ namespace SHAM.UI.Controllers
 
         }
 
-        public IActionResult Edit(int id, ConstantDto level)
+        [HttpPost]
+        public JsonResult Edit(ConstantDto data)
         {
             try
             {
-                if (id != level.ID)
-                {
-                    return NotFound();
-                }
-                if (level != null)
-                {
-
-                    _levelRepository.Update(level);
-                    return RedirectToAction(nameof(Index));
-
-                }
-                return RedirectToAction(nameof(Index));
+                _levelRepository.Update(data);
+                return Json(new { Status = true });
             }
             catch (System.Exception)
             {
-
-                throw;
+                return Json(new { Status = false });
             }
 
         }

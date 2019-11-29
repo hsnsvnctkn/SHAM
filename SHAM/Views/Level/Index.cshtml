@@ -66,21 +66,21 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form asp-action="Edit" method="post" role="form">
+            <form id="editForm">
                 <div class="modal-body">
                     <div class="card-body">
                         <div class="form-group">
-                            <input type="hidden" id="levelId" value="" name="id" />
+                            <input type="hidden" name="Id" id="levelId" value="" />
                         </div>
                         <div class="form-group">
-                            <label for="name">Seviye Adı</label>
-                            <input id="levelName" type="text" name="name" data-parsley-trigger="change" value="" required="" placeholder="Seviye Adı Giriniz" autocomplete="off" class="form-control">
+                            <label for="levelName">Seviye Adı</label>
+                            <input id="levelName" name="Name" type="text" data-parsley-trigger="change" value="" required="" placeholder="Seviye Adı Giriniz" autocomplete="off" class="form-control">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-                    <button type="submit" class="btn btn-success" asp-action="Edit">Kaydet</button>
+                    <button class="btn btn-success" id="BtnEdit">Kaydet</button>
                 </div>
             </form>
         </div>
@@ -102,7 +102,7 @@
                     <div class="card-body">
                         <div class="form-group">
                             Silmek istediğinize emin misiniz ?
-                            <input type="hidden" id="levelIdDel" value="19" name="id" />
+                            <input type="hidden" id="levelIdDel" value="" name="id" />
                         </div>
                     </div>
                 </div>
@@ -143,18 +143,34 @@
     </div>
 </div>
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script>
 
-    $(".viewModel").click(function () {
-        var name = $(this).data("name");
-        document.getElementById("levelName").value = name;
-        var id = $(this).data("id");
-        document.getElementById("levelId").value = id;
-    })
-    $(".viewModelDel").click(function () {
-        var id = $(this).data("id");
-        document.getElementById("levelIdDel").value = id;
-    })
 
-</script>
+
+@section scripts{
+    <script>
+
+        $(".viewModel").click(function () {
+            var name = $(this).data("name");
+            document.getElementById("levelName").value = name;
+            var id = $(this).data("id");
+            document.getElementById("levelId").value = id;
+        });
+        $(".viewModelDel").click(function () {
+            var id = $(this).data("id");
+            document.getElementById("levelIdDel").value = id;
+        });
+
+        $("#BtnEdit").click(function () {
+            $("#editForm").ajaxSubmit({
+                url: '/Level/Edit', type: 'post',
+                success: function (result) {
+                    if (result.status) {
+                        window.location.reload();
+                    }
+                }
+            })
+        });
+
+    </script>
+}
+

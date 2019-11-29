@@ -11,6 +11,8 @@ namespace SHAM.Domain.Entities
         public Employee()
         {
             CREATED_ACTIVITY = new HashSet<Activity>();
+            ACTIVITIES = new HashSet<ActivityEmployee>();
+            PROJECTS = new HashSet<ProjectEmployee>();
         }
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

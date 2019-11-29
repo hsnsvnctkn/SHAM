@@ -1,5 +1,6 @@
 ﻿using SHAM.Domain.Entities;
 using System;
+using System.Collections.Generic;
 
 namespace SHAM.Repository.Dto
 {
@@ -17,6 +18,21 @@ namespace SHAM.Repository.Dto
         public DateTime CREATED_DATE { get; set; }
         public TimeSpan CREATED_TIME { get; set; }
 
-        virtual public Title TITLE { get; set; }
+
+        virtual public TitleDto TITLE { get; set; }
+
+        public virtual ICollection<Employee> CREATED_EMPLOYEES { get; set; }
+        public virtual Employee CREATED_EMPLOYEE { get; set; }
+
+        public virtual ICollection<ActivityEmployee> ACTIVITIES { get; set; } //????
+
+        public virtual ICollection<Activity> CREATED_ACTIVITY { get; set; }
+
+        public virtual ICollection<Customer> CUSTOMERS { get; set; }
+
+        public virtual ICollection<ProjectEmployee> PROJECTS { get; set; }
+
+        public virtual ICollection<Project> CREATED_PROJECTS { get; set; }
+
     }
 }

@@ -11,6 +11,7 @@ namespace SHAM.Domain.Entities
         public Project()
         {
             ACTIVITIES = new HashSet<Activity>();
+            EMPLOYEES = new HashSet<ProjectEmployee>();
         }
         [Key]
         public int ID { get; set; }
@@ -51,6 +52,7 @@ namespace SHAM.Domain.Entities
 
         [Required]
         public TimeSpan CREATED_TIME { get; set; } = DateTime.Now.TimeOfDay;
+
 
 
         public virtual ICollection<Activity> ACTIVITIES { get; set; }

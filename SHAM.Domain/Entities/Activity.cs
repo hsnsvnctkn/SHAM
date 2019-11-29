@@ -8,10 +8,10 @@ namespace SHAM.Domain.Entities
     [Table("ACTIVITIES")]
     public class Activity
     {
-        //public Activity()
-        //{
-        //    EMPLOYEES = new HashSet<Employee>();
-        //}
+        public Activity()
+        {
+            EMPLOYEES = new HashSet<ActivityEmployee>();
+        }
         [Key]
         public int ID { get; set; }//PK
 

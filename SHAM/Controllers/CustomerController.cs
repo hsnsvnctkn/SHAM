@@ -8,24 +8,23 @@ using SHAM.Repository.Dto;
 
 namespace SHAM.UI.Controllers
 {
-    public class EmployeeController : Controller
+    public class CustomerController : Controller
     {
-        readonly IEmployeeRepository _employeeRepository;
-        public EmployeeController(IEmployeeRepository employeeRepository)
+        readonly ICustomerRepository _customerRepository;
+        public CustomerController(ICustomerRepository customerRepository)
         {
-            _employeeRepository = employeeRepository;
+            _customerRepository = customerRepository;
         }
         public IActionResult Index()
         {
-            var model = _employeeRepository.GetList();
+            var model = _customerRepository.GetList();
             return View(model);
         }
-        [HttpPost]
-        public JsonResult Create(EmployeeDto employee)
+        public JsonResult Create(CustomerDto employee)
         {
             try
             {
-                _employeeRepository.Create(employee);
+                _customerRepository.Create(employee);
                 return Json(new { status = true });
             }
             catch (Exception)
@@ -36,11 +35,11 @@ namespace SHAM.UI.Controllers
         }
 
         [HttpPost]
-        public JsonResult Edit(EmployeeDto employee)
+        public JsonResult Edit(CustomerDto customer)
         {
             try
             {
-                _employeeRepository.Update(employee);
+                _customerRepository.Update(customer);
                 return Json(new { status = true });
             }
             catch (Exception)
@@ -49,7 +48,6 @@ namespace SHAM.UI.Controllers
                 return Json(new { status = false });
             }
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -57,12 +55,8 @@ namespace SHAM.UI.Controllers
         {
             try
             {
-                var emp = _employeeRepository.Get(id);
 
-                if (emp == null)
-                    return NotFound("Silinecek birşey bulunamadı !");
-
-                _employeeRepository.Delete(emp.ID);
+                _customerRepository.Delete(id);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -72,5 +66,7 @@ namespace SHAM.UI.Controllers
                 return NotFound("Hata");
             }
         }
+
+
     }
 }
