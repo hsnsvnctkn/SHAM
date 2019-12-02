@@ -59,7 +59,9 @@ namespace SHAM.Repository
             {
                 ID = e.ID,
                 NAME = e.EMPLOYEE_NAME,
-                SURNAME = e.EMPLOYEE_SURNAME
+                SURNAME = e.EMPLOYEE_SURNAME,
+                PROJECTS = e.PROJECTS,
+                ACTIVITIES = e.ACTIVITIES
             }).ToList();
 
             var level = _context.Levels.Select(l => new LevelDto

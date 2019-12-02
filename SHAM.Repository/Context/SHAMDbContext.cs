@@ -21,8 +21,8 @@ namespace SHAM.Repository.Context
         public DbSet<Project_Type> Project_Types { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Title> Titles { get; set; }
-        public DbSet<ActivityEmployee> ActivityEmployees { get; set; }
-        public DbSet<ProjectEmployee> ProjectEmployees { get; set; }
+        public DbSet<ActivityEmployee> ActivityEmployees { get; set; } // Many to Many 
+        public DbSet<ProjectEmployee> ProjectEmployees { get; set; } //Many to Many
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

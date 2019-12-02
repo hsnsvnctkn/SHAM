@@ -97,15 +97,5 @@ namespace SHAM.Repository
             return new EmpConsDto { TitleDto = title, EmployeeDto = emp };
 
         }
-
-        //public List<DropDownListDto> dropDownListDtos()
-        //{
-        //    var level = _context.Levels.Select(l => new Level { ID = l.ID, LEVEL_NAME = l.LEVEL_NAME });
-        //    var title = _context.Titles.Select(t => new Title { ID = t.ID, TITLE_NAME = t.TITLE_NAME });
-        //    var priority = _context.Priorities.Select(p => new Priority { ID = p.ID, PRIORITY_NAME = p.PRIORITY_NAME });
-        //    var project_type = _context.Project_Types.Select(pt => new Project_Type { ID = pt.ID, TYPE_NAME = pt.TYPE_NAME });
-
-        //    return 0;
-        //}
     }
 }
