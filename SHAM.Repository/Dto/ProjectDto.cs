@@ -7,11 +7,15 @@ namespace SHAM.Repository.Dto
 {
     public class ProjectDto
     {
+        public ProjectDto()
+        {
+            ACTIVITIES = new HashSet<Activity>();
+            EMPLOYEES = new HashSet<ProjectEmployee>();
+        }
         public int ID { get; set; }
         public string NAME { get; set; }
         public int TYPE { get; set; }
         public int CUSTOMER_ID { get; set; }
-        public int EMPLOYEE { get; set; }
         public DateTime EST_START_DATE { get; set; }
         public DateTime EST_END_DATE { get; set; }
         public DateTime? START_DATE { get; set; }

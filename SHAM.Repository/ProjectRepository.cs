@@ -21,7 +21,7 @@ namespace SHAM.Repository
         public ProjectAllDto GetList()
         {
 
-            var project = _context.Projects.Include(p => p.EMPLOYEES).Select(p => new ProjectDto
+            var project = _context.Projects.Select(p => new ProjectDto
             {
                 ID = p.ID,
                 NAME = p.PROJECT_NAME,

@@ -6,6 +6,11 @@ namespace SHAM.Repository.Dto
 {
     public class EmployeeDto
     {
+        public EmployeeDto()
+        {
+            ACTIVITIES = new HashSet<ActivityEmployee>();
+            PROJECTS = new HashSet<ProjectEmployee>();
+        }
         public int ID { get; set; }
         public string NAME { get; set; }
         public string SURNAME { get; set; }

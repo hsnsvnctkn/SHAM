@@ -25,9 +25,6 @@ namespace SHAM.Domain.Entities
         [Required]
         public int CUSTOMER_NUMBER { get; set; }//FK --
 
-        [Required]
-        public int EMPLOYEE_NUMBER { get; set; }//FK--
-
         [Display(Name = "Date")]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         [DataType(DataType.Date)]
@@ -67,6 +64,7 @@ namespace SHAM.Domain.Entities
 
         public virtual Customer CUSTOMER { get; set; }
 
+        [ForeignKey("EmployeeID")]
         public virtual ICollection<ProjectEmployee> EMPLOYEES { get; set; }
 
         public virtual Level LEVEL { get; set; }

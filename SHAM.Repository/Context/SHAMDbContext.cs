@@ -114,22 +114,20 @@ namespace SHAM.Repository.Context
                 .OnDelete(DeleteBehavior.Restrict);
             });
 
-            modelBuilder.Entity<ProjectEmployee>(entity =>
-            {
-                entity.HasKey(pe => new { pe.ProjectID, pe.EmployeeID });
+            modelBuilder.Entity<ProjectEmployee>()
+                .HasKey(pe => new { pe.ProjectID, pe.EmployeeID });
 
-                entity
+            modelBuilder.Entity<ProjectEmployee>()
                 .HasOne(pe => pe.PROJECT)
                 .WithMany(e => e.EMPLOYEES)
                 .HasForeignKey(pe => pe.ProjectID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-                entity
+            modelBuilder.Entity<ProjectEmployee>()
                 .HasOne(pe => pe.EMPLOYEE)
                 .WithMany(p => p.PROJECTS)
                 .HasForeignKey(pe => pe.EmployeeID)
                 .OnDelete(DeleteBehavior.Restrict);
-            });
 
             seedData(modelBuilder);
         }
@@ -201,19 +199,12 @@ namespace SHAM.Repository.Context
             };
             modelBuilder.Entity<Activity>().HasData(activity);
 
-            //var projectEmployee = new List<ProjectEmployee>
-            //{
-            //    new ProjectEmployee{ PROJECT = project[0], EMPLOYEE = employee[0], ProjectID = project[0].ID, EmployeeID = employee[0].ID },
-            //    new ProjectEmployee{ PROJECT = project[0], EMPLOYEE = employee[1], ProjectID = project[0].ID, EmployeeID = employee[1].ID },
-            //    new ProjectEmployee{ PROJECT = project[1], EMPLOYEE = employee[1], ProjectID = project[1].ID, EmployeeID = employee[1].ID },
-            //    new ProjectEmployee{ PROJECT = project[1], EMPLOYEE = employee[2], ProjectID = project[1].ID, EmployeeID = employee[2].ID }
-            //};
-            var projectEmployee = new ProjectEmployee
+            var projectEmployee = new List<ProjectEmployee>
             {
-                PROJECT = project[0],
-                EmployeeID = employee[0].ID,
-                EMPLOYEE = employee[0],
-                ProjectID = project[0].ID
+                new ProjectEmployee{ ProjectID = project[0].ID, EmployeeID = employee[2].ID },
+                new ProjectEmployee{ ProjectID = project[0].ID, EmployeeID = employee[1].ID },
+                new ProjectEmployee{ ProjectID = project[1].ID, EmployeeID = employee[1].ID },
+                new ProjectEmployee{ ProjectID = project[1].ID, EmployeeID = employee[0].ID }
             };
             modelBuilder.Entity<ProjectEmployee>().HasData(projectEmployee);
         }
