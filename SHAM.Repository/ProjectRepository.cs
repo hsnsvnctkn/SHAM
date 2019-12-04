@@ -1,4 +1,5 @@
-﻿using SHAM.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using SHAM.Domain.Entities;
 using SHAM.Repository.Contracts;
 using SHAM.Repository.Dto;
 using System;
@@ -19,13 +20,13 @@ namespace SHAM.Repository
 
         public ProjectAllDto GetList()
         {
-            var project = _context.Projects.Select(p => new ProjectDto
+
+            var project = _context.Projects.Include(p => p.EMPLOYEES).Select(p => new ProjectDto
             {
                 ID = p.ID,
                 NAME = p.PROJECT_NAME,
                 TYPE = p.PROJECT_TYPE,
                 CUSTOMER_ID = p.CUSTOMER_NUMBER,
-                EMPLOYEE = p.EMPLOYEE_NUMBER,
                 EST_START_DATE = p.ESTIMATE_START_DATE,
                 EST_END_DATE = p.ESTIMATE_END_DATE,
                 STATUS = p.PROJECT_STATUS,

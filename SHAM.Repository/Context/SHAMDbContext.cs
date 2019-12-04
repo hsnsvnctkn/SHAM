@@ -22,7 +22,7 @@ namespace SHAM.Repository.Context
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Title> Titles { get; set; }
         public DbSet<ActivityEmployee> ActivityEmployees { get; set; } // Many to Many 
-        public DbSet<ProjectEmployee> ProjectEmployees { get; set; } //Many to Many
+        public DbSet<ProjectEmployee> ProjectEmployees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -189,8 +189,8 @@ namespace SHAM.Repository.Context
 
             var project = new List<Project>
             {
-                new Project{ ID = 1, PROJECT_TYPE = 2, PROJECT_NAME = "Project Management", CUSTOMER_NUMBER = 3, EMPLOYEE_NUMBER = 2, ESTIMATE_START_DATE = new DateTime(2019,05,05), ESTIMATE_END_DATE = new DateTime(2019,08,06), START_DATE = new DateTime(2019,05,05), END_DATE = new DateTime(2019,08,10), PROJECT_STATUS = true, PROJECT_LEVEL = 1, PROJECT_CREATOR = 2 },
-                new Project{ ID = 2, PROJECT_TYPE = 1, PROJECT_NAME = "Game Simulator", CUSTOMER_NUMBER = 1, EMPLOYEE_NUMBER = 3, ESTIMATE_START_DATE = new DateTime(2019,10,01), ESTIMATE_END_DATE = new DateTime(2019,12,20), START_DATE = new DateTime(2019,10,05), END_DATE = new DateTime(2019,12,17), PROJECT_STATUS = true, PROJECT_LEVEL = 3, PROJECT_CREATOR = 3 }
+                new Project{ ID = 1, PROJECT_TYPE = 2, PROJECT_NAME = "Project Management", CUSTOMER_NUMBER = 3, ESTIMATE_START_DATE = new DateTime(2019,05,05), ESTIMATE_END_DATE = new DateTime(2019,08,06), START_DATE = new DateTime(2019,05,05), END_DATE = new DateTime(2019,08,10), PROJECT_STATUS = true, PROJECT_LEVEL = 1, PROJECT_CREATOR = 2},
+                new Project{ ID = 2, PROJECT_TYPE = 1, PROJECT_NAME = "Game Simulator", CUSTOMER_NUMBER = 1, ESTIMATE_START_DATE = new DateTime(2019,10,01), ESTIMATE_END_DATE = new DateTime(2019,12,20), START_DATE = new DateTime(2019,10,05), END_DATE = new DateTime(2019,12,17), PROJECT_STATUS = true, PROJECT_LEVEL = 3, PROJECT_CREATOR = 3 }
             };
             modelBuilder.Entity<Project>().HasData(project);
 
@@ -200,6 +200,22 @@ namespace SHAM.Repository.Context
                 new Activity{ ID = 2, PROJECT_NUMBER = 1, ACTIVITY_DETAIL = "Notify Mr. Kaya when finished", EMPLOYEE_NUMBER = 3, ESTIMATE_START_DATE = new DateTime(2019,06,09), ESTIMATE_END_DATE = new DateTime(2019,08,10), START_DATE = new DateTime(2019,06,09), ACTIVITY_STATUS = true, ACTIVITY_PRIORITY = 3, ACTIVITY_CREATOR = 2 }
             };
             modelBuilder.Entity<Activity>().HasData(activity);
+
+            //var projectEmployee = new List<ProjectEmployee>
+            //{
+            //    new ProjectEmployee{ PROJECT = project[0], EMPLOYEE = employee[0], ProjectID = project[0].ID, EmployeeID = employee[0].ID },
+            //    new ProjectEmployee{ PROJECT = project[0], EMPLOYEE = employee[1], ProjectID = project[0].ID, EmployeeID = employee[1].ID },
+            //    new ProjectEmployee{ PROJECT = project[1], EMPLOYEE = employee[1], ProjectID = project[1].ID, EmployeeID = employee[1].ID },
+            //    new ProjectEmployee{ PROJECT = project[1], EMPLOYEE = employee[2], ProjectID = project[1].ID, EmployeeID = employee[2].ID }
+            //};
+            var projectEmployee = new ProjectEmployee
+            {
+                PROJECT = project[0],
+                EmployeeID = employee[0].ID,
+                EMPLOYEE = employee[0],
+                ProjectID = project[0].ID
+            };
+            modelBuilder.Entity<ProjectEmployee>().HasData(projectEmployee);
         }
     }
 }

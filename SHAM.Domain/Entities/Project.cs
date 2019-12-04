@@ -28,13 +28,19 @@ namespace SHAM.Domain.Entities
         [Required]
         public int EMPLOYEE_NUMBER { get; set; }//FK--
 
+        [Display(Name = "Date")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
+        [DataType(DataType.Date)]
         [Required]
         public DateTime ESTIMATE_START_DATE { get; set; }
 
+        [Display(Name = "Date")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
+        [DataType(DataType.Date)]
         [Required]
         public DateTime ESTIMATE_END_DATE { get; set; }
         [Required]
-        public DateTime START_DATE { get; set; }
+        public DateTime? START_DATE { get; set; }
 
         public DateTime? END_DATE { get; set; }
 

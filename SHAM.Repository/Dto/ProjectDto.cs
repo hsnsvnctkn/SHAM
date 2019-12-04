@@ -14,7 +14,7 @@ namespace SHAM.Repository.Dto
         public int EMPLOYEE { get; set; }
         public DateTime EST_START_DATE { get; set; }
         public DateTime EST_END_DATE { get; set; }
-        public DateTime START_DATE { get; set; }
+        public DateTime? START_DATE { get; set; }
         public DateTime? END_DATE { get; set; }
         public bool STATUS { get; set; }
         public int LEVEL_ID { get; set; }
