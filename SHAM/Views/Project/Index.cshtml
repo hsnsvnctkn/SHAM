@@ -9,13 +9,13 @@
     <div class="row" style="justify-content: center;">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="page-header">
-                <h2 class="pageheader-title">Müsteriler</h2>
+                <h2 class="pageheader-title">Projeler</h2>
             </div>
         </div>
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
-                <h5 class="card-header">Müsteri Bilgileri</h5>
-                <button class="btn btn-outline-success" data-toggle="modal" data-target="#create">Yeni Müsteri Ekle</button>
+                <h5 class="card-header">Proje Bilgileri</h5>
+                <button class="btn btn-outline-success" data-toggle="modal" data-target="#create">Yeni Proje Ekle</button>
                 <div class="text-center">
                     <div class="card-body p-0">
                         <div class="table-responsive">
@@ -51,10 +51,10 @@
                                                 <td id="@item.ID-type" data-id="@item.PROJECT_TYPE_.ID">@item.PROJECT_TYPE_.TYPE_NAME</td>
                                                 <td id="@item.ID-customer" data-id="@item.CUSTOMER.ID">@item.CUSTOMER.CUSTOMER_NAME</td>
                                                 <td>
-                                                    <select id="@item.ID-employee">
+                                                    <select class="custom-select" id="@item.ID-employee">
                                                         @foreach (var emp in item.EMPLOYEES)
                                                         {
-                                                            <option>@emp.EMPLOYEE.EMPLOYEE_NAME</option>
+                                                            <option value="@emp.EMPLOYEE.ID">@emp.EMPLOYEE.EMPLOYEE_NAME</option>
                                                         }
                                                     </select>
                                                 </td>
@@ -91,6 +91,35 @@
 </div>
 
 
+<!------------Modals --------->
+<!-- Delete -->
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Müsteri Sil</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Delete" method="post" role="form">
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label id="NameDel"></label><br />
+                            Projesini Silmek istediğinize emin misiniz ?
+                            <input type="hidden" id="IdDel" value="" name="ID" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                    <button type="submit" class="btn btn-danger" asp-action="Delete">Sil</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!--Edit-->
 <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -131,7 +160,7 @@
                                     <select class="custom-select" id="CUSTOMER_ID" name="CUSTOMER_ID">
                                         @foreach (var item in Model.CustomerDto)
                                         {
-                                            <option value="@item.ID">@item.NAME</option>
+                                            <option selected value="@item.ID">@item.NAME</option>
                                         }
                                     </select>
                                 </div>
@@ -139,7 +168,7 @@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-5 col-form-label text-sm-right">Çalısanları</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <select class="custom-select" id="EMPLOYEE" name="EMPLOYEE">
+                                    <select id="pEmployees" class="selectpicker" data-live-search="true" multiple data-actions-box="true" name="NEWPROJECTEMPLOYEE">
                                         @foreach (var item in Model.EmployeeDto)
                                         {
                                             <option value="@item.ID">@item.NAME</option>
@@ -176,7 +205,7 @@
                                             <option value="@item.ID">@item.NAME @item.SURNAME</option>
                                         }
                                     </select>
-                                    <input type="hidden" id="hideCreator" name="CREATOR_ID" value="" />
+                                    <input type="hidden" id="hideCreator" name="CREATOR" value="" />
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -228,25 +257,163 @@
         </div>
     </div>
 </div>
+<!--Create-->
+<div class="modal fade" id="create" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Yeni Proje Ekle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <form id="createForm" role="form">
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <input type="hidden" name="ID" />
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Proje Adı </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <input type="text" name="NAME" data-parsley-trigger="change" value="" required="" autocomplete="off" data-parsley-maxlength="50" placeholder="Proje Adı" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Tipi</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <select class="custom-select" name="TYPE">
+                                        @foreach (var item in Model.ProjectTypeDto)
+                                        {
+                                            <option value="@item.ID">@item.NAME</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Müsterisi</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <select class="custom-select" name="CUSTOMER_ID">
+                                        @foreach (var item in Model.CustomerDto)
+                                        {
+                                            <option value="@item.ID">@item.NAME</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Çalısanları</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <select class="selectpicker" data-live-search="true" multiple data-actions-box="true" name="NEWPROJECTEMPLOYEE">
+                                        @foreach (var item in Model.EmployeeDto)
+                                        {
+                                            <option value="@item.ID">@item.NAME</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Durumu</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <select class="custom-select" name="STATUS" typeof="bool">
+                                        <option selected value="true">Aktif</option>
+                                        <option value="false">Pasif</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Seviye</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <select class="custom-select" name="LEVEL_ID">
+                                        @foreach (var item in Model.LevelDto)
+                                        {
+                                            <option value="@item.ID">@item.NAME</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Oluşturan Kişi</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <select class="custom-select" name="CREATOR">
+                                        @foreach (var item in Model.EmployeeDto)
+                                        {
+                                            <option value="@item.ID">@item.NAME @item.SURNAME</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Tahmini Başlama Tarihi</label>
+                                <div class="input-group date col-12 col-sm-8 col-lg-6 datePicker" id="mydatetimepicker5" data-target-input="nearest">
+                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker5" id="EST_START_DATE" name="EST_START_DATE">
+                                    <div class="input-group-append" data-target="#mydatetimepicker5" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Tahmini Bitiş Tarihi</label>
+                                <div class="input-group date col-12 col-sm-8 col-lg-6 datePicker" id="mydatetimepicker6" data-target-input="nearest">
+                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker6" id="EST_END_DATE" name="EST_END_DATE">
+                                    <div class="input-group-append" data-target="#mydatetimepicker6" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Başlama Tarihi</label>
+                                <div class="input-group date col-12 col-sm-8 col-lg-6 datePicker" id="mydatetimepicker7" data-target-input="nearest">
+                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker7" id="START_DATE" name="START_DATE" />
+                                    <div class="input-group-append" data-target="#mydatetimepicker7" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Bitiş Tarihi</label>
+                                <div class="input-group date col-12 col-sm-8 col-lg-6 datePicker" id="mydatetimepicker8" data-target-input="nearest">
+                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker8" id="END_DATE" name="END_DATE" />
+                                    <div class="input-group-append" data-target="#mydatetimepicker8" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <div class="col col-sm-10 col-lg-9 offset-sm-1 offset-lg-0">
+                                    <button type="button" class="btn btn-space btn-success" id="BtnCreate">Kaydet</button>
+                                    <button type="button" class="btn btn-space btn-secondary" data-dismiss="modal">Kapat</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 @section scripts{
     <script>
         $(".viewModelDel").click(function () {
             var id = $(this).data("id");
-            var name = $(this).data("name") + " " + $(this).data("surname");
+            var name = $(this).data("name");
 
-            document.getElementById("employeeNameDel").textContent = name;
-            document.getElementById("employeeIdDel").value = id;
+            document.getElementById("NameDel").textContent = name;
+            document.getElementById("IdDel").value = id;
         });
 
         $("#BtnCreate").click(function () {
             $("#createForm").ajaxSubmit({
-                url: '/Employee/Create',
+                url: '/Project/Create',
                 type: 'post',
                 success: function (result) {
                     if (result.status)
                         window.location.reload();
+                    else
+                        alert("Hata");
                 }
             })
         });
@@ -262,6 +429,11 @@
             var start = $("#" + id + "-start", "#tb").html();
             var end = $("#" + id + "-end", "#tb").html();
             var creator = $("#" + id + "-creator", "#tb").data("id");
+
+            var employees = new Array();
+            $("#" + id + "-employee>option").each(function () {
+                employees.push($(this).val());
+            })
 
             if (status == "Aktif")
                 status = true;
@@ -279,11 +451,13 @@
             document.getElementById("END_DATE").value = end;
             document.getElementById("CREATOR_ID").value = creator;
             document.getElementById("hideCreator").value = creator;
+
+
         })
 
         $("#BtnEdit").click(function () {
             $("#editForm").ajaxSubmit({
-                url: '/Employee/Edit', type: 'post',
+                url: '/Project/Edit', type: 'post',
                 success: function (result) {
                     if (result.status) {
                         window.location.reload();
@@ -295,9 +469,16 @@
         });
 
         $('.datePicker').datetimepicker({
-            format: 'DD.mm.YYYY',
+            format: 'DD.MM.YYYY',
         });
 
+        $('.selectpicker').selectpicker({
+            noneSelectedText: 'Seçim Yapılmadı',
+            selectAllText: 'Tümü',
+            deselectAllText: 'Hiçbiri',
+            size: 'auto',
+
+        });
         ; (function ($) {
             $.fn.datepicker.language['tr'] = {
                 days: ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'],

@@ -9,5 +9,8 @@ namespace SHAM.Repository.Contracts
     public interface IProjectRepository : IGenericRepository<Project>
     {
         ProjectAllDto GetList();
+        void Create(ProjectDto project);
+        void Delete(int id);
+        void Update(ProjectDto project);
     }
 }

@@ -17,6 +17,33 @@ namespace SHAM.Repository
 
         }
 
+        public void Create(ProjectDto project)
+        {
+            var emp = new List<ProjectEmployee>();
+
+            foreach (var item in project.NEWPROJECTEMPLOYEE)
+            {
+                emp.Add(new ProjectEmployee { EmployeeID = item });
+            }
+
+            _context.Projects.Add(new Project
+            {
+                ID = project.ID,
+                PROJECT_NAME = project.NAME,
+                PROJECT_TYPE = project.TYPE,
+                CUSTOMER_NUMBER = project.CUSTOMER_ID,
+                ESTIMATE_START_DATE = project.EST_START_DATE,
+                ESTIMATE_END_DATE = project.EST_END_DATE,
+                PROJECT_STATUS = project.STATUS,
+                PROJECT_LEVEL = project.LEVEL_ID,
+                PROJECT_CREATOR = project.CREATOR,
+                END_DATE = project.END_DATE,
+                START_DATE = project.START_DATE,
+                EMPLOYEES = emp
+            });
+            _context.SaveChanges();
+
+        }
 
         public ProjectAllDto GetList()
         {
@@ -72,6 +99,61 @@ namespace SHAM.Repository
             }).ToList();
 
             return new ProjectAllDto { CustomerDto = customer, EmployeeDto = employee, LevelDto = level, ProjectDto = project, ProjectTypeDto = type };
+        }
+
+        public void Delete(int id)
+        {
+            var project = _context.Projects.FirstOrDefault(p => p.ID == id);
+            var projectEmployee = _context.ProjectEmployees.Where(pe => pe.ProjectID == id);
+
+            foreach (var item in projectEmployee)
+            {
+                _context.ProjectEmployees.Remove(item);
+            }
+            _context.Projects.Remove(project);
+            _context.SaveChanges();
+        }
+
+        public void Update(ProjectDto project)
+        {
+            var emp = new List<ProjectEmployee>();
+
+            foreach (var item in project.NEWPROJECTEMPLOYEE)
+            {
+                var pe = _context.ProjectEmployees.Where(pe => pe.ProjectID == project.ID && pe.EmployeeID == item);
+                if (pe != null)
+                {
+                    _context.ProjectEmployees.Update(new ProjectEmployee
+                    {
+                        ProjectID = project.ID,
+                        EmployeeID = item
+                    });
+                }
+                else
+                {
+                    _context.ProjectEmployees.Add(new ProjectEmployee
+                    {
+                        ProjectID = project.ID,
+                        EmployeeID = item
+                    });
+                }
+            }
+
+            _context.Projects.Update(new Project
+            {
+                ID = project.ID,
+                PROJECT_NAME = project.NAME,
+                PROJECT_TYPE = project.TYPE,
+                CUSTOMER_NUMBER = project.CUSTOMER_ID,
+                ESTIMATE_START_DATE = project.EST_START_DATE,
+                ESTIMATE_END_DATE = project.EST_END_DATE,
+                PROJECT_STATUS = project.STATUS,
+                PROJECT_LEVEL = project.LEVEL_ID,
+                PROJECT_CREATOR = project.CREATOR,
+                END_DATE = project.END_DATE,
+                START_DATE = project.START_DATE,
+            });
+            _context.SaveChanges();
         }
     }
 }

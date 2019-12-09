@@ -56,8 +56,8 @@
                                                     <td id="@item.ID-status">Pasif</td>
                                                 }
                                                 <td id="@item.ID-creator" data-id="@item.CREATOR_ID">@item.CREATOR_ID</td>
-                                                <td>@item.CREATED_DATE</td>
-                                                <td>@item.CREATED_TIME</td>
+                                                <td>@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
+                                                <td>@item.CREATED_TIME.ToString("hh':'mm':'ss")</td>
                                                 <td>
                                                     <button type="button" class="btn btn-outline-danger viewModelDel" data-toggle="modal" data-target="#delete" data-name="@item.NAME" data-id="@item.ID">Sil</button>
                                                 </td>

@@ -22,9 +22,6 @@ namespace SHAM.Domain.Entities
         public string ACTIVITY_DETAIL { get; set; }
 
         [Required]
-        public int EMPLOYEE_NUMBER { get; set; }//FK --
-
-        [Required]
         public int ACTIVITY_CREATOR { get; set; }//FK--
 
         [Required]

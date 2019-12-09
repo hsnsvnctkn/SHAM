@@ -28,6 +28,21 @@ namespace SHAM.Repository.Context
         {
             modelBuilder.HasDefaultSchema("SHAM");
 
+            modelBuilder.Entity<ProjectEmployee>()
+                .HasKey(pe => new { pe.ProjectID, pe.EmployeeID });
+
+            modelBuilder.Entity<ProjectEmployee>()
+                .HasOne(pe => pe.PROJECT)
+                .WithMany(e => e.EMPLOYEES)
+                .HasForeignKey(pe => pe.ProjectID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ProjectEmployee>()
+                .HasOne(pe => pe.EMPLOYEE)
+                .WithMany(p => p.PROJECTS)
+                .HasForeignKey(pe => pe.EmployeeID)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Employee>(entity =>
             {
                 entity
@@ -54,7 +69,7 @@ namespace SHAM.Repository.Context
                 entity
                 .HasOne(activity => activity.CREATED_EMPLOYEE)
                 .WithMany(employee => employee.CREATED_ACTIVITY)
-                .HasForeignKey(activity => activity.EMPLOYEE_NUMBER)
+                .HasForeignKey(activity => activity.ACTIVITY_CREATOR)
                 .OnDelete(DeleteBehavior.Restrict);
 
                 entity
@@ -113,21 +128,6 @@ namespace SHAM.Repository.Context
                 .HasForeignKey(project => project.PROJECT_CREATOR)
                 .OnDelete(DeleteBehavior.Restrict);
             });
-
-            modelBuilder.Entity<ProjectEmployee>()
-                .HasKey(pe => new { pe.ProjectID, pe.EmployeeID });
-
-            modelBuilder.Entity<ProjectEmployee>()
-                .HasOne(pe => pe.PROJECT)
-                .WithMany(e => e.EMPLOYEES)
-                .HasForeignKey(pe => pe.ProjectID)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<ProjectEmployee>()
-                .HasOne(pe => pe.EMPLOYEE)
-                .WithMany(p => p.PROJECTS)
-                .HasForeignKey(pe => pe.EmployeeID)
-                .OnDelete(DeleteBehavior.Restrict);
 
             seedData(modelBuilder);
         }
@@ -194,8 +194,8 @@ namespace SHAM.Repository.Context
 
             var activity = new List<Activity>
             {
-                new Activity{ ID = 1, PROJECT_NUMBER = 1, ACTIVITY_DETAIL = "Send to Shell when finished", EMPLOYEE_NUMBER = 1, ESTIMATE_START_DATE = new DateTime(2019,05,09), ESTIMATE_END_DATE = new DateTime(2019,06,20), START_DATE = new DateTime(2019,05,09), END_DATE = new DateTime(2019,06,21), ACTIVITY_STATUS = false, ACTIVITY_PRIORITY = 3, ACTIVITY_CREATOR = 2 },
-                new Activity{ ID = 2, PROJECT_NUMBER = 1, ACTIVITY_DETAIL = "Notify Mr. Kaya when finished", EMPLOYEE_NUMBER = 3, ESTIMATE_START_DATE = new DateTime(2019,06,09), ESTIMATE_END_DATE = new DateTime(2019,08,10), START_DATE = new DateTime(2019,06,09), ACTIVITY_STATUS = true, ACTIVITY_PRIORITY = 3, ACTIVITY_CREATOR = 2 }
+                new Activity{ ID = 1, PROJECT_NUMBER = 1, ACTIVITY_DETAIL = "Send to Shell when finished", ESTIMATE_START_DATE = new DateTime(2019,05,09), ESTIMATE_END_DATE = new DateTime(2019,06,20), START_DATE = new DateTime(2019,05,09), END_DATE = new DateTime(2019,06,21), ACTIVITY_STATUS = false, ACTIVITY_PRIORITY = 3, ACTIVITY_CREATOR = 2 },
+                new Activity{ ID = 2, PROJECT_NUMBER = 1, ACTIVITY_DETAIL = "Notify Mr. Kaya when finished", ESTIMATE_START_DATE = new DateTime(2019,06,09), ESTIMATE_END_DATE = new DateTime(2019,08,10), START_DATE = new DateTime(2019,06,09), ACTIVITY_STATUS = true, ACTIVITY_PRIORITY = 3, ACTIVITY_CREATOR = 2 }
             };
             modelBuilder.Entity<Activity>().HasData(activity);
 
@@ -207,6 +207,15 @@ namespace SHAM.Repository.Context
                 new ProjectEmployee{ ProjectID = project[1].ID, EmployeeID = employee[0].ID }
             };
             modelBuilder.Entity<ProjectEmployee>().HasData(projectEmployee);
+
+            var activityEmployee = new List<ActivityEmployee>
+            {
+                new ActivityEmployee{ ActivityID = project[0].ID, EmployeeID = employee[0].ID },
+                new ActivityEmployee{ ActivityID = project[0].ID, EmployeeID = employee[1].ID },
+                new ActivityEmployee{ ActivityID = project[1].ID, EmployeeID = employee[2].ID },
+                new ActivityEmployee{ ActivityID = project[1].ID, EmployeeID = employee[0].ID }
+            };
+            modelBuilder.Entity<ActivityEmployee>().HasData(activityEmployee);
         }
     }
 }

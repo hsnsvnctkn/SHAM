@@ -7,11 +7,6 @@ namespace SHAM.Repository.Dto
 {
     public class ProjectDto
     {
-        public ProjectDto()
-        {
-            ACTIVITIES = new HashSet<Activity>();
-            EMPLOYEES = new HashSet<ProjectEmployee>();
-        }
         public int ID { get; set; }
         public string NAME { get; set; }
         public int TYPE { get; set; }
@@ -25,6 +20,7 @@ namespace SHAM.Repository.Dto
         public int CREATOR { get; set; }
         public DateTime CREATED_DATE { get; set; }
         public TimeSpan CREATED_TIME { get; set; }
+        public virtual List<int> NEWPROJECTEMPLOYEE { get; set; }
 
         public virtual ICollection<Activity> ACTIVITIES { get; set; }
 
