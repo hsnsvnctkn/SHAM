@@ -5,7 +5,6 @@
 
 <!--Database-->
 <div class="ecommerce-widget">
-
     <div class="row" style="justify-content: center;">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="page-header">
@@ -97,7 +96,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Müsteri Sil</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Proje Sil</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -347,7 +346,7 @@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-5 col-form-label text-sm-right">Tahmini Başlama Tarihi</label>
                                 <div class="input-group date col-12 col-sm-8 col-lg-6 datePicker" id="mydatetimepicker5" data-target-input="nearest">
-                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker5" id="EST_START_DATE" name="EST_START_DATE">
+                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker5" name="EST_START_DATE">
                                     <div class="input-group-append" data-target="#mydatetimepicker5" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                                     </div>
@@ -356,7 +355,7 @@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-5 col-form-label text-sm-right">Tahmini Bitiş Tarihi</label>
                                 <div class="input-group date col-12 col-sm-8 col-lg-6 datePicker" id="mydatetimepicker6" data-target-input="nearest">
-                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker6" id="EST_END_DATE" name="EST_END_DATE">
+                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker6" name="EST_END_DATE">
                                     <div class="input-group-append" data-target="#mydatetimepicker6" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                                     </div>
@@ -365,7 +364,7 @@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-5 col-form-label text-sm-right">Başlama Tarihi</label>
                                 <div class="input-group date col-12 col-sm-8 col-lg-6 datePicker" id="mydatetimepicker7" data-target-input="nearest">
-                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker7" id="START_DATE" name="START_DATE" />
+                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker7" name="START_DATE" />
                                     <div class="input-group-append" data-target="#mydatetimepicker7" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                                     </div>
@@ -374,7 +373,7 @@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-5 col-form-label text-sm-right">Bitiş Tarihi</label>
                                 <div class="input-group date col-12 col-sm-8 col-lg-6 datePicker" id="mydatetimepicker8" data-target-input="nearest">
-                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker8" id="END_DATE" name="END_DATE" />
+                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker8" name="END_DATE" />
                                     <div class="input-group-append" data-target="#mydatetimepicker8" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                                     </div>
@@ -382,7 +381,7 @@
                             </div>
                             <div class="form-group row text-right">
                                 <div class="col col-sm-10 col-lg-9 offset-sm-1 offset-lg-0">
-                                    <button type="button" class="btn btn-space btn-success" id="BtnCreate">Kaydet</button>
+                                    <button type="button" class="btn btn-space btn-success" id="BtnCreate">Ekle</button>
                                     <button type="button" class="btn btn-space btn-secondary" data-dismiss="modal">Kapat</button>
                                 </div>
                             </div>
@@ -429,6 +428,7 @@
             var start = $("#" + id + "-start", "#tb").html();
             var end = $("#" + id + "-end", "#tb").html();
             var creator = $("#" + id + "-creator", "#tb").data("id");
+            var status = $("#" + id + "-status", "#tb").html();
 
             var employees = new Array();
             $("#" + id + "-employee>option").each(function () {
@@ -451,8 +451,10 @@
             document.getElementById("END_DATE").value = end;
             document.getElementById("CREATOR_ID").value = creator;
             document.getElementById("hideCreator").value = creator;
+            document.getElementById("STATUS").value = status;
 
-
+            $('select[name=NEWPROJECTEMPLOYEE]').val(employees);
+            $('.selectpicker').selectpicker('refresh');
         })
 
         $("#BtnEdit").click(function () {

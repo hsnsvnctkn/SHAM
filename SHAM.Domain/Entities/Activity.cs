@@ -31,7 +31,7 @@ namespace SHAM.Domain.Entities
         public DateTime ESTIMATE_END_DATE { get; set; }
 
         [Required]
-        public DateTime START_DATE { get; set; }
+        public DateTime? START_DATE { get; set; }
 
         public DateTime? END_DATE { get; set; }
 

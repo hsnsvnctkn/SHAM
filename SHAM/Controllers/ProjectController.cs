@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SHAM.Repository.Contracts;
 using SHAM.Repository.Dto;
+using System;
 
 namespace SHAM.UI.Controllers
 {

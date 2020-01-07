@@ -1,11 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SHAM.Domain.Entities;
+﻿using SHAM.Domain.Entities;
 using SHAM.Repository.Contracts;
 using SHAM.Repository.Dto;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SHAM.Repository
 {
@@ -63,7 +60,6 @@ namespace SHAM.Repository
                 CREATED_TIME = p.CREATED_TIME,
                 END_DATE = p.END_DATE,
                 START_DATE = p.START_DATE,
-                ACTIVITIES = p.ACTIVITIES,
                 CREATED_EMPLOYEE = p.CREATED_EMPLOYEE,
                 CUSTOMER = p.CUSTOMER,
                 EMPLOYEES = p.EMPLOYEES,
@@ -87,9 +83,7 @@ namespace SHAM.Repository
             {
                 ID = e.ID,
                 NAME = e.EMPLOYEE_NAME,
-                SURNAME = e.EMPLOYEE_SURNAME,
-                PROJECTS = e.PROJECTS,
-                ACTIVITIES = e.ACTIVITIES
+                SURNAME = e.EMPLOYEE_SURNAME
             }).ToList();
 
             var level = _context.Levels.Select(l => new LevelDto
@@ -116,28 +110,31 @@ namespace SHAM.Repository
 
         public void Update(ProjectDto project)
         {
-            var emp = new List<ProjectEmployee>();
-
             foreach (var item in project.NEWPROJECTEMPLOYEE)
             {
-                var pe = _context.ProjectEmployees.Where(pe => pe.ProjectID == project.ID && pe.EmployeeID == item);
-                if (pe != null)
-                {
-                    _context.ProjectEmployees.Update(new ProjectEmployee
-                    {
-                        ProjectID = project.ID,
-                        EmployeeID = item
-                    });
-                }
-                else
+                var pe = _context.ProjectEmployees.Where(pe => pe.ProjectID == project.ID && pe.EmployeeID == item).ToList();
+                if (pe.Count == 0)
                 {
                     _context.ProjectEmployees.Add(new ProjectEmployee
                     {
                         ProjectID = project.ID,
                         EmployeeID = item
                     });
+                    _context.SaveChanges();
                 }
+
             }
+            var pe2 = _context.ProjectEmployees.Where(pe => pe.ProjectID == project.ID);
+
+            foreach (var item in pe2)
+            {
+                if (!project.NEWPROJECTEMPLOYEE.Contains(item.EmployeeID))
+                {
+                    _context.ProjectEmployees.Remove(item);
+                }
+
+            }
+            _context.SaveChanges();
 
             _context.Projects.Update(new Project
             {

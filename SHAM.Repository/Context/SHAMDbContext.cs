@@ -43,6 +43,24 @@ namespace SHAM.Repository.Context
                 .HasForeignKey(pe => pe.EmployeeID)
                 .OnDelete(DeleteBehavior.Restrict);
 
+
+            modelBuilder.Entity<ActivityEmployee>()
+                .HasKey(ae => new { ae.ActivityID, ae.EmployeeID });
+
+            modelBuilder.Entity<ActivityEmployee>()
+                .HasOne(ae => ae.ACTIVITY)
+                .WithMany(e => e.EMPLOYEES)
+                .HasForeignKey(ae => ae.ActivityID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ActivityEmployee>()
+                .HasOne(ae => ae.EMPLOYEE)
+                .WithMany(p => p.ACTIVITIES)
+                .HasForeignKey(ae => ae.EmployeeID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+
             modelBuilder.Entity<Employee>(entity =>
             {
                 entity
@@ -64,7 +82,7 @@ namespace SHAM.Repository.Context
                 .HasOne(activity => activity.PROJECT)
                 .WithMany(project => project.ACTIVITIES)
                 .HasForeignKey(activity => activity.PROJECT_NUMBER)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
                 entity
                 .HasOne(activity => activity.CREATED_EMPLOYEE)
@@ -76,23 +94,6 @@ namespace SHAM.Repository.Context
                 .HasOne(activity => activity.PRIORITY)
                 .WithMany(priority => priority.ACTIVITIES)
                 .HasForeignKey(activity => activity.ACTIVITY_PRIORITY)
-                .OnDelete(DeleteBehavior.Restrict);
-            });
-
-            modelBuilder.Entity<ActivityEmployee>(entity =>
-            {
-                entity.HasKey(ae => new { ae.ActivityID, ae.EmployeeID });
-
-                entity
-                .HasOne(ae => ae.ACTIVITY)
-                .WithMany(e => e.EMPLOYEES)
-                .HasForeignKey(ae => ae.ActivityID)
-                .OnDelete(DeleteBehavior.Restrict);
-
-                entity
-                .HasOne(ae => ae.EMPLOYEE)
-                .WithMany(a => a.ACTIVITIES)
-                .HasForeignKey(ae => ae.EmployeeID)
                 .OnDelete(DeleteBehavior.Restrict);
             });
 
@@ -216,6 +217,7 @@ namespace SHAM.Repository.Context
                 new ActivityEmployee{ ActivityID = project[1].ID, EmployeeID = employee[0].ID }
             };
             modelBuilder.Entity<ActivityEmployee>().HasData(activityEmployee);
+
         }
     }
 }
