@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SHAM.Repository.Authorize;
 using SHAM.Repository.Contracts;
 using SHAM.Repository.Dto;
 using System;
+using System.Security.Claims;
 
 namespace SHAM.UI.Controllers
 {
+    [Authorize(Roles.NORMAL,Roles.ADMIN)]
     public class ProjectController : Controller
     {
         readonly IProjectRepository _projectRepository;
@@ -13,11 +16,13 @@ namespace SHAM.UI.Controllers
         {
             _projectRepository = projectRepository;
         }
+        [Authorize(Roles.ADMIN)]
         public IActionResult Index()
         {
             var model = _projectRepository.GetList();
             return View(model);
         }
+        [Authorize(Roles.ADMIN)]
         public JsonResult Edit(ProjectDto project)
         {
             try
@@ -31,11 +36,30 @@ namespace SHAM.UI.Controllers
                 return Json(new { status = false });
             }
         }
-
+        [Authorize(Roles.ADMIN)]
         public JsonResult Create(ProjectDto project)
         {
             try
             {
+                var claimsIndentity = HttpContext.User.Identity as ClaimsIdentity;
+                var userClaims = claimsIndentity.Claims;
+                string id = "";
+                if (HttpContext.User.Identity.IsAuthenticated)
+                {
+                    foreach (var claim in userClaims)
+                    {
+                        var cType = claim.Type;
+                        var cValue = claim.Value;
+                        switch (cType)
+                        {
+                            case "ID":
+                                id = cValue;
+                                break;
+                        }
+                    }
+                }
+                project.CREATOR = Convert.ToInt16(id);
+
                 _projectRepository.Create(project);
                 return Json(new { status = true });
             }
@@ -45,7 +69,7 @@ namespace SHAM.UI.Controllers
                 return Json(new { status = false });
             }
         }
-
+        [Authorize(Roles.ADMIN)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
@@ -63,7 +87,28 @@ namespace SHAM.UI.Controllers
                 return NotFound("Hata");
             }
         }
+        public IActionResult MyProject()
+        {
+            var claimsIndentity = HttpContext.User.Identity as ClaimsIdentity;
+            var userClaims = claimsIndentity.Claims;
+            string id = "";
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                foreach (var claim in userClaims)
+                {
+                    var cType = claim.Type;
+                    var cValue = claim.Value;
+                    switch (cType)
+                    {
+                        case "ID":
+                            id = cValue;
+                            break;
+                    }
+                }
+            }
 
-
+            var model = _projectRepository.GetMyProject(Convert.ToInt16(id));
+            return View(model);
+        }
     }
 }

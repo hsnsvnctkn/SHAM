@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SHAM.Repository.Authorize;
 using SHAM.Repository.Contracts;
 using SHAM.Repository.Dto;
 
 namespace SHAM.UI.Controllers
 {
+    [Authorize(Roles.ADMIN)]
     public class ProjectTypeController : Controller
     {
         readonly IProjectTypeRepository _projectTypeRepository;

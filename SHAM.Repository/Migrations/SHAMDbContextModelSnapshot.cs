@@ -84,8 +84,8 @@ namespace SHAM.Repository.Migrations
                             ACTIVITY_DETAIL = "Send to Shell when finished",
                             ACTIVITY_PRIORITY = 3,
                             ACTIVITY_STATUS = false,
-                            CREATED_DATE = new DateTime(2019, 12, 11, 16, 13, 0, 766, DateTimeKind.Local).AddTicks(1561),
-                            CREATED_TIME = new TimeSpan(583807661568),
+                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 79, DateTimeKind.Local).AddTicks(4337),
+                            CREATED_TIME = new TimeSpan(526900794347),
                             END_DATE = new DateTime(2019, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ESTIMATE_END_DATE = new DateTime(2019, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ESTIMATE_START_DATE = new DateTime(2019, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -100,8 +100,8 @@ namespace SHAM.Repository.Migrations
                             ACTIVITY_DETAIL = "Notify Mr. Kaya when finished",
                             ACTIVITY_PRIORITY = 3,
                             ACTIVITY_STATUS = true,
-                            CREATED_DATE = new DateTime(2019, 12, 11, 16, 13, 0, 766, DateTimeKind.Local).AddTicks(7720),
-                            CREATED_TIME = new TimeSpan(583807667727),
+                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 80, DateTimeKind.Local).AddTicks(1165),
+                            CREATED_TIME = new TimeSpan(526900801181),
                             ESTIMATE_END_DATE = new DateTime(2019, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ESTIMATE_START_DATE = new DateTime(2019, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             INVOICE = false,
@@ -201,8 +201,8 @@ namespace SHAM.Repository.Migrations
                         new
                         {
                             ID = 1,
-                            CREATED_DATE = new DateTime(2019, 12, 11, 16, 13, 0, 764, DateTimeKind.Local).AddTicks(4423),
-                            CREATED_TIME = new TimeSpan(583807644430),
+                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 77, DateTimeKind.Local).AddTicks(4274),
+                            CREATED_TIME = new TimeSpan(526900774284),
                             CUSTOMER_ADRESS = "Maltepe/Istanbul",
                             CUSTOMER_CREATOR = 2,
                             CUSTOMER_MAIL = "shell123@shell.com.tr",
@@ -214,8 +214,8 @@ namespace SHAM.Repository.Migrations
                         new
                         {
                             ID = 2,
-                            CREATED_DATE = new DateTime(2019, 12, 11, 16, 13, 0, 764, DateTimeKind.Local).AddTicks(9083),
-                            CREATED_TIME = new TimeSpan(583807649090),
+                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 77, DateTimeKind.Local).AddTicks(8812),
+                            CREATED_TIME = new TimeSpan(526900778823),
                             CUSTOMER_ADRESS = "Fatih/Istanbul",
                             CUSTOMER_CREATOR = 3,
                             CUSTOMER_MAIL = "hhhsssqqq@solen.com.tr",
@@ -227,8 +227,8 @@ namespace SHAM.Repository.Migrations
                         new
                         {
                             ID = 3,
-                            CREATED_DATE = new DateTime(2019, 12, 11, 16, 13, 0, 764, DateTimeKind.Local).AddTicks(9163),
-                            CREATED_TIME = new TimeSpan(583807649164),
+                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 77, DateTimeKind.Local).AddTicks(8920),
+                            CREATED_TIME = new TimeSpan(526900778922),
                             CUSTOMER_ADRESS = "Kadıköy/Istanbul",
                             CUSTOMER_CREATOR = 1,
                             CUSTOMER_MAIL = "supppp@foriba.com.tr",
@@ -286,6 +286,12 @@ namespace SHAM.Repository.Migrations
                     b.Property<int>("EMPLOYEE_TITLE")
                         .HasColumnType("int");
 
+                    b.Property<string>("PASSWORD")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ROLE")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ID");
 
                     b.HasIndex("EMPLOYEE_CREATOR");
@@ -298,8 +304,8 @@ namespace SHAM.Repository.Migrations
                         new
                         {
                             ID = 1,
-                            CREATED_DATE = new DateTime(2019, 12, 11, 16, 13, 0, 762, DateTimeKind.Local).AddTicks(9555),
-                            CREATED_TIME = new TimeSpan(583807637883),
+                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 75, DateTimeKind.Local).AddTicks(4252),
+                            CREATED_TIME = new TimeSpan(526900764924),
                             EMPLOYEE_ADRESS = "Sancaktepe/İstanbul",
                             EMPLOYEE_CREATOR = 1,
                             EMPLOYEE_MAIL = "sevinctekin.hasan@gmail.com",
@@ -307,13 +313,14 @@ namespace SHAM.Repository.Migrations
                             EMPLOYEE_PHONE_NO = "05363403660",
                             EMPLOYEE_STATUS = true,
                             EMPLOYEE_SURNAME = "Sevinçtekin",
-                            EMPLOYEE_TITLE = 1
+                            EMPLOYEE_TITLE = 1,
+                            ROLE = "ADMIN"
                         },
                         new
                         {
                             ID = 2,
-                            CREATED_DATE = new DateTime(2019, 12, 11, 16, 13, 0, 764, DateTimeKind.Local).AddTicks(2637),
-                            CREATED_TIME = new TimeSpan(583807642644),
+                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 77, DateTimeKind.Local).AddTicks(1639),
+                            CREATED_TIME = new TimeSpan(526900771669),
                             EMPLOYEE_ADRESS = "Kartal/İstanbul",
                             EMPLOYEE_CREATOR = 1,
                             EMPLOYEE_MAIL = "aaaaasssddn@gmail.com",
@@ -321,13 +328,14 @@ namespace SHAM.Repository.Migrations
                             EMPLOYEE_PHONE_NO = "05322545362",
                             EMPLOYEE_STATUS = true,
                             EMPLOYEE_SURNAME = "Kaya",
-                            EMPLOYEE_TITLE = 1
+                            EMPLOYEE_TITLE = 1,
+                            ROLE = "NORMAL"
                         },
                         new
                         {
                             ID = 3,
-                            CREATED_DATE = new DateTime(2019, 12, 11, 16, 13, 0, 764, DateTimeKind.Local).AddTicks(2729),
-                            CREATED_TIME = new TimeSpan(583807642731),
+                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 77, DateTimeKind.Local).AddTicks(1788),
+                            CREATED_TIME = new TimeSpan(526900771789),
                             EMPLOYEE_ADRESS = "Üsküdar/İstanbul",
                             EMPLOYEE_CREATOR = 2,
                             EMPLOYEE_MAIL = "qwwwweeeqq@gmail.com",
@@ -335,7 +343,8 @@ namespace SHAM.Repository.Migrations
                             EMPLOYEE_PHONE_NO = "05348796582",
                             EMPLOYEE_STATUS = true,
                             EMPLOYEE_SURNAME = "Balcıoğlu",
-                            EMPLOYEE_TITLE = 1
+                            EMPLOYEE_TITLE = 1,
+                            ROLE = "NORMAL"
                         });
                 });
 
@@ -494,8 +503,8 @@ namespace SHAM.Repository.Migrations
                         new
                         {
                             ID = 1,
-                            CREATED_DATE = new DateTime(2019, 12, 11, 16, 13, 0, 765, DateTimeKind.Local).AddTicks(1580),
-                            CREATED_TIME = new TimeSpan(583807651588),
+                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 78, DateTimeKind.Local).AddTicks(2316),
+                            CREATED_TIME = new TimeSpan(526900782333),
                             CUSTOMER_NUMBER = 3,
                             END_DATE = new DateTime(2019, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ESTIMATE_END_DATE = new DateTime(2019, 8, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -510,8 +519,8 @@ namespace SHAM.Repository.Migrations
                         new
                         {
                             ID = 2,
-                            CREATED_DATE = new DateTime(2019, 12, 11, 16, 13, 0, 765, DateTimeKind.Local).AddTicks(9369),
-                            CREATED_TIME = new TimeSpan(583807659376),
+                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 79, DateTimeKind.Local).AddTicks(1062),
+                            CREATED_TIME = new TimeSpan(526900791086),
                             CUSTOMER_NUMBER = 1,
                             END_DATE = new DateTime(2019, 12, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ESTIMATE_END_DATE = new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -588,6 +597,33 @@ namespace SHAM.Repository.Migrations
                         {
                             ID = 2,
                             TYPE_NAME = "Object - Oriented"
+                        });
+                });
+
+            modelBuilder.Entity("SHAM.Domain.Entities.Role", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ROLE_NAME")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ROLE");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            ROLE_NAME = "ADMIN"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            ROLE_NAME = "NORMAL"
                         });
                 });
 

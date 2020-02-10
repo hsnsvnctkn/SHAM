@@ -23,7 +23,7 @@ namespace SHAM.Repository.Context
         public DbSet<Title> Titles { get; set; }
         public DbSet<ActivityEmployee> ActivityEmployees { get; set; } // Many to Many 
         public DbSet<ProjectEmployee> ProjectEmployees { get; set; }
-
+        public DbSet<Role> Roles { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("SHAM");
@@ -135,6 +135,13 @@ namespace SHAM.Repository.Context
 
         void seedData(ModelBuilder modelBuilder)
         {
+            var roles = new List<Role>
+            {
+                new Role{ ID = 1, ROLE_NAME = "ADMIN"},
+                new Role{ ID = 2, ROLE_NAME = "NORMAL"}
+            };
+            modelBuilder.Entity<Role>().HasData(roles);
+
             var titles = new List<Title>
             {
                 new Title { ID = 1, TITLE_NAME = "Junior" },
@@ -172,9 +179,9 @@ namespace SHAM.Repository.Context
 
             var employee = new List<Employee>
             {
-                new Employee{ ID = 1, EMPLOYEE_NAME = "Hasan", EMPLOYEE_SURNAME = "Sevinçtekin", EMPLOYEE_PHONE_NO = "05363403660", EMPLOYEE_ADRESS = "Sancaktepe/İstanbul", EMPLOYEE_MAIL = "sevinctekin.hasan@gmail.com", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 1, EMPLOYEE_CREATOR = 1 },
-                new Employee{ ID = 2, EMPLOYEE_NAME = "Ömer Faruk", EMPLOYEE_SURNAME = "Kaya", EMPLOYEE_PHONE_NO = "05322545362", EMPLOYEE_ADRESS = "Kartal/İstanbul", EMPLOYEE_MAIL = "aaaaasssddn@gmail.com", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 1, EMPLOYEE_CREATOR = 1 },
-                new Employee{ ID = 3, EMPLOYEE_NAME = "Fatih", EMPLOYEE_SURNAME = "Balcıoğlu", EMPLOYEE_PHONE_NO = "05348796582", EMPLOYEE_ADRESS = "Üsküdar/İstanbul", EMPLOYEE_MAIL = "qwwwweeeqq@gmail.com", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 1, EMPLOYEE_CREATOR = 2 }
+                new Employee{ ID = 1, EMPLOYEE_NAME = "Hasan", EMPLOYEE_SURNAME = "Sevinçtekin", EMPLOYEE_PHONE_NO = "05363403660", EMPLOYEE_ADRESS = "Sancaktepe/İstanbul", EMPLOYEE_MAIL = "sevinctekin.hasan@gmail.com", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 1, EMPLOYEE_CREATOR = 1, ROLE = Dto.Roles.ADMIN.ToString() },
+                new Employee{ ID = 2, EMPLOYEE_NAME = "Ömer Faruk", EMPLOYEE_SURNAME = "Kaya", EMPLOYEE_PHONE_NO = "05322545362", EMPLOYEE_ADRESS = "Kartal/İstanbul", EMPLOYEE_MAIL = "aaaaasssddn@gmail.com", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 1, EMPLOYEE_CREATOR = 1, ROLE = Dto.Roles.NORMAL.ToString() },
+                new Employee{ ID = 3, EMPLOYEE_NAME = "Fatih", EMPLOYEE_SURNAME = "Balcıoğlu", EMPLOYEE_PHONE_NO = "05348796582", EMPLOYEE_ADRESS = "Üsküdar/İstanbul", EMPLOYEE_MAIL = "qwwwweeeqq@gmail.com", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 1, EMPLOYEE_CREATOR = 2, ROLE = Dto.Roles.NORMAL.ToString() }
             };
             modelBuilder.Entity<Employee>().HasData(employee);
 

@@ -13,5 +13,6 @@ namespace SHAM.Repository.Contracts
         void Create(ProjectDto project);
         void Delete(int id);
         void Update(ProjectDto project);
+        ProjectAllDto GetMyProject(int id);
     }
 }

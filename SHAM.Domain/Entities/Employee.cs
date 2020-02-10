@@ -41,7 +41,8 @@ namespace SHAM.Domain.Entities
 
         [Required]
         public TimeSpan CREATED_TIME { get; set; } = DateTime.Now.TimeOfDay;
-
+        public string PASSWORD { get; set; }
+        public string ROLE { get; set; }
 
         public virtual Title TITLE { get; set; }
 
@@ -57,6 +58,7 @@ namespace SHAM.Domain.Entities
         public virtual ICollection<ProjectEmployee> PROJECTS { get; set; }
 
         public virtual ICollection<Project> CREATED_PROJECTS { get; set; }
+
 
 
     }

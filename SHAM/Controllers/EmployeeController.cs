@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SHAM.Repository.Authorize;
 using SHAM.Repository.Contracts;
 using SHAM.Repository.Dto;
 
 namespace SHAM.UI.Controllers
 {
+    [Authorize(Roles.ADMIN)]
     public class EmployeeController : Controller
     {
         readonly IEmployeeRepository _employeeRepository;

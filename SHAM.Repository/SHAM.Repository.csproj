@@ -55,9 +55,17 @@
     <Compile Remove="Migrations\20191211124128_m1.Designer.cs" />
     <Compile Remove="Migrations\20191211124955_m1.cs" />
     <Compile Remove="Migrations\20191211124955_m1.Designer.cs" />
+    <Compile Remove="Migrations\20191211131301_m1.cs" />
+    <Compile Remove="Migrations\20191211131301_m1.Designer.cs" />
+    <Compile Remove="Migrations\20200123150935_m1.cs" />
+    <Compile Remove="Migrations\20200123150935_m1.Designer.cs" />
+    <Compile Remove="Migrations\20200128083459_m1.cs" />
+    <Compile Remove="Migrations\20200128083459_m1.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
@@ -65,6 +73,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.6.0" />
   </ItemGroup>
 
   <ItemGroup>

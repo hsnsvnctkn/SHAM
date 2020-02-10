@@ -11,5 +11,7 @@ namespace SHAM.Repository.Contracts
         EmployeeDto Get(int id);
         void Delete(int id);
         void Update(EmployeeDto employee);
+        void UpdateMyInfo(UserDto user);
+        void UpdateMyPass(int id, string pass);
     }
 }

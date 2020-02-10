@@ -1,6 +1,7 @@
 ﻿using SHAM.Domain.Entities;
 using SHAM.Repository.Contracts;
 using SHAM.Repository.Dto;
+using System;
 using System.Linq;
 
 namespace SHAM.Repository
@@ -26,6 +27,20 @@ namespace SHAM.Repository
                 EMPLOYEE_TITLE = employee.TITLE_ID,
                 EMPLOYEE_CREATOR = employee.CREATOR_ID
             });
+            _context.SaveChanges();
+        }
+
+        public void UpdateMyInfo(UserDto user)
+        {
+            var employee = _context.Employees.FirstOrDefault(e => e.ID == Convert.ToInt16(user.ID));
+
+            employee.EMPLOYEE_NAME = user.NAME;
+            employee.EMPLOYEE_SURNAME = user.SURNAME;
+            employee.EMPLOYEE_MAIL = user.EMAIL;
+            employee.EMPLOYEE_ADRESS = user.ADRESS;
+
+            _context.Employees.Update(employee);
+
             _context.SaveChanges();
         }
         public void Delete(int id)
@@ -96,6 +111,17 @@ namespace SHAM.Repository
 
             return new EmpConsDto { TitleDto = title, EmployeeDto = emp };
 
+        }
+
+        public void UpdateMyPass(int id, string pass)
+        {
+            var employee = _context.Employees.FirstOrDefault(e => e.ID == id);
+
+            employee.PASSWORD=pass;
+
+            _context.Employees.Update(employee);
+
+            _context.SaveChanges();
         }
     }
 }

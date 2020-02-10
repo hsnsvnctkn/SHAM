@@ -13,5 +13,6 @@ namespace SHAM.Repository.Contracts
         void Create(ActivityDto activity);
         void Update(ActivityDto activity);
         void Delete(int id);
+        ActivityAllDto GetMyActivity(int id);
     }
 }
