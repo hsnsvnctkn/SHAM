@@ -10,7 +10,7 @@ using SHAM.Repository.Dto;
 
 namespace SHAM.UI.Controllers
 {
-    [Authorize(Roles.NORMAL,Roles.ADMIN)]
+    [Authorize(Roles.NORMAL, Roles.ADMIN)]
     public class ActivityController : Controller
     {
         readonly IActivityRepository _activityRepository;
@@ -80,10 +80,26 @@ namespace SHAM.UI.Controllers
         {
             try
             {
-
                 _activityRepository.Delete(id);
 
                 return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+
+                return NotFound("Hata");
+            }
+        }
+        [HttpPost]
+        [Authorize(Roles.ADMIN, Roles.NORMAL)]
+        [ValidateAntiForgeryToken]
+        public IActionResult MyDelete(int id)
+        {
+            try
+            {
+                _activityRepository.Delete(id);
+
+                return RedirectToAction("MyActivity");
             }
             catch (Exception)
             {
@@ -114,6 +130,5 @@ namespace SHAM.UI.Controllers
             var model = _activityRepository.GetMyActivity(Convert.ToInt16(id));
             return View(model);
         }
-
     }
 }

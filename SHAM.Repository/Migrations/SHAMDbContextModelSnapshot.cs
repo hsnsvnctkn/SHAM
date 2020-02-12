@@ -30,6 +30,9 @@ namespace SHAM.Repository.Migrations
                     b.Property<int>("ACTIVITY_CREATOR")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("ACTIVITY_DATE")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ACTIVITY_DETAIL")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)")
@@ -50,14 +53,8 @@ namespace SHAM.Repository.Migrations
                     b.Property<TimeSpan>("CREATED_TIME")
                         .HasColumnType("time");
 
-                    b.Property<DateTime?>("END_DATE")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ESTIMATE_END_DATE")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ESTIMATE_START_DATE")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("END_TIME")
+                        .HasColumnType("time");
 
                     b.Property<bool>("INVOICE")
                         .HasColumnType("bit");
@@ -65,9 +62,8 @@ namespace SHAM.Repository.Migrations
                     b.Property<int>("PROJECT_NUMBER")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("START_DATE")
-                        .IsRequired()
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("START_TIME")
+                        .HasColumnType("time");
 
                     b.HasKey("ID");
 
@@ -86,34 +82,33 @@ namespace SHAM.Repository.Migrations
                         {
                             ID = 1,
                             ACTIVITY_CREATOR = 2,
+                            ACTIVITY_DATE = new DateTime(2019, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ACTIVITY_DETAIL = "Send to Shell when finished",
                             ACTIVITY_EMPLOYEE = 1,
                             ACTIVITY_PRIORITY = 3,
                             ACTIVITY_STATUS = false,
-                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 609, DateTimeKind.Local).AddTicks(1702),
-                            CREATED_TIME = new TimeSpan(490216091710),
-                            END_DATE = new DateTime(2019, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ESTIMATE_END_DATE = new DateTime(2019, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ESTIMATE_START_DATE = new DateTime(2019, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CREATED_DATE = new DateTime(2020, 2, 12, 14, 53, 44, 143, DateTimeKind.Local).AddTicks(3230),
+                            CREATED_TIME = new TimeSpan(536241433238),
+                            END_TIME = new TimeSpan(0, 18, 15, 0, 0),
                             INVOICE = false,
                             PROJECT_NUMBER = 1,
-                            START_DATE = new DateTime(2019, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            START_TIME = new TimeSpan(0, 10, 45, 0, 0)
                         },
                         new
                         {
                             ID = 2,
                             ACTIVITY_CREATOR = 2,
+                            ACTIVITY_DATE = new DateTime(2019, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ACTIVITY_DETAIL = "Notify Mr. Kaya when finished",
                             ACTIVITY_EMPLOYEE = 3,
                             ACTIVITY_PRIORITY = 3,
                             ACTIVITY_STATUS = true,
-                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 609, DateTimeKind.Local).AddTicks(8507),
-                            CREATED_TIME = new TimeSpan(490216098516),
-                            ESTIMATE_END_DATE = new DateTime(2019, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ESTIMATE_START_DATE = new DateTime(2019, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CREATED_DATE = new DateTime(2020, 2, 12, 14, 53, 44, 143, DateTimeKind.Local).AddTicks(9023),
+                            CREATED_TIME = new TimeSpan(536241439031),
+                            END_TIME = new TimeSpan(0, 19, 25, 0, 0),
                             INVOICE = false,
                             PROJECT_NUMBER = 1,
-                            START_DATE = new DateTime(2019, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            START_TIME = new TimeSpan(0, 11, 45, 0, 0)
                         });
                 });
 
@@ -171,39 +166,39 @@ namespace SHAM.Repository.Migrations
                         new
                         {
                             ID = 1,
-                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 607, DateTimeKind.Local).AddTicks(4469),
-                            CREATED_TIME = new TimeSpan(490216074479),
+                            CREATED_DATE = new DateTime(2020, 2, 12, 14, 53, 44, 141, DateTimeKind.Local).AddTicks(5366),
+                            CREATED_TIME = new TimeSpan(536241415374),
                             CUSTOMER_ADRESS = "Maltepe/Istanbul",
                             CUSTOMER_CREATOR = 2,
                             CUSTOMER_MAIL = "shell123@shell.com.tr",
                             CUSTOMER_NAME = "Shell",
-                            CUSTOMER_PHONE_NO = "021632145215",
+                            CUSTOMER_PHONE_NO = "21632145215",
                             CUSTOMER_STATUS = true,
                             CUSTOMER_TYPE = "Indirect"
                         },
                         new
                         {
                             ID = 2,
-                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 607, DateTimeKind.Local).AddTicks(8312),
-                            CREATED_TIME = new TimeSpan(490216078320),
+                            CREATED_DATE = new DateTime(2020, 2, 12, 14, 53, 44, 141, DateTimeKind.Local).AddTicks(9396),
+                            CREATED_TIME = new TimeSpan(536241419404),
                             CUSTOMER_ADRESS = "Fatih/Istanbul",
                             CUSTOMER_CREATOR = 3,
                             CUSTOMER_MAIL = "hhhsssqqq@solen.com.tr",
                             CUSTOMER_NAME = "Şölen",
-                            CUSTOMER_PHONE_NO = "02125422311",
+                            CUSTOMER_PHONE_NO = "2125422311",
                             CUSTOMER_STATUS = true,
                             CUSTOMER_TYPE = "Direct"
                         },
                         new
                         {
                             ID = 3,
-                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 607, DateTimeKind.Local).AddTicks(8900),
-                            CREATED_TIME = new TimeSpan(490216078901),
+                            CREATED_DATE = new DateTime(2020, 2, 12, 14, 53, 44, 142, DateTimeKind.Local).AddTicks(11),
+                            CREATED_TIME = new TimeSpan(536241420013),
                             CUSTOMER_ADRESS = "Kadıköy/Istanbul",
                             CUSTOMER_CREATOR = 1,
                             CUSTOMER_MAIL = "supppp@foriba.com.tr",
                             CUSTOMER_NAME = "Foriba",
-                            CUSTOMER_PHONE_NO = "02163112400",
+                            CUSTOMER_PHONE_NO = "2163112400",
                             CUSTOMER_STATUS = true,
                             CUSTOMER_TYPE = "Direct"
                         });
@@ -274,46 +269,49 @@ namespace SHAM.Repository.Migrations
                         new
                         {
                             ID = 1,
-                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 605, DateTimeKind.Local).AddTicks(5047),
-                            CREATED_TIME = new TimeSpan(490216066239),
+                            CREATED_DATE = new DateTime(2020, 2, 12, 14, 53, 44, 139, DateTimeKind.Local).AddTicks(4576),
+                            CREATED_TIME = new TimeSpan(536241405173),
                             EMPLOYEE_ADRESS = "Sancaktepe/İstanbul",
                             EMPLOYEE_CREATOR = 1,
                             EMPLOYEE_MAIL = "sevinctekin.hasan@gmail.com",
                             EMPLOYEE_NAME = "Hasan",
-                            EMPLOYEE_PHONE_NO = "05363403660",
+                            EMPLOYEE_PHONE_NO = "5363403660",
                             EMPLOYEE_STATUS = true,
                             EMPLOYEE_SURNAME = "Sevinçtekin",
                             EMPLOYEE_TITLE = 1,
+                            PASSWORD = "test",
                             ROLE = "ADMIN"
                         },
                         new
                         {
                             ID = 2,
-                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 607, DateTimeKind.Local).AddTicks(1999),
-                            CREATED_TIME = new TimeSpan(490216072006),
+                            CREATED_DATE = new DateTime(2020, 2, 12, 14, 53, 44, 141, DateTimeKind.Local).AddTicks(2271),
+                            CREATED_TIME = new TimeSpan(536241412281),
                             EMPLOYEE_ADRESS = "Kartal/İstanbul",
                             EMPLOYEE_CREATOR = 1,
-                            EMPLOYEE_MAIL = "aaaaasssddn@gmail.com",
+                            EMPLOYEE_MAIL = "a@gmail.com",
                             EMPLOYEE_NAME = "Ömer Faruk",
-                            EMPLOYEE_PHONE_NO = "05322545362",
+                            EMPLOYEE_PHONE_NO = "5322545362",
                             EMPLOYEE_STATUS = true,
                             EMPLOYEE_SURNAME = "Kaya",
                             EMPLOYEE_TITLE = 1,
+                            PASSWORD = "test",
                             ROLE = "NORMAL"
                         },
                         new
                         {
                             ID = 3,
-                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 607, DateTimeKind.Local).AddTicks(2102),
-                            CREATED_TIME = new TimeSpan(490216072104),
+                            CREATED_DATE = new DateTime(2020, 2, 12, 14, 53, 44, 141, DateTimeKind.Local).AddTicks(2402),
+                            CREATED_TIME = new TimeSpan(536241412404),
                             EMPLOYEE_ADRESS = "Üsküdar/İstanbul",
                             EMPLOYEE_CREATOR = 2,
-                            EMPLOYEE_MAIL = "qwwwweeeqq@gmail.com",
+                            EMPLOYEE_MAIL = "b@gmail.com",
                             EMPLOYEE_NAME = "Fatih",
-                            EMPLOYEE_PHONE_NO = "05348796582",
+                            EMPLOYEE_PHONE_NO = "5348796582",
                             EMPLOYEE_STATUS = true,
                             EMPLOYEE_SURNAME = "Balcıoğlu",
                             EMPLOYEE_TITLE = 1,
+                            PASSWORD = "test",
                             ROLE = "NORMAL"
                         });
                 });
@@ -473,8 +471,8 @@ namespace SHAM.Repository.Migrations
                         new
                         {
                             ID = 1,
-                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 608, DateTimeKind.Local).AddTicks(1360),
-                            CREATED_TIME = new TimeSpan(490216081369),
+                            CREATED_DATE = new DateTime(2020, 2, 12, 14, 53, 44, 142, DateTimeKind.Local).AddTicks(2842),
+                            CREATED_TIME = new TimeSpan(536241422849),
                             CUSTOMER_NUMBER = 3,
                             END_DATE = new DateTime(2019, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ESTIMATE_END_DATE = new DateTime(2019, 8, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -489,8 +487,8 @@ namespace SHAM.Repository.Migrations
                         new
                         {
                             ID = 2,
-                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 609, DateTimeKind.Local).AddTicks(26),
-                            CREATED_TIME = new TimeSpan(490216090034),
+                            CREATED_DATE = new DateTime(2020, 2, 12, 14, 53, 44, 143, DateTimeKind.Local).AddTicks(1113),
+                            CREATED_TIME = new TimeSpan(536241431121),
                             CUSTOMER_NUMBER = 1,
                             END_DATE = new DateTime(2019, 12, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ESTIMATE_END_DATE = new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -649,7 +647,7 @@ namespace SHAM.Repository.Migrations
                     b.HasOne("SHAM.Domain.Entities.Project", "PROJECT")
                         .WithMany("ACTIVITIES")
                         .HasForeignKey("PROJECT_NUMBER")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

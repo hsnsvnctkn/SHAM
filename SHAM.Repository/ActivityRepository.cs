@@ -23,10 +23,9 @@ namespace SHAM.Repository
                 ACTIVITY_DETAIL = activity.ACTIVITY_DETAIL,
                 ACTIVITY_CREATOR = activity.CREATOR,
                 ACTIVITY_EMPLOYEE = activity.ACTIVITY_EMPLOYEE,
-                ESTIMATE_START_DATE = activity.EST_START_DATE,
-                ESTIMATE_END_DATE = activity.EST_END_DATE,
-                END_DATE = activity.END_DATE,
-                START_DATE = activity.START_DATE,
+                ACTIVITY_DATE = activity.ACTIVITY_DATE,
+                START_TIME = activity.START_TIME,
+                END_TIME = activity.END_TIME,
                 ACTIVITY_STATUS = activity.STATUS,
                 ACTIVITY_PRIORITY = activity.ACTIVITY_PRIORITY,
                 INVOICE = activity.INVOICE,
@@ -51,10 +50,9 @@ namespace SHAM.Repository
                 ACTIVITY_DETAIL = a.ACTIVITY_DETAIL,
                 CREATOR = a.ACTIVITY_CREATOR,
                 ACTIVITY_EMPLOYEE = a.ACTIVITY_EMPLOYEE,
-                EST_START_DATE = a.ESTIMATE_START_DATE,
-                EST_END_DATE = a.ESTIMATE_END_DATE,
-                START_DATE = a.START_DATE,
-                END_DATE = a.END_DATE,
+                ACTIVITY_DATE = a.ACTIVITY_DATE,
+                START_TIME = a.START_TIME,
+                END_TIME = a.END_TIME,
                 STATUS = a.ACTIVITY_STATUS,
                 ACTIVITY_PRIORITY = a.ACTIVITY_PRIORITY,
                 INVOICE = a.INVOICE,
@@ -68,7 +66,7 @@ namespace SHAM.Repository
 
             var project = _context.Projects.Select(p => new ProjectDto { ID = p.ID, NAME = p.PROJECT_NAME }).ToList();
 
-            var employee = _context.Employees.Select(e => new EmployeeDto { ID = e.ID, NAME = e.EMPLOYEE_NAME, SURNAME = e.EMPLOYEE_SURNAME }).ToList();
+            var employee = _context.Employees.Select(e => new EmployeeDto { ID = e.ID, NAME = e.EMPLOYEE_NAME, SURNAME = e.EMPLOYEE_SURNAME, PROJECTS = e.PROJECTS }).ToList();
 
             var priority = _context.Priorities.Select(p => new PriorityDto { ID = p.ID, NAME = p.PRIORITY_NAME }).ToList();
 
@@ -85,10 +83,9 @@ namespace SHAM.Repository
                 ACTIVITY_DETAIL = a.ACTIVITY_DETAIL,
                 CREATOR = a.ACTIVITY_CREATOR,
                 ACTIVITY_EMPLOYEE = a.ACTIVITY_EMPLOYEE,
-                EST_START_DATE = a.ESTIMATE_START_DATE,
-                EST_END_DATE = a.ESTIMATE_END_DATE,
-                START_DATE = a.START_DATE,
-                END_DATE = a.END_DATE,
+                ACTIVITY_DATE = a.ACTIVITY_DATE,
+                START_TIME = a.START_TIME,
+                END_TIME = a.END_TIME,
                 STATUS = a.ACTIVITY_STATUS,
                 ACTIVITY_PRIORITY = a.ACTIVITY_PRIORITY,
                 INVOICE = a.INVOICE,
@@ -111,21 +108,19 @@ namespace SHAM.Repository
 
         public void Update(ActivityDto activity)
         {
-            _context.Activities.Update(new Activity
-            {
-                ID = activity.ID,
-                PROJECT_NUMBER = activity.PROJECT_NUMBER,
-                ACTIVITY_DETAIL = activity.ACTIVITY_DETAIL,
-                ACTIVITY_EMPLOYEE = activity.ACTIVITY_EMPLOYEE,
-                ACTIVITY_CREATOR = activity.CREATOR,
-                ESTIMATE_START_DATE = activity.EST_START_DATE,
-                ESTIMATE_END_DATE = activity.EST_END_DATE,
-                END_DATE = activity.END_DATE,
-                START_DATE = activity.START_DATE,
-                ACTIVITY_STATUS = activity.STATUS,
-                ACTIVITY_PRIORITY = activity.ACTIVITY_PRIORITY,
-                INVOICE = activity.INVOICE,
-            });
+            var thisActivity = _context.Activities.FirstOrDefault(a => a.ID == activity.ID);
+
+            thisActivity.PROJECT_NUMBER = activity.PROJECT_NUMBER;
+            thisActivity.ACTIVITY_DETAIL = activity.ACTIVITY_DETAIL;
+            thisActivity.ACTIVITY_DATE = activity.ACTIVITY_DATE;
+            thisActivity.START_TIME = activity.START_TIME;
+            thisActivity.END_TIME = activity.END_TIME;
+            thisActivity.ACTIVITY_STATUS = activity.STATUS;
+            thisActivity.ACTIVITY_PRIORITY = activity.ACTIVITY_PRIORITY;
+            thisActivity.INVOICE = activity.INVOICE;
+
+
+            _context.Activities.Update(thisActivity);
             _context.SaveChanges();
         }
     }

@@ -65,7 +65,7 @@ namespace SHAM.Repository.Context
                 .HasOne(activity => activity.PROJECT)
                 .WithMany(project => project.ACTIVITIES)
                 .HasForeignKey(activity => activity.PROJECT_NUMBER)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.SetNull);
 
                 entity
                 .HasOne(activity => activity.CREATED_EMPLOYEE)
@@ -191,8 +191,8 @@ namespace SHAM.Repository.Context
 
             var activity = new List<Activity>
             {
-                new Activity{ ID = 1, PROJECT_NUMBER = 1, ACTIVITY_EMPLOYEE = 1, ACTIVITY_DETAIL = "Send to Shell when finished", ESTIMATE_START_DATE = new DateTime(2019,05,09), ESTIMATE_END_DATE = new DateTime(2019,06,20), START_DATE = new DateTime(2019,05,09), END_DATE = new DateTime(2019,06,21), ACTIVITY_STATUS = false, ACTIVITY_PRIORITY = 3, ACTIVITY_CREATOR = 2 },
-                new Activity{ ID = 2, PROJECT_NUMBER = 1, ACTIVITY_EMPLOYEE = 3, ACTIVITY_DETAIL = "Notify Mr. Kaya when finished", ESTIMATE_START_DATE = new DateTime(2019,06,09), ESTIMATE_END_DATE = new DateTime(2019,08,10), START_DATE = new DateTime(2019,06,09), ACTIVITY_STATUS = true, ACTIVITY_PRIORITY = 3, ACTIVITY_CREATOR = 2 }
+                new Activity{ ID = 1, PROJECT_NUMBER = 1, ACTIVITY_EMPLOYEE = 1, ACTIVITY_DETAIL = "Send to Shell when finished", ACTIVITY_DATE = new DateTime(2019,06,20), START_TIME = new TimeSpan(10,45,00), END_TIME = new TimeSpan(18,15,00), ACTIVITY_STATUS = false, ACTIVITY_PRIORITY = 3, ACTIVITY_CREATOR = 2 },
+                new Activity{ ID = 2, PROJECT_NUMBER = 1, ACTIVITY_EMPLOYEE = 3, ACTIVITY_DETAIL = "Notify Mr. Kaya when finished", ACTIVITY_DATE = new DateTime(2019,08,10), START_TIME = new TimeSpan(11,45,00),  END_TIME = new TimeSpan(19,25,00), ACTIVITY_STATUS = true, ACTIVITY_PRIORITY = 3, ACTIVITY_CREATOR = 2 }
             };
             modelBuilder.Entity<Activity>().HasData(activity);
 

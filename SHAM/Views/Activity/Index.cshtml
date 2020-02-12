@@ -31,10 +31,9 @@
                                             <th class="border-0">Önceliği</th>
                                             <th class="border-0">Fatura</th>
                                             <th class="border-0">Detay</th>
-                                            <th class="border-0">Pln. Baş. Tarihi</th>
-                                            <th class="border-0">Pln. Btş. Tarihi</th>
-                                            <th class="border-0">Başlama Tarihi</th>
-                                            <th class="border-0">Bitiş Tarihi</th>
+                                            <th class="border-0">Aktivite Tarihi</th>
+                                            <th class="border-0">Başlama Saati</th>
+                                            <th class="border-0">Bitiş Saati</th>
                                             <th class="border-0">Oluşturma Tarihi</th>
                                             <th class="border-0">Oluşturma Saati</th>
                                             <th class="border-0"></th>
@@ -67,10 +66,9 @@
                                                     <td id="@item.ID-invoice">Hayır</td>
                                                 }
                                                 <td id="@item.ID-detail">@item.ACTIVITY_DETAIL</td>
-                                                <td id="@item.ID-estStart">@item.EST_START_DATE.ToString("dd/MM/yyyy")</td>
-                                                <td id="@item.ID-estEnd">@item.EST_END_DATE.ToString("dd/MM/yyyy")</td>
-                                                <td id="@item.ID-start">@item.START_DATE?.ToString("dd/MM/yyyy")</td>
-                                                <td id="@item.ID-end">@item.END_DATE?.ToString("dd/MM/yyyy")</td>
+                                                <td id="@item.ID-estStart">@item.ACTIVITY_DATE.ToString("dd/MM/yyyy")</td>
+                                                <td id="@item.ID-start">@item.START_TIME.ToString("hh':'mm':'ss")</td>
+                                                <td id="@item.ID-end">@item.END_TIME.ToString("hh':'mm':'ss")</td>
                                                 <td>@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
                                                 <td>@item.CREATED_TIME.ToString("hh':'mm':'ss")</td>
                                                 <td>
@@ -184,39 +182,24 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Tahmini Başlama Tarihi</label>
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Aktivite Tarihi</label>
                                 <div class="input-group date col-12 col-sm-8 col-lg-6 datePicker" id="mydatetimepicker5" data-target-input="nearest">
-                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker5" name="EST_START_DATE">
+                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker5" name="ACTIVITY_DATE">
                                     <div class="input-group-append" data-target="#mydatetimepicker5" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Tahmini Bitiş Tarihi</label>
-                                <div class="input-group date col-12 col-sm-8 col-lg-6 datePicker" id="mydatetimepicker6" data-target-input="nearest">
-                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker6" name="EST_END_DATE">
-                                    <div class="input-group-append" data-target="#mydatetimepicker6" data-toggle="datetimepicker">
-                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
-                                    </div>
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Başlama Saati</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <input name="START_TIME" type="time" style="width: inherit;" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Başlama Tarihi</label>
-                                <div class="input-group date col-12 col-sm-8 col-lg-6 datePicker" id="mydatetimepicker7" data-target-input="nearest">
-                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker7" name="START_DATE" />
-                                    <div class="input-group-append" data-target="#mydatetimepicker7" data-toggle="datetimepicker">
-                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Bitiş Tarihi</label>
-                                <div class="input-group date col-12 col-sm-8 col-lg-6 datePicker" id="mydatetimepicker8" data-target-input="nearest">
-                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker8" name="END_DATE" />
-                                    <div class="input-group-append" data-target="#mydatetimepicker8" data-toggle="datetimepicker">
-                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
-                                    </div>
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Bitiş Saati</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <input name="END_TIME" type="time" style="width: inherit;" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
@@ -300,6 +283,8 @@
                                         }
                                     </select>
                                     <input type="hidden" id="hideCreator" name="CREATOR" value="" />
+                                    <input type="hidden" id="hideCreator" name="ACTIVITY_EMPLOYEE" value="" />
+
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -309,39 +294,24 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Tahmini Başlama Tarihi</label>
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Aktivite Tarihi</label>
                                 <div class="input-group date col-12 col-sm-8 col-lg-6 datePicker" id="mydatetimepicker1" data-target-input="nearest">
-                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker1" id="EST_START_DATE" name="EST_START_DATE">
+                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker1" id="ACTIVITY_DATE" name="ACTIVITY_DATE">
                                     <div class="input-group-append" data-target="#mydatetimepicker1" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Tahmini Bitiş Tarihi</label>
-                                <div class="input-group date col-12 col-sm-8 col-lg-6 datePicker" id="mydatetimepicker2" data-target-input="nearest">
-                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker2" id="EST_END_DATE" name="EST_END_DATE">
-                                    <div class="input-group-append" data-target="#mydatetimepicker2" data-toggle="datetimepicker">
-                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
-                                    </div>
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Başlama Saati</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <input id="START_TIME" name="START_TIME" type="time" style="width: inherit;" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Başlama Tarihi</label>
-                                <div class="input-group date col-12 col-sm-8 col-lg-6 datePicker" id="mydatetimepicker3" data-target-input="nearest">
-                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker3" id="START_DATE" name="START_DATE" />
-                                    <div class="input-group-append" data-target="#mydatetimepicker3" data-toggle="datetimepicker">
-                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Bitiş Tarihi</label>
-                                <div class="input-group date col-12 col-sm-8 col-lg-6 datePicker" id="mydatetimepicker4" data-target-input="nearest">
-                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker4" id="END_DATE" name="END_DATE" />
-                                    <div class="input-group-append" data-target="#mydatetimepicker4" data-toggle="datetimepicker">
-                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
-                                    </div>
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Bitiş Saati</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <input id="END_TIME" name="END_TIME" type="time" style="width: inherit;" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
@@ -389,8 +359,7 @@
             var invoice = $("#" + id + "-invoice", "#tb").html();
             var priority = $("#" + id + "-priority", "#tb").data("id");
             var detail = $("#" + id + "-detail", "#tb").html();
-            var estStart = $("#" + id + "-estStart", "#tb").html();
-            var estEnd = $("#" + id + "-estEnd", "#tb").html();
+            var actDate = $("#" + id + "-estStart", "#tb").html();
             var start = $("#" + id + "-start", "#tb").html();
             var end = $("#" + id + "-end", "#tb").html();
             var creator = $("#" + id + "-creator", "#tb").data("id");
@@ -417,13 +386,9 @@
             document.getElementById("ACTIVITY_PRIORITY").value = priority;
             document.getElementById("DETAIL").value = detail;
             document.getElementById("STATUS").value = status;
-            document.getElementById("EST_START_DATE").value = estStart;
-            document.getElementById("EST_END_DATE").value = estEnd;
-            document.getElementById("START_DATE").value = start;
-            document.getElementById("END_DATE").value = end;
-            document.getElementById("CREATOR").value = creator;
-            document.getElementById("hideCreator").value = creator;
-
+            document.getElementById("ACTIVITY_DATE").value = actDate;
+            document.getElementById("START_TIME").value = start;
+            document.getElementById("END_TIME").value = end;
 
             //$('select[name=NEWACTIVITYEMPLOYEE]').val(employees);
             //$('.selectpicker').selectpicker('refresh');

@@ -15,14 +15,14 @@ namespace SHAM.Repository.Dto
         public int CREATOR { get; set; }//FK--
         public int ACTIVITY_EMPLOYEE { get; set; }
 
-        public DateTime EST_START_DATE { get; set; }
+        public DateTime ACTIVITY_DATE { get; set; }
 
-        public DateTime EST_END_DATE { get; set; }
+        public TimeSpan START_TIME { get; set; }
 
-        public DateTime? START_DATE { get; set; }
+        public TimeSpan END_TIME { get; set; }
 
-        public DateTime? END_DATE { get; set; }
         public DateTime CREATED_DATE { get; set; }
+
         public TimeSpan CREATED_TIME { get; set; }
 
         public bool STATUS { get; set; }

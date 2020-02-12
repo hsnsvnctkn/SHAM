@@ -7,12 +7,21 @@
     <div class="row" style="justify-content: center;">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="page-header">
-                <h2 class="pageheader-title">Activiteler</h2>
+                <h2 class="pageheader-title">Activitelerim</h2>
             </div>
         </div>
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
                 <h5 class="card-header">Aktivite Bilgileri</h5>
+                <button class="btn btn-outline-success" data-toggle="modal" data-target="#create">Yeni Aktivite ekle</button>
+                <div class="row" style="margin-top:5px;">
+                    <div class="col-xl-1">
+                        <button class="btn" id="BtnAllActivity">Hepsini Göster</button>
+                    </div>
+                    <div class="col-xl-1">
+                        <button class="btn" id="ThisMouth">Sadece Bu Ay'ı Göster</button>
+                    </div>
+                </div>
                 <div class="text-center">
                     <div class="card-body p-0">
                         <div class="table-responsive">
@@ -20,6 +29,7 @@
                                 <table class="table table-striped table-bordered first" id="tb">
                                     <thead class="bg-light">
                                         <tr class="border-0">
+                                            <th class="border-0"></th>
                                             <th class="border-0">#</th>
                                             <th class="border-0">Proje</th>
                                             <th class="border-0">Oluşturan</th>
@@ -27,18 +37,19 @@
                                             <th class="border-0">Önceliği</th>
                                             <th class="border-0">Fatura</th>
                                             <th class="border-0">Detay</th>
-                                            <th class="border-0">Pln. Baş. Tarihi</th>
-                                            <th class="border-0">Pln. Btş. Tarihi</th>
-                                            <th class="border-0">Başlama Tarihi</th>
-                                            <th class="border-0">Bitiş Tarihi</th>
+                                            <th class="border-0">Aktivite Tarihi</th>
+                                            <th class="border-0">Başlama Saati</th>
+                                            <th class="border-0">Bitiş Saati</th>
                                             <th class="border-0">Oluşturma Tarihi</th>
                                             <th class="border-0">Oluşturma Saati</th>
+                                            <th class="border-0"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var item in Model.ActivityDto)
                                         {
                                             <tr>
+                                                <td><button type="button" data-id="@item.ID" data-toggle="modal" data-target="#edit" class="btn btn-outline-primary fBtnEdit">Düzenle</button></td>
                                                 <td id="@item.ID">@item.ID </td>
                                                 <td id="@item.ID-project" data-id="@item.PROJECT.ID">@item.PROJECT.PROJECT_NAME</td>
                                                 <td id="@item.ID-creator" data-id="@item.CREATED_EMPLOYEE.ID">@item.CREATED_EMPLOYEE.EMPLOYEE_NAME @item.CREATED_EMPLOYEE.EMPLOYEE_SURNAME</td>
@@ -60,12 +71,14 @@
                                                     <td id="@item.ID-invoice">Hayır</td>
                                                 }
                                                 <td id="@item.ID-detail">@item.ACTIVITY_DETAIL</td>
-                                                <td id="@item.ID-estStart">@item.EST_START_DATE.ToString("dd/MM/yyyy")</td>
-                                                <td id="@item.ID-estEnd">@item.EST_END_DATE.ToString("dd/MM/yyyy")</td>
-                                                <td id="@item.ID-start">@item.START_DATE?.ToString("dd/MM/yyyy")</td>
-                                                <td id="@item.ID-end">@item.END_DATE?.ToString("dd/MM/yyyy")</td>
+                                                <td id="@item.ID-estStart">@item.ACTIVITY_DATE.ToString("dd/MM/yyyy")</td>
+                                                <td id="@item.ID-start">@item.START_TIME.ToString("hh':'mm':'ss")</td>
+                                                <td id="@item.ID-end">@item.END_TIME.ToString("hh':'mm':'ss")</td>
                                                 <td>@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
                                                 <td>@item.CREATED_TIME.ToString("hh':'mm':'ss")</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-outline-danger viewModelDel" data-toggle="modal" data-target="#delete" data-id="@item.ID">Sil</button>
+                                                </td>
                                             </tr>
                                         }
                                     </tbody>
@@ -78,3 +91,358 @@
         </div>
     </div>
 </div>
+
+<h2>My Customers</h2>
+
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+
+<!------------Modals --------->
+<!-- Delete -->
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Aktivite Sil</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="MyDelete" method="post" role="form">
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="form-group">
+                            Aktiviteyi Silmek istediğinize emin misiniz ?
+                            <input type="hidden" id="IdDel" value="" name="ID" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                    <button type="submit" class="btn btn-danger" asp-action="MyDelete">Sil</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!--Create-->
+<div class="modal fade" id="create" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Yeni Aktivite Ekle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <form id="createForm" role="form">
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <input type="hidden" name="ID" />
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Projesi</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <select class="custom-select" name="PROJECT_NUMBER">
+                                        @foreach (var item in Model.ProjectDto)
+                                        {
+                                            <option value="@item.ID">@item.NAME</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Durumu</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <select class="custom-select" name="STATUS" typeof="bool">
+                                        <option selected value="true">Aktif</option>
+                                        <option value="false">Pasif</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Önceliği</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <select class="custom-select" name="ACTIVITY_PRIORITY">
+                                        @foreach (var item in Model.PriorityDto)
+                                        {
+                                            <option value="@item.ID">@item.NAME</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Fatura</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <select class="custom-select" name="INVOICE" typeof="bool">
+                                        <option selected value="true">Evet</option>
+                                        <option value="false">Hayır</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Detay</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <textarea name="ACTIVITY_DETAIL" class="form-control" autocomplete="off" data-parsley-maxlength="100" placeholder="Activite Detayı" id="exampleFormControlTextarea1" rows="3" style="margin-top: 0px; margin-bottom: 0px; height: 119px;"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Aktivite Tarihi</label>
+                                <div class="input-group date col-12 col-sm-8 col-lg-6 datePicker" id="mydatetimepicker5" data-target-input="nearest">
+                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker5" name="ACTIVITY_DATE">
+                                    <div class="input-group-append" data-target="#mydatetimepicker5" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Başlama Saati</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <input name="START_TIME" type="time" style="width: inherit;" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Bitiş Saati</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <input name="END_TIME" type="time" style="width: inherit;" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <div class="col col-sm-10 col-lg-9 offset-sm-1 offset-lg-0">
+                                    <button type="button" class="btn btn-space btn-success" id="BtnCreate">Ekle</button>
+                                    <button type="button" class="btn btn-space btn-secondary" data-dismiss="modal">Kapat</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Edit-->
+<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Aktivite Düzenle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <form id="editForm" role="form">
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <input type="hidden" name="ID" id="activtyID" value="" />
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Projesi</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <select class="custom-select" id="PROJECT_NUMBER" name="PROJECT_NUMBER">
+                                        @foreach (var item in Model.ProjectDto)
+                                        {
+                                            <option value="@item.ID">@item.NAME</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Durumu</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <select class="custom-select" id="STATUS" typeof="bool" name="STATUS">
+                                        <option value="true">Aktif</option>
+                                        <option value="false">Pasif</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Önceliği</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <select class="custom-select" id="ACTIVITY_PRIORITY" name="ACTIVITY_PRIORITY">
+                                        @foreach (var item in Model.PriorityDto)
+                                        {
+                                            <option value="@item.ID">@item.NAME</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Fatura</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <select class="custom-select" id="INVOICE" typeof="bool" name="INVOICE">
+                                        <option value="true">Evet</option>
+                                        <option value="false">Hayır</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Oluşturan Kişi</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <select class="custom-select" id="CREATOR" disabled>
+                                        @foreach (var item in Model.EmployeeDto)
+                                        {
+                                            <option value="@item.ID">@item.NAME @item.SURNAME</option>
+                                        }
+                                    </select>
+                                    <input type="hidden" id="hideCreator" name="CREATOR" value="" />
+                                    <input type="hidden" id="hideCreator" name="ACTIVITY_EMPLOYEE" value="" />
+
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Detay</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <textarea class="form-control" autocomplete="off" data-parsley-maxlength="100" placeholder="Activite Detayı" name="ACTIVITY_DETAIL" id="DETAIL" rows="3" style="margin-top: 0px; margin-bottom: 0px; height: 119px;"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Aktivite Tarihi</label>
+                                <div class="input-group date col-12 col-sm-8 col-lg-6 datePicker" id="mydatetimepicker1" data-target-input="nearest">
+                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker1" id="ACTIVITY_DATE" name="ACTIVITY_DATE">
+                                    <div class="input-group-append" data-target="#mydatetimepicker1" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Başlama Saati</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <input id="START_TIME" name="START_TIME" type="time" style="width: inherit;" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Bitiş Saati</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <input id="END_TIME" name="END_TIME" type="time" style="width: inherit;" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <div class="col col-sm-10 col-lg-9 offset-sm-1 offset-lg-0">
+                                    <button type="button" class="btn btn-space btn-success" id="BtnEdit">Kaydet</button>
+                                    <button type="button" class="btn btn-space btn-secondary" data-dismiss="modal">Kapat</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        function myFunction() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("tb");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[8];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+        $(".viewModelDel").click(function () {
+            var id = $(this).data("id");
+            var name = $(this).data("name");
+
+            document.getElementById("IdDel").value = id;
+        });
+
+        $("#BtnCreate").click(function () {
+            $("#createForm").ajaxSubmit({
+                url: '/Activity/Create',
+                type: 'post',
+                success: function (result) {
+                    if (result.status)
+                        window.location.reload();
+                    else
+                        alert("Hata");
+                }
+            })
+        });
+
+        $(".fBtnEdit").click(function () {
+            var id = $(this).data("id");
+            var project = $("#" + id + "-project", "#tb").data("id");
+            var invoice = $("#" + id + "-invoice", "#tb").html();
+            var priority = $("#" + id + "-priority", "#tb").data("id");
+            var detail = $("#" + id + "-detail", "#tb").html();
+            var actDate = $("#" + id + "-estStart", "#tb").html();
+            var start = $("#" + id + "-start", "#tb").html();
+            var end = $("#" + id + "-end", "#tb").html();
+            var status = $("#" + id + "-status", "#tb").html();
+
+            //var employees = new Array();
+            //$("#" + id + "-employee>option").each(function () {
+            //    employees.push($(this).val());
+            //})
+
+            if (status == "Aktif")
+                status = true;
+            else if (status == "Pasif")
+                status = false;
+
+            if (invoice == "Evet")
+                invoice = true;
+            else if (invoice == "Hayır")
+                invoice = false;
+
+            document.getElementById("activtyID").value = id;
+            document.getElementById("PROJECT_NUMBER").value = project;
+            document.getElementById("INVOICE").value = invoice;
+            document.getElementById("ACTIVITY_PRIORITY").value = priority;
+            document.getElementById("DETAIL").value = detail;
+            document.getElementById("STATUS").value = status;
+            document.getElementById("ACTIVITY_DATE").value = actDate;
+            document.getElementById("START_TIME").value = start;
+            document.getElementById("END_TIME").value = end;
+
+
+            //$('select[name=NEWACTIVITYEMPLOYEE]').val(employees);
+            //$('.selectpicker').selectpicker('refresh');
+        })
+
+        $("#BtnEdit").click(function () {
+            $("#editForm").ajaxSubmit({
+                url: '/Activity/Edit', type: 'post',
+                success: function (result) {
+                    if (result.status) {
+                        window.location.reload();
+                    }
+                    else
+                        alert("hata");
+                }
+            })
+        });
+
+        $('.datePicker').datetimepicker({
+            format: 'DD.MM.YYYY',
+        });
+
+        $('.selectpicker').selectpicker({
+            noneSelectedText: 'Seçim Yapılmadı',
+            selectAllText: 'Tümü',
+            deselectAllText: 'Hiçbiri',
+            size: 'auto',
+
+        });
+    </script>
+}
+

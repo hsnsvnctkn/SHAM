@@ -63,6 +63,10 @@
     <Compile Remove="Migrations\20200128083459_m1.Designer.cs" />
     <Compile Remove="Migrations\20200130113810_m1.cs" />
     <Compile Remove="Migrations\20200130113810_m1.Designer.cs" />
+    <Compile Remove="Migrations\20200210103702_m1.cs" />
+    <Compile Remove="Migrations\20200210103702_m1.Designer.cs" />
+    <Compile Remove="Migrations\20200212075207_m1.cs" />
+    <Compile Remove="Migrations\20200212075207_m1.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

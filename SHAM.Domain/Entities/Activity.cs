@@ -23,15 +23,13 @@ namespace SHAM.Domain.Entities
         public int ACTIVITY_EMPLOYEE { get; set; }
 
         [Required]
-        public DateTime ESTIMATE_START_DATE { get; set; }
+        public DateTime ACTIVITY_DATE { get; set; }
 
         [Required]
-        public DateTime ESTIMATE_END_DATE { get; set; }
+        public TimeSpan START_TIME { get; set; }
 
         [Required]
-        public DateTime? START_DATE { get; set; }
-
-        public DateTime? END_DATE { get; set; }
+        public TimeSpan END_TIME { get; set; }
 
         [Required]
         public bool ACTIVITY_STATUS { get; set; }
