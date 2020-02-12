@@ -8,10 +8,6 @@ namespace SHAM.Domain.Entities
     [Table("ACTIVITIES")]
     public class Activity
     {
-        public Activity()
-        {
-            EMPLOYEES = new HashSet<ActivityEmployee>();
-        }
         [Key]
         public int ID { get; set; }//PK
 
@@ -23,6 +19,8 @@ namespace SHAM.Domain.Entities
 
         [Required]
         public int ACTIVITY_CREATOR { get; set; }//FK--
+        [Required]
+        public int ACTIVITY_EMPLOYEE { get; set; }
 
         [Required]
         public DateTime ESTIMATE_START_DATE { get; set; }
@@ -53,7 +51,7 @@ namespace SHAM.Domain.Entities
 
         public virtual Project PROJECT { get; set; }
 
-        public virtual ICollection<ActivityEmployee> EMPLOYEES { get; set; } //????
+        public virtual Employee EMPLOYEE { get; set; } //????
 
         public virtual Employee CREATED_EMPLOYEE { get; set; }
 

@@ -13,5 +13,7 @@ namespace SHAM.Repository.Dto
         public string ADRESS { get; set; }
         public string PASSWORD { get; set; }
         public string ROLE { get; set; }
+        public string PHONE_NO { get; set; }
+        public string TOKEN { get; set; }
     }
 }

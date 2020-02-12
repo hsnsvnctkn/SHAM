@@ -25,7 +25,7 @@
                                             <th class="border-0"></th>
                                             <th class="border-0">#</th>
                                             <th class="border-0">Proje</th>
-                                            <th class="border-0">Çalışanları</th>
+                                            <th class="border-0">Çalışan</th>
                                             <th class="border-0">Oluşturan</th>
                                             <th class="border-0">Durum</th>
                                             <th class="border-0">Önceliği</th>
@@ -47,14 +47,7 @@
                                                 <td><button type="button" data-id="@item.ID" data-toggle="modal" data-target="#edit" class="btn btn-outline-primary fBtnEdit">Düzenle</button></td>
                                                 <td id="@item.ID">@item.ID </td>
                                                 <td id="@item.ID-project" data-id="@item.PROJECT.ID">@item.PROJECT.PROJECT_NAME</td>
-                                                <td>
-                                                    <select class="custom-select" id="@item.ID-employee">
-                                                        @*@foreach (var emp in item.EMPLOYEES)
-                                                            {
-                                                                <option value="@emp.EMPLOYEE.ID">@emp.EMPLOYEE.EMPLOYEE_NAME @emp.EMPLOYEE.EMPLOYEE_SURNAME</option>
-                                                            }*@
-                                                    </select>
-                                                </td>
+                                                <td id="@item.EMPLOYEE.ID"> @item.EMPLOYEE.EMPLOYEE_NAME @item.EMPLOYEE.EMPLOYEE_SURNAME</td>
                                                 <td id="@item.ID-creator" data-id="@item.CREATED_EMPLOYEE.ID">@item.CREATED_EMPLOYEE.EMPLOYEE_NAME @item.CREATED_EMPLOYEE.EMPLOYEE_SURNAME</td>
                                                 @if (item.STATUS == true)
                                                 {
@@ -148,17 +141,6 @@
                                 <div class="col-12 col-sm-8 col-lg-6">
                                     <select class="custom-select" name="PROJECT_NUMBER">
                                         @foreach (var item in Model.ProjectDto)
-                                        {
-                                            <option value="@item.ID">@item.NAME</option>
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Çalısanları</label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <select class="selectpicker" data-live-search="true" multiple data-actions-box="true" name="NEWACTIVITYEMPLOYEE">
-                                        @foreach (var item in Model.EmployeeDto)
                                         {
                                             <option value="@item.ID">@item.NAME</option>
                                         }
@@ -272,17 +254,6 @@
                                 <div class="col-12 col-sm-8 col-lg-6">
                                     <select class="custom-select" id="PROJECT_NUMBER" name="PROJECT_NUMBER">
                                         @foreach (var item in Model.ProjectDto)
-                                        {
-                                            <option value="@item.ID">@item.NAME</option>
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-5 col-form-label text-sm-right">Çalısanları</label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <select class="selectpicker" data-live-search="true" multiple data-actions-box="true" name="NEWACTIVITYEMPLOYEE">
-                                        @foreach (var item in Model.EmployeeDto)
                                         {
                                             <option value="@item.ID">@item.NAME</option>
                                         }

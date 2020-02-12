@@ -6,10 +6,6 @@ namespace SHAM.Repository.Dto
 {
     public class EmployeeDto
     {
-        public EmployeeDto()
-        {
-            ACTIVITIES = new HashSet<ActivityEmployee>();
-        }
         public int ID { get; set; }
         public string NAME { get; set; }
         public string SURNAME { get; set; }
@@ -21,14 +17,16 @@ namespace SHAM.Repository.Dto
         public int CREATOR_ID { get; set; }
         public DateTime CREATED_DATE { get; set; }
         public TimeSpan CREATED_TIME { get; set; }
+        public string ROLE { get; set; }
 
 
-        virtual public TitleDto TITLE { get; set; }
+
+        virtual public Title TITLE { get; set; }
 
         public virtual ICollection<Employee> CREATED_EMPLOYEES { get; set; }
         public virtual Employee CREATED_EMPLOYEE { get; set; }
 
-        public virtual ICollection<ActivityEmployee> ACTIVITIES { get; set; } //????
+        public virtual ICollection<Activity> ACTIVITIES { get; set; } //????
 
         public virtual ICollection<Activity> CREATED_ACTIVITY { get; set; }
 

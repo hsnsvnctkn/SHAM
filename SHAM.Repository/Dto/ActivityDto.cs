@@ -6,11 +6,6 @@ namespace SHAM.Repository.Dto
 {
     public class ActivityDto
     {
-        public ActivityDto()
-        {
-            EMPLOYEES = new HashSet<ActivityEmployee>();
-        }
-
         public int ID { get; set; }//PK
 
         public int PROJECT_NUMBER { get; set; }//FK --
@@ -18,6 +13,7 @@ namespace SHAM.Repository.Dto
         public string ACTIVITY_DETAIL { get; set; }
 
         public int CREATOR { get; set; }//FK--
+        public int ACTIVITY_EMPLOYEE { get; set; }
 
         public DateTime EST_START_DATE { get; set; }
 
@@ -35,13 +31,10 @@ namespace SHAM.Repository.Dto
 
         public bool INVOICE { get; set; }
 
-        public virtual List<int> NEWACTIVITYEMPLOYEE { get; set; }
-
-
 
         public virtual Project PROJECT { get; set; }
 
-        public virtual ICollection<ActivityEmployee> EMPLOYEES { get; set; } //????
+        public virtual Employee EMPLOYEE { get; set; } //????
 
         public virtual Employee CREATED_EMPLOYEE { get; set; }
 

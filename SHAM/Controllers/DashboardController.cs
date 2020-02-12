@@ -23,6 +23,7 @@ namespace SHAM.UI.Controllers
         public IActionResult Index()
         {
             UserDto loggedUser = new UserDto();
+            var userDto = new EmployeeDto();
             if (User.Identity.IsAuthenticated)
             {
                 var claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
@@ -40,32 +41,12 @@ namespace SHAM.UI.Controllers
                             case "ID":
                                 loggedUser.ID = cValue;
                                 break;
-                            case ClaimTypes.Name:
-                                loggedUser.NAME = cValue;
-                                break;
-                            case ClaimTypes.Surname:
-                                loggedUser.SURNAME = cValue;
-                                break;
-                            case ClaimTypes.Email:
-                                loggedUser.EMAIL = cValue;
-                                break;
-                            case "PASSWORD":
-                                loggedUser.PASSWORD = cValue;
-                                break;
-                            case Roles.NORMAL:
-                                loggedUser.ROLE = "Normal Kullanıcı";
-                                break;
-                            case Roles.ADMIN:
-                                loggedUser.ROLE = "Admin";
-                                break;
-                            case "ADRESS":
-                                loggedUser.ADRESS = cValue;
-                                break;
                         }
                     }
+                    userDto = _employeeRepository.Get(Convert.ToInt16(loggedUser.ID));
                 }
             }
-            return View("Index", loggedUser);
+            return View("Index", userDto);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

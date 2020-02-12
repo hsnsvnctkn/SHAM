@@ -49,7 +49,7 @@ namespace SHAM.Domain.Entities
         public virtual ICollection<Employee> CREATED_EMPLOYEES { get; set; }
         public virtual Employee CREATED_EMPLOYEE { get; set; }
 
-        public virtual ICollection<ActivityEmployee> ACTIVITIES { get; set; } //????
+        public virtual ICollection<Activity> ACTIVITIES { get; set; } //????
 
         public virtual ICollection<Activity> CREATED_ACTIVITY { get; set; }
 

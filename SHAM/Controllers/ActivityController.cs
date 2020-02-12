@@ -47,7 +47,7 @@ namespace SHAM.UI.Controllers
                     }
                 }
                 activity.CREATOR = Convert.ToInt16(id);
-
+                activity.ACTIVITY_EMPLOYEE = Convert.ToInt16(id);
 
                 _activityRepository.Create(activity);
                 return Json(new { status = true });

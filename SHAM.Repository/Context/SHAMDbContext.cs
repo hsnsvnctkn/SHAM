@@ -21,7 +21,6 @@ namespace SHAM.Repository.Context
         public DbSet<Project_Type> Project_Types { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Title> Titles { get; set; }
-        public DbSet<ActivityEmployee> ActivityEmployees { get; set; } // Many to Many 
         public DbSet<ProjectEmployee> ProjectEmployees { get; set; }
         public DbSet<Role> Roles { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -41,22 +40,6 @@ namespace SHAM.Repository.Context
                 .HasOne(pe => pe.EMPLOYEE)
                 .WithMany(p => p.PROJECTS)
                 .HasForeignKey(pe => pe.EmployeeID)
-                .OnDelete(DeleteBehavior.Restrict);
-
-
-            modelBuilder.Entity<ActivityEmployee>()
-                .HasKey(ae => new { ae.ActivityID, ae.EmployeeID });
-
-            modelBuilder.Entity<ActivityEmployee>()
-                .HasOne(ae => ae.ACTIVITY)
-                .WithMany(e => e.EMPLOYEES)
-                .HasForeignKey(ae => ae.ActivityID)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<ActivityEmployee>()
-                .HasOne(ae => ae.EMPLOYEE)
-                .WithMany(p => p.ACTIVITIES)
-                .HasForeignKey(ae => ae.EmployeeID)
                 .OnDelete(DeleteBehavior.Restrict);
 
 
@@ -95,6 +78,12 @@ namespace SHAM.Repository.Context
                 .WithMany(priority => priority.ACTIVITIES)
                 .HasForeignKey(activity => activity.ACTIVITY_PRIORITY)
                 .OnDelete(DeleteBehavior.Restrict);
+
+                entity
+                .HasOne(activity => activity.EMPLOYEE)
+                .WithMany(employee => employee.ACTIVITIES)
+                .HasForeignKey(activity => activity.ACTIVITY_EMPLOYEE)
+                .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Customer>()
@@ -179,17 +168,17 @@ namespace SHAM.Repository.Context
 
             var employee = new List<Employee>
             {
-                new Employee{ ID = 1, EMPLOYEE_NAME = "Hasan", EMPLOYEE_SURNAME = "Sevinçtekin", EMPLOYEE_PHONE_NO = "05363403660", EMPLOYEE_ADRESS = "Sancaktepe/İstanbul", EMPLOYEE_MAIL = "sevinctekin.hasan@gmail.com", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 1, EMPLOYEE_CREATOR = 1, ROLE = Dto.Roles.ADMIN.ToString() },
-                new Employee{ ID = 2, EMPLOYEE_NAME = "Ömer Faruk", EMPLOYEE_SURNAME = "Kaya", EMPLOYEE_PHONE_NO = "05322545362", EMPLOYEE_ADRESS = "Kartal/İstanbul", EMPLOYEE_MAIL = "aaaaasssddn@gmail.com", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 1, EMPLOYEE_CREATOR = 1, ROLE = Dto.Roles.NORMAL.ToString() },
-                new Employee{ ID = 3, EMPLOYEE_NAME = "Fatih", EMPLOYEE_SURNAME = "Balcıoğlu", EMPLOYEE_PHONE_NO = "05348796582", EMPLOYEE_ADRESS = "Üsküdar/İstanbul", EMPLOYEE_MAIL = "qwwwweeeqq@gmail.com", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 1, EMPLOYEE_CREATOR = 2, ROLE = Dto.Roles.NORMAL.ToString() }
+                new Employee{ ID = 1, EMPLOYEE_NAME = "Hasan", EMPLOYEE_SURNAME = "Sevinçtekin", EMPLOYEE_PHONE_NO = "5363403660", EMPLOYEE_ADRESS = "Sancaktepe/İstanbul", EMPLOYEE_MAIL = "sevinctekin.hasan@gmail.com", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 1, EMPLOYEE_CREATOR = 1, PASSWORD = "test", ROLE = Dto.Roles.ADMIN.ToString() },
+                new Employee{ ID = 2, EMPLOYEE_NAME = "Ömer Faruk", EMPLOYEE_SURNAME = "Kaya", EMPLOYEE_PHONE_NO = "5322545362", EMPLOYEE_ADRESS = "Kartal/İstanbul", EMPLOYEE_MAIL = "a@gmail.com", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 1, EMPLOYEE_CREATOR = 1, PASSWORD = "test", ROLE = Dto.Roles.NORMAL.ToString() },
+                new Employee{ ID = 3, EMPLOYEE_NAME = "Fatih", EMPLOYEE_SURNAME = "Balcıoğlu", EMPLOYEE_PHONE_NO = "5348796582", EMPLOYEE_ADRESS = "Üsküdar/İstanbul", EMPLOYEE_MAIL = "b@gmail.com", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 1, EMPLOYEE_CREATOR = 2, PASSWORD = "test", ROLE = Dto.Roles.NORMAL.ToString() }
             };
             modelBuilder.Entity<Employee>().HasData(employee);
 
             var customer = new List<Customer>
             {
-                new Customer{ ID = 1, CUSTOMER_TYPE = "Indirect", CUSTOMER_NAME = "Shell", CUSTOMER_PHONE_NO = "021632145215", CUSTOMER_ADRESS = "Maltepe/Istanbul", CUSTOMER_MAIL = "shell123@shell.com.tr", CUSTOMER_STATUS = true, CUSTOMER_CREATOR = 2 },
-                new Customer{ ID = 2, CUSTOMER_TYPE = "Direct", CUSTOMER_NAME = "Şölen", CUSTOMER_PHONE_NO = "02125422311", CUSTOMER_ADRESS = "Fatih/Istanbul", CUSTOMER_MAIL = "hhhsssqqq@solen.com.tr", CUSTOMER_STATUS = true, CUSTOMER_CREATOR = 3 },
-                new Customer{ ID = 3, CUSTOMER_TYPE = "Direct", CUSTOMER_NAME = "Foriba", CUSTOMER_PHONE_NO = "02163112400", CUSTOMER_ADRESS = "Kadıköy/Istanbul", CUSTOMER_MAIL = "supppp@foriba.com.tr", CUSTOMER_STATUS = true, CUSTOMER_CREATOR = 1 }
+                new Customer{ ID = 1, CUSTOMER_TYPE = "Indirect", CUSTOMER_NAME = "Shell", CUSTOMER_PHONE_NO = "21632145215", CUSTOMER_ADRESS = "Maltepe/Istanbul", CUSTOMER_MAIL = "shell123@shell.com.tr", CUSTOMER_STATUS = true, CUSTOMER_CREATOR = 2 },
+                new Customer{ ID = 2, CUSTOMER_TYPE = "Direct", CUSTOMER_NAME = "Şölen", CUSTOMER_PHONE_NO = "2125422311", CUSTOMER_ADRESS = "Fatih/Istanbul", CUSTOMER_MAIL = "hhhsssqqq@solen.com.tr", CUSTOMER_STATUS = true, CUSTOMER_CREATOR = 3 },
+                new Customer{ ID = 3, CUSTOMER_TYPE = "Direct", CUSTOMER_NAME = "Foriba", CUSTOMER_PHONE_NO = "2163112400", CUSTOMER_ADRESS = "Kadıköy/Istanbul", CUSTOMER_MAIL = "supppp@foriba.com.tr", CUSTOMER_STATUS = true, CUSTOMER_CREATOR = 1 }
             };
             modelBuilder.Entity<Customer>().HasData(customer);
 
@@ -202,8 +191,8 @@ namespace SHAM.Repository.Context
 
             var activity = new List<Activity>
             {
-                new Activity{ ID = 1, PROJECT_NUMBER = 1, ACTIVITY_DETAIL = "Send to Shell when finished", ESTIMATE_START_DATE = new DateTime(2019,05,09), ESTIMATE_END_DATE = new DateTime(2019,06,20), START_DATE = new DateTime(2019,05,09), END_DATE = new DateTime(2019,06,21), ACTIVITY_STATUS = false, ACTIVITY_PRIORITY = 3, ACTIVITY_CREATOR = 2 },
-                new Activity{ ID = 2, PROJECT_NUMBER = 1, ACTIVITY_DETAIL = "Notify Mr. Kaya when finished", ESTIMATE_START_DATE = new DateTime(2019,06,09), ESTIMATE_END_DATE = new DateTime(2019,08,10), START_DATE = new DateTime(2019,06,09), ACTIVITY_STATUS = true, ACTIVITY_PRIORITY = 3, ACTIVITY_CREATOR = 2 }
+                new Activity{ ID = 1, PROJECT_NUMBER = 1, ACTIVITY_EMPLOYEE = 1, ACTIVITY_DETAIL = "Send to Shell when finished", ESTIMATE_START_DATE = new DateTime(2019,05,09), ESTIMATE_END_DATE = new DateTime(2019,06,20), START_DATE = new DateTime(2019,05,09), END_DATE = new DateTime(2019,06,21), ACTIVITY_STATUS = false, ACTIVITY_PRIORITY = 3, ACTIVITY_CREATOR = 2 },
+                new Activity{ ID = 2, PROJECT_NUMBER = 1, ACTIVITY_EMPLOYEE = 3, ACTIVITY_DETAIL = "Notify Mr. Kaya when finished", ESTIMATE_START_DATE = new DateTime(2019,06,09), ESTIMATE_END_DATE = new DateTime(2019,08,10), START_DATE = new DateTime(2019,06,09), ACTIVITY_STATUS = true, ACTIVITY_PRIORITY = 3, ACTIVITY_CREATOR = 2 }
             };
             modelBuilder.Entity<Activity>().HasData(activity);
 
@@ -215,16 +204,6 @@ namespace SHAM.Repository.Context
                 new ProjectEmployee{ ProjectID = project[1].ID, EmployeeID = employee[0].ID }
             };
             modelBuilder.Entity<ProjectEmployee>().HasData(projectEmployee);
-
-            var activityEmployee = new List<ActivityEmployee>
-            {
-                new ActivityEmployee{ ActivityID = project[0].ID, EmployeeID = employee[0].ID },
-                new ActivityEmployee{ ActivityID = project[0].ID, EmployeeID = employee[1].ID },
-                new ActivityEmployee{ ActivityID = project[1].ID, EmployeeID = employee[2].ID },
-                new ActivityEmployee{ ActivityID = project[1].ID, EmployeeID = employee[0].ID }
-            };
-            modelBuilder.Entity<ActivityEmployee>().HasData(activityEmployee);
-
         }
     }
 }

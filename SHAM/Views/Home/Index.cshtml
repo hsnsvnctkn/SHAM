@@ -243,51 +243,87 @@
     }
     else
     {
-<div class="row">
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <div class="page-header">
-            <h2 class="pageheader-title">Projelerim</h2><hr>
-        </div>
-    </div>
+        <div class="row" style="text-align:center">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="text-align:left">
+                <div class="page-header">
+                    <h2 class="pageheader-title"><b>Ana Sayfa</b></h2><hr>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="card border-3 border-top border-top-primary" style="border-bottom-color: #5969ff">
+                    <div class="card-body">
+                        <div class="d-inline-block">
+                            <h5 class="text-muted border-bottom pb-2">Proje Sayısı</h5>
+                            <h2 class="mb-0">@Model.myProjectCount</h2>
+                        </div>
+                        <div class="float-right icon-circle-medium  icon-box-lg  bg-primary-light mt-1">
 
-    @foreach (var item in Model.MyProject)
-    {
-        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-            <div class="card" style="border-bottom-color: #5969ff">
-                <h5 class="card-header">Proje Adı: <b>@item.NAME</b></h5>
-                <div class="card-body">
-                    <div class="progress">
-                        @{
-                            double levelID = item.LEVEL.ID;
-                            double levelCount = Model.levelCount;
-                            double a = levelID / levelCount * 100;
-                            a = Math.Round(a, 0);
-                        }
-                        <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: @a%" aria-valuenow="@a" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <div style="float:right;margin-top:10px">@a%</div>
-                    <div style="margin-top:10px">
-                        Durumu:
-                        @if (item.STATUS == false)
-                        {
-                            <i class="fa fas fa-minus-circle fa-fw fa-sm text-danger"></i>
-                        }
-                        else
-                        {
-                            <i class="fa fas fa-check-circle fa-fw fa-sm text-success"></i>
-                        }
+                            <i class="fa fas fa-file-alt fa-fw fa-sm text-primary"></i>
+                        </div>
                     </div>
                 </div>
-                <div class="card-footer d-flex text-muted">
-                    <div>
-                        Projenin Seviyesi: &nbsp;<b> @item.LEVEL.LEVEL_NAME</b>
-                    </div><br />
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="card border-3 border-top border-top-primary" style="border-bottom-color: #5969ff">
+                    <div class="card-body">
+                        <div class="d-inline-block">
+                            <h5 class="text-muted border-bottom pb-2">Aktivite Sayısı</h5>
+                            <h2 class="mb-0">@Model.myActivityCount</h2>
+                        </div>
+                        <div class="float-right icon-circle-medium  icon-box-lg  bg-brand-light mt-1">
+                            <i class="fa fas fa-file-code fa-fw fa-sm text-brand"></i>
+                        </div>
+                    </div>
                 </div>
-
             </div>
         </div>
-    }
-</div>
+
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="page-header">
+                    <h2 class="pageheader-title">Projelerim</h2><hr>
+                </div>
+            </div>
+
+            @foreach (var item in Model.MyProject)
+            {
+                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
+                    <div class="card" style="border-bottom-color: #5969ff">
+                        <h5 class="card-header">Proje Adı: <b>@item.NAME</b></h5>
+                        <div class="card-body">
+                            <div class="progress">
+                                @{
+                                    double levelID = item.LEVEL.ID;
+                                    double levelCount = Model.levelCount;
+                                    double a = levelID / levelCount * 100;
+                                    a = Math.Round(a, 0);
+                                }
+                                <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: @a%" aria-valuenow="@a" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div style="float:right;margin-top:10px">@a%</div>
+                            <div style="margin-top:10px">
+                                Durumu:
+                                @if (item.STATUS == false)
+                                {
+                                    <i class="fa fas fa-minus-circle fa-fw fa-sm text-danger"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fas fa-check-circle fa-fw fa-sm text-success"></i>
+                                }
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex text-muted">
+                            <div>
+                                Projenin Seviyesi: &nbsp;<b> @item.LEVEL.LEVEL_NAME</b>
+                            </div><br />
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
 
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">

@@ -19,7 +19,6 @@ namespace SHAM.Repository
         {
 
             var projectID = _context.ProjectEmployees.Where(pe => pe.EmployeeID == id).Select(p => p.ProjectID).ToList();
-            var activityID = _context.ActivityEmployees.Where(pe => pe.EmployeeID == id).Select(p => p.ActivityID).ToList();
 
             var getIndex = new IndexDto
             {
@@ -32,7 +31,7 @@ namespace SHAM.Repository
                     LEVEL = p.LEVEL,
                 }).ToList(),
 
-                MyActivity = _context.Activities.Where(a => activityID.Contains(a.ID)).Select(a => new ActivityDto
+                MyActivity = _context.Activities.Where(a => a.ACTIVITY_EMPLOYEE == id).Select(a => new ActivityDto
                 {
                     ACTIVITY_DETAIL = a.ACTIVITY_DETAIL,
                     STATUS = a.ACTIVITY_STATUS,

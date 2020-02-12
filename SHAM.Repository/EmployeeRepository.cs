@@ -38,6 +38,7 @@ namespace SHAM.Repository
             employee.EMPLOYEE_SURNAME = user.SURNAME;
             employee.EMPLOYEE_MAIL = user.EMAIL;
             employee.EMPLOYEE_ADRESS = user.ADRESS;
+            employee.EMPLOYEE_PHONE_NO = user.PHONE_NO;
 
             _context.Employees.Update(employee);
 
@@ -51,23 +52,35 @@ namespace SHAM.Repository
         }
         public EmployeeDto Get(int id)
         {
-            var employee = _context.Employees.FirstOrDefault(e => e.ID == id);
-            return new EmployeeDto
+            var emp = _context.Employees.Select(e => new EmployeeDto
             {
-                ID = employee.ID,
-                NAME = employee.EMPLOYEE_NAME,
-                SURNAME = employee.EMPLOYEE_SURNAME,
-                PHONE_NO = employee.EMPLOYEE_PHONE_NO,
-                ADRESS = employee.EMPLOYEE_ADRESS,
-                MAIL = employee.EMPLOYEE_MAIL,
-                STATUS = employee.EMPLOYEE_STATUS,
-                TITLE_ID = employee.EMPLOYEE_TITLE,
-                CREATOR_ID = employee.EMPLOYEE_CREATOR,
-                CREATED_DATE = employee.CREATED_DATE,
-                CREATED_TIME = employee.CREATED_TIME,
-                TITLE = new TitleDto { ID = employee.TITLE.ID }
-            };
+                ID = e.ID,
+                NAME = e.EMPLOYEE_NAME,
+                SURNAME = e.EMPLOYEE_SURNAME,
+                PHONE_NO = e.EMPLOYEE_PHONE_NO,
+                ADRESS = e.EMPLOYEE_ADRESS,
+                MAIL = e.EMPLOYEE_MAIL,
+                STATUS = e.EMPLOYEE_STATUS,
+                TITLE = e.TITLE,
+                ROLE = e.ROLE
+            }).Where(e => e.ID == id).FirstOrDefault();
+
+            return emp;
         }
+        public UserDto Get(string email)
+        {
+            var emp = _context.Employees.Select(e => new UserDto
+            {
+                NAME = e.EMPLOYEE_NAME,
+                SURNAME = e.EMPLOYEE_SURNAME,
+                PHONE_NO = e.EMPLOYEE_PHONE_NO,
+                ADRESS = e.EMPLOYEE_ADRESS,
+                EMAIL = e.EMPLOYEE_MAIL,
+            }).Where(e => e.EMAIL == email).FirstOrDefault();
+
+            return emp;
+        }
+
         public void Create(EmployeeDto employee)
         {
             _context.Employees.Add(new Employee
@@ -105,7 +118,7 @@ namespace SHAM.Repository
                 ACTIVITIES = e.ACTIVITIES,
                 CREATED_EMPLOYEE = e.CREATED_EMPLOYEE,
                 PROJECTS = e.PROJECTS,
-                TITLE = new TitleDto { ID = e.TITLE.ID, NAME = e.TITLE.TITLE_NAME }
+                TITLE = e.TITLE
             }).ToList();
 
 
@@ -117,7 +130,7 @@ namespace SHAM.Repository
         {
             var employee = _context.Employees.FirstOrDefault(e => e.ID == id);
 
-            employee.PASSWORD=pass;
+            employee.PASSWORD = pass;
 
             _context.Employees.Update(employee);
 

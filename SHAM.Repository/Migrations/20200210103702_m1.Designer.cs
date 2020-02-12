@@ -10,7 +10,7 @@ using SHAM.Repository.Context;
 namespace SHAM.Repository.Migrations
 {
     [DbContext(typeof(SHAMDbContext))]
-    [Migration("20200130113810_m1")]
+    [Migration("20200210103702_m1")]
     partial class m1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,9 @@ namespace SHAM.Repository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
+
+                    b.Property<int>("ACTIVITY_EMPLOYEE")
+                        .HasColumnType("int");
 
                     b.Property<int>("ACTIVITY_PRIORITY")
                         .HasColumnType("int");
@@ -72,6 +75,8 @@ namespace SHAM.Repository.Migrations
 
                     b.HasIndex("ACTIVITY_CREATOR");
 
+                    b.HasIndex("ACTIVITY_EMPLOYEE");
+
                     b.HasIndex("ACTIVITY_PRIORITY");
 
                     b.HasIndex("PROJECT_NUMBER");
@@ -84,10 +89,11 @@ namespace SHAM.Repository.Migrations
                             ID = 1,
                             ACTIVITY_CREATOR = 2,
                             ACTIVITY_DETAIL = "Send to Shell when finished",
+                            ACTIVITY_EMPLOYEE = 1,
                             ACTIVITY_PRIORITY = 3,
                             ACTIVITY_STATUS = false,
-                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 79, DateTimeKind.Local).AddTicks(4337),
-                            CREATED_TIME = new TimeSpan(526900794347),
+                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 609, DateTimeKind.Local).AddTicks(1702),
+                            CREATED_TIME = new TimeSpan(490216091710),
                             END_DATE = new DateTime(2019, 6, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ESTIMATE_END_DATE = new DateTime(2019, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ESTIMATE_START_DATE = new DateTime(2019, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -100,52 +106,16 @@ namespace SHAM.Repository.Migrations
                             ID = 2,
                             ACTIVITY_CREATOR = 2,
                             ACTIVITY_DETAIL = "Notify Mr. Kaya when finished",
+                            ACTIVITY_EMPLOYEE = 3,
                             ACTIVITY_PRIORITY = 3,
                             ACTIVITY_STATUS = true,
-                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 80, DateTimeKind.Local).AddTicks(1165),
-                            CREATED_TIME = new TimeSpan(526900801181),
+                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 609, DateTimeKind.Local).AddTicks(8507),
+                            CREATED_TIME = new TimeSpan(490216098516),
                             ESTIMATE_END_DATE = new DateTime(2019, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ESTIMATE_START_DATE = new DateTime(2019, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             INVOICE = false,
                             PROJECT_NUMBER = 1,
                             START_DATE = new DateTime(2019, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
-                });
-
-            modelBuilder.Entity("SHAM.Domain.Entities.ActivityEmployee", b =>
-                {
-                    b.Property<int>("ActivityID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EmployeeID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ActivityID", "EmployeeID");
-
-                    b.HasIndex("EmployeeID");
-
-                    b.ToTable("ActivityEmployees");
-
-                    b.HasData(
-                        new
-                        {
-                            ActivityID = 1,
-                            EmployeeID = 1
-                        },
-                        new
-                        {
-                            ActivityID = 1,
-                            EmployeeID = 2
-                        },
-                        new
-                        {
-                            ActivityID = 2,
-                            EmployeeID = 3
-                        },
-                        new
-                        {
-                            ActivityID = 2,
-                            EmployeeID = 1
                         });
                 });
 
@@ -203,8 +173,8 @@ namespace SHAM.Repository.Migrations
                         new
                         {
                             ID = 1,
-                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 77, DateTimeKind.Local).AddTicks(4274),
-                            CREATED_TIME = new TimeSpan(526900774284),
+                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 607, DateTimeKind.Local).AddTicks(4469),
+                            CREATED_TIME = new TimeSpan(490216074479),
                             CUSTOMER_ADRESS = "Maltepe/Istanbul",
                             CUSTOMER_CREATOR = 2,
                             CUSTOMER_MAIL = "shell123@shell.com.tr",
@@ -216,8 +186,8 @@ namespace SHAM.Repository.Migrations
                         new
                         {
                             ID = 2,
-                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 77, DateTimeKind.Local).AddTicks(8812),
-                            CREATED_TIME = new TimeSpan(526900778823),
+                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 607, DateTimeKind.Local).AddTicks(8312),
+                            CREATED_TIME = new TimeSpan(490216078320),
                             CUSTOMER_ADRESS = "Fatih/Istanbul",
                             CUSTOMER_CREATOR = 3,
                             CUSTOMER_MAIL = "hhhsssqqq@solen.com.tr",
@@ -229,8 +199,8 @@ namespace SHAM.Repository.Migrations
                         new
                         {
                             ID = 3,
-                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 77, DateTimeKind.Local).AddTicks(8920),
-                            CREATED_TIME = new TimeSpan(526900778922),
+                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 607, DateTimeKind.Local).AddTicks(8900),
+                            CREATED_TIME = new TimeSpan(490216078901),
                             CUSTOMER_ADRESS = "Kadıköy/Istanbul",
                             CUSTOMER_CREATOR = 1,
                             CUSTOMER_MAIL = "supppp@foriba.com.tr",
@@ -306,8 +276,8 @@ namespace SHAM.Repository.Migrations
                         new
                         {
                             ID = 1,
-                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 75, DateTimeKind.Local).AddTicks(4252),
-                            CREATED_TIME = new TimeSpan(526900764924),
+                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 605, DateTimeKind.Local).AddTicks(5047),
+                            CREATED_TIME = new TimeSpan(490216066239),
                             EMPLOYEE_ADRESS = "Sancaktepe/İstanbul",
                             EMPLOYEE_CREATOR = 1,
                             EMPLOYEE_MAIL = "sevinctekin.hasan@gmail.com",
@@ -321,8 +291,8 @@ namespace SHAM.Repository.Migrations
                         new
                         {
                             ID = 2,
-                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 77, DateTimeKind.Local).AddTicks(1639),
-                            CREATED_TIME = new TimeSpan(526900771669),
+                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 607, DateTimeKind.Local).AddTicks(1999),
+                            CREATED_TIME = new TimeSpan(490216072006),
                             EMPLOYEE_ADRESS = "Kartal/İstanbul",
                             EMPLOYEE_CREATOR = 1,
                             EMPLOYEE_MAIL = "aaaaasssddn@gmail.com",
@@ -336,8 +306,8 @@ namespace SHAM.Repository.Migrations
                         new
                         {
                             ID = 3,
-                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 77, DateTimeKind.Local).AddTicks(1788),
-                            CREATED_TIME = new TimeSpan(526900771789),
+                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 607, DateTimeKind.Local).AddTicks(2102),
+                            CREATED_TIME = new TimeSpan(490216072104),
                             EMPLOYEE_ADRESS = "Üsküdar/İstanbul",
                             EMPLOYEE_CREATOR = 2,
                             EMPLOYEE_MAIL = "qwwwweeeqq@gmail.com",
@@ -505,8 +475,8 @@ namespace SHAM.Repository.Migrations
                         new
                         {
                             ID = 1,
-                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 78, DateTimeKind.Local).AddTicks(2316),
-                            CREATED_TIME = new TimeSpan(526900782333),
+                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 608, DateTimeKind.Local).AddTicks(1360),
+                            CREATED_TIME = new TimeSpan(490216081369),
                             CUSTOMER_NUMBER = 3,
                             END_DATE = new DateTime(2019, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ESTIMATE_END_DATE = new DateTime(2019, 8, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -521,8 +491,8 @@ namespace SHAM.Repository.Migrations
                         new
                         {
                             ID = 2,
-                            CREATED_DATE = new DateTime(2020, 1, 30, 14, 38, 10, 79, DateTimeKind.Local).AddTicks(1062),
-                            CREATED_TIME = new TimeSpan(526900791086),
+                            CREATED_DATE = new DateTime(2020, 2, 10, 13, 37, 1, 609, DateTimeKind.Local).AddTicks(26),
+                            CREATED_TIME = new TimeSpan(490216090034),
                             CUSTOMER_NUMBER = 1,
                             END_DATE = new DateTime(2019, 12, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ESTIMATE_END_DATE = new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -666,6 +636,12 @@ namespace SHAM.Repository.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("SHAM.Domain.Entities.Employee", "EMPLOYEE")
+                        .WithMany("ACTIVITIES")
+                        .HasForeignKey("ACTIVITY_EMPLOYEE")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SHAM.Domain.Entities.Priority", "PRIORITY")
                         .WithMany("ACTIVITIES")
                         .HasForeignKey("ACTIVITY_PRIORITY")
@@ -675,21 +651,6 @@ namespace SHAM.Repository.Migrations
                     b.HasOne("SHAM.Domain.Entities.Project", "PROJECT")
                         .WithMany("ACTIVITIES")
                         .HasForeignKey("PROJECT_NUMBER")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SHAM.Domain.Entities.ActivityEmployee", b =>
-                {
-                    b.HasOne("SHAM.Domain.Entities.Activity", "ACTIVITY")
-                        .WithMany("EMPLOYEES")
-                        .HasForeignKey("ActivityID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SHAM.Domain.Entities.Employee", "EMPLOYEE")
-                        .WithMany("ACTIVITIES")
-                        .HasForeignKey("EmployeeID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

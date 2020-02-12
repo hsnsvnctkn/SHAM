@@ -16,18 +16,13 @@ namespace SHAM.Repository
 
         public void Create(ActivityDto activity)
         {
-            var emp = new List<ActivityEmployee>();
-
-            foreach (var item in activity.NEWACTIVITYEMPLOYEE)
-            {
-                emp.Add(new ActivityEmployee { EmployeeID = item });
-            }
             _context.Activities.Add(new Activity
             {
                 ID = activity.ID,
                 PROJECT_NUMBER = activity.PROJECT_NUMBER,
                 ACTIVITY_DETAIL = activity.ACTIVITY_DETAIL,
                 ACTIVITY_CREATOR = activity.CREATOR,
+                ACTIVITY_EMPLOYEE = activity.ACTIVITY_EMPLOYEE,
                 ESTIMATE_START_DATE = activity.EST_START_DATE,
                 ESTIMATE_END_DATE = activity.EST_END_DATE,
                 END_DATE = activity.END_DATE,
@@ -35,7 +30,6 @@ namespace SHAM.Repository
                 ACTIVITY_STATUS = activity.STATUS,
                 ACTIVITY_PRIORITY = activity.ACTIVITY_PRIORITY,
                 INVOICE = activity.INVOICE,
-                EMPLOYEES = emp
             });
             _context.SaveChanges();
         }
@@ -43,12 +37,7 @@ namespace SHAM.Repository
         public void Delete(int id)
         {
             var activity = _context.Activities.FirstOrDefault(p => p.ID == id);
-            var activityEmployee = _context.ActivityEmployees.Where(pe => pe.ActivityID == id);
 
-            foreach (var item in activityEmployee)
-            {
-                _context.ActivityEmployees.Remove(item);
-            }
             _context.Activities.Remove(activity);
             _context.SaveChanges();
         }
@@ -61,6 +50,7 @@ namespace SHAM.Repository
                 PROJECT_NUMBER = a.PROJECT_NUMBER,
                 ACTIVITY_DETAIL = a.ACTIVITY_DETAIL,
                 CREATOR = a.ACTIVITY_CREATOR,
+                ACTIVITY_EMPLOYEE = a.ACTIVITY_EMPLOYEE,
                 EST_START_DATE = a.ESTIMATE_START_DATE,
                 EST_END_DATE = a.ESTIMATE_END_DATE,
                 START_DATE = a.START_DATE,
@@ -70,10 +60,10 @@ namespace SHAM.Repository
                 INVOICE = a.INVOICE,
                 CREATED_DATE = a.CREATED_DATE,
                 CREATED_TIME = a.CREATED_TIME,
-                EMPLOYEES = a.EMPLOYEES,
                 PROJECT = a.PROJECT,
                 CREATED_EMPLOYEE = a.CREATED_EMPLOYEE,
-                PRIORITY = a.PRIORITY
+                PRIORITY = a.PRIORITY,
+                EMPLOYEE = a.EMPLOYEE
             }).ToList();
 
             var project = _context.Projects.Select(p => new ProjectDto { ID = p.ID, NAME = p.PROJECT_NAME }).ToList();
@@ -87,14 +77,14 @@ namespace SHAM.Repository
 
         public ActivityAllDto GetMyActivity(int id)
         {
-            var activityID = _context.ActivityEmployees.Where(pe => pe.EmployeeID == id).Select(p => p.ActivityID).ToList();
 
-            var activity = _context.Activities.Where(a => activityID.Contains(a.ID)).Select(a => new ActivityDto
+            var activity = _context.Activities.Where(a => a.ACTIVITY_EMPLOYEE == id).Select(a => new ActivityDto
             {
                 ID = a.ID,
                 PROJECT_NUMBER = a.PROJECT_NUMBER,
                 ACTIVITY_DETAIL = a.ACTIVITY_DETAIL,
                 CREATOR = a.ACTIVITY_CREATOR,
+                ACTIVITY_EMPLOYEE = a.ACTIVITY_EMPLOYEE,
                 EST_START_DATE = a.ESTIMATE_START_DATE,
                 EST_END_DATE = a.ESTIMATE_END_DATE,
                 START_DATE = a.START_DATE,
@@ -104,7 +94,7 @@ namespace SHAM.Repository
                 INVOICE = a.INVOICE,
                 CREATED_DATE = a.CREATED_DATE,
                 CREATED_TIME = a.CREATED_TIME,
-                EMPLOYEES = a.EMPLOYEES,
+                EMPLOYEE = a.EMPLOYEE,
                 PROJECT = a.PROJECT,
                 CREATED_EMPLOYEE = a.CREATED_EMPLOYEE,
                 PRIORITY = a.PRIORITY
@@ -121,37 +111,12 @@ namespace SHAM.Repository
 
         public void Update(ActivityDto activity)
         {
-            foreach (var item in activity.NEWACTIVITYEMPLOYEE)
-            {
-                var pe = _context.ActivityEmployees.Where(pe => pe.ActivityID == activity.ID && pe.EmployeeID == item).ToList();
-                if (pe.Count == 0)
-                {
-                    _context.ActivityEmployees.Add(new ActivityEmployee
-                    {
-                        ActivityID = activity.ID,
-                        EmployeeID = item
-                    });
-                    _context.SaveChanges();
-                }
-
-            }
-            var pe2 = _context.ActivityEmployees.Where(pe => pe.ActivityID == activity.ID);
-
-            foreach (var item in pe2)
-            {
-                if (!activity.NEWACTIVITYEMPLOYEE.Contains(item.EmployeeID))
-                {
-                    _context.ActivityEmployees.Remove(item);
-                }
-
-            }
-            _context.SaveChanges();
-
             _context.Activities.Update(new Activity
             {
                 ID = activity.ID,
                 PROJECT_NUMBER = activity.PROJECT_NUMBER,
                 ACTIVITY_DETAIL = activity.ACTIVITY_DETAIL,
+                ACTIVITY_EMPLOYEE = activity.ACTIVITY_EMPLOYEE,
                 ACTIVITY_CREATOR = activity.CREATOR,
                 ESTIMATE_START_DATE = activity.EST_START_DATE,
                 ESTIMATE_END_DATE = activity.EST_END_DATE,

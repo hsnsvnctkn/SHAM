@@ -53,7 +53,10 @@
                                                     <select class="custom-select" id="@item.ID-employee">
                                                         @foreach (var emp in item.EMPLOYEES)
                                                         {
-                                                            <option value="@emp.EMPLOYEE.ID">@emp.EMPLOYEE.EMPLOYEE_NAME</option>
+                                                            if (emp.EMPLOYEE != null)
+                                                            {
+                                                                <option value="@emp.EMPLOYEE.ID">@emp.EMPLOYEE.EMPLOYEE_NAME</option>
+                                                            }
                                                         }
                                                     </select>
                                                 </td>

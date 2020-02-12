@@ -1,4 +1,4 @@
-﻿@model SHAM.Repository.Dto.UserDto
+﻿@model SHAM.Repository.Dto.EmployeeDto
 @{
     ViewData["Title"] = "Profil Bilgileri";
 }
@@ -39,17 +39,42 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Email</td>
-                                                            <td>@Model.EMAIL</td>
+                                                            <td>@Model.MAIL</td>
                                                         </tr>
+                                                        <tr>
+                                                            <td>Ünvan</td>
+                                                            <td>@Model.TITLE.TITLE_NAME</td>
+                                                        </tr>
+
                                                         <tr>
                                                             <td>Yetki</td>
                                                             <td>@Model.ROLE</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Tel No</td>
+                                                            <td>@Model.PHONE_NO</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Adres</td>
+                                                            <td>@Model.ADRESS</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Üye Durumu</td>
+                                                            @if (Model.STATUS == true)
+                                                            {
+                                                                <td>Aktif</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>Pasif</td>
+                                                            }
                                                         </tr>
                                                     </table>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             <form asp-action="EditMyInfo" method="post" role="form">
@@ -63,11 +88,15 @@
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="EMAIL">E-Mail</label>
-                                                    <input type="EMAIL" name="EMAIL" required="" value="@Model.EMAIL" data-parsley-type="email" placeholder="Mail Adresi Giriniz" class="form-control">
+                                                    <input type="EMAIL" name="EMAIL" required="" value="@Model.MAIL" data-parsley-type="email" placeholder="Mail Adresi Giriniz" class="form-control">
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="ADRESS">Adres</label>
-                                                    <input id="ADRESS" type="text" name="ADRESS" data-parsley-trigger="change" value="@Model.ADRESS" required="" placeholder="Adres Giriniz" autocomplete="off" class="form-control">
+                                                    <textarea id="ADRESS" type="text" name="ADRESS" data-parsley-trigger="change" value="" required="" placeholder="Adres Giriniz" autocomplete="off" class="form-control">@Model.ADRESS</textarea>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="PHONE_NO">Tel No</label>
+                                                    <input id="phone-mask" im-insert="true" type="text" name="PHONE_NO" data-parsley-trigger="change" value="@Model.PHONE_NO" required="" placeholder="Telefon Numarası Giriniz" autocomplete="off" class="form-control phone-inputmask">
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="SURNAME">Kaydetmek için şifre giriniz </label>
@@ -139,7 +168,6 @@
 </div>
 
 
-
 @section scripts{
     <script>
         $(document).ready(function () {
@@ -159,5 +187,11 @@
                 $("#passSave").attr("disabled", true);
             }
         }
+
+        $(function (e) {
+            "use strict";
+            $(".date-inputmask").inputmask("dd/mm/yyyy"),
+                $(".phone-inputmask").inputmask("(999) 999-9999")
+        });
     </script>
 }
