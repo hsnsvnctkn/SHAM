@@ -83,7 +83,7 @@
                         <div class="card-body">
                             <div class="progress">
                                 @{
-                                    double levelID = item.LEVEL.ID;
+                                    double levelID = item.LEVEL.i;
                                     double levelCount = Model.levelCount;
                                     double a = levelID / levelCount * 100;
                                     a = Math.Round(a, 0);
@@ -172,7 +172,7 @@
                         <div class="card-body">
                             <div class="progress">
                                 @{
-                                    double levelID = item.LEVEL.ID;
+                                    double levelID = item.LEVEL.i;
                                     double levelCount = Model.levelCount;
                                     double a = levelID / levelCount * 100;
                                     a = Math.Round(a, 0);
@@ -294,12 +294,12 @@
                         <div class="card-body">
                             <div class="progress">
                                 @{
-                                    double levelID = item.LEVEL.ID;
+                                    double levelID = item.LEVEL.i;
                                     double levelCount = Model.levelCount;
                                     double a = levelID / levelCount * 100;
                                     a = Math.Round(a, 0);
                                 }
-                                <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: @a%" aria-valuenow="@a" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: @a% " aria-valuenow="@a" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                             <div style="float:right;margin-top:10px">@a%</div>
                             <div style="margin-top:10px">

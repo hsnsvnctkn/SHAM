@@ -32,7 +32,7 @@
                                     @foreach (var item in Model)
                                     {
                                         <tr>
-                                            <td>@item.ID</td>
+                                            <td>@item.i</td>
                                             <td>@item.NAME</td>
                                             <td>
                                                 <button class="btn btn-outline-primary viewModel" data-toggle="modal" data-target="#edit" data-name="@item.NAME" data-id="@item.ID">Düzenle</button>
@@ -66,7 +66,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="editForm">
+            <form asp-action="Edit" id="editForm" role="form" method="post" >
                 <div class="modal-body">
                     <div class="card-body">
                         <div class="form-group">
@@ -80,7 +80,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-                    <button class="btn btn-success" id="BtnEdit">Kaydet</button>
+                    <button type="submit" class="btn btn-success" asp-action="Edit">Kaydet</button>
                 </div>
             </form>
         </div>
@@ -160,16 +160,19 @@
             document.getElementById("levelIdDel").value = id;
         });
 
-        $("#BtnEdit").click(function () {
-            $("#editForm").ajaxSubmit({
-                url: '/Level/Edit', type: 'post',
-                success: function (result) {
-                    if (result.status) {
-                        window.location.reload();
-                    }
-                }
-            })
-        });
+        //$("#BtnEdit").click(function () {
+        //    $("#editForm").ajaxSubmit({
+        //        url: '/Level/Edit', type: 'post',
+        //        success: function (result) {
+        //            if (result.status) {
+        //                window.location.reload();
+        //            }
+        //            else {
+        //                window.location.reload();
+        //            }
+        //        }
+        //    })
+        //});
 
     </script>
 }

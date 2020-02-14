@@ -51,17 +51,16 @@ namespace SHAM.UI.Controllers
 
         }
 
-        [HttpPost]
-        public JsonResult Edit(ConstantDto data)
+        public IActionResult Edit(ConstantDto data)
         {
             try
             {
                 _levelRepository.Update(data);
-                return Json(new { Status = true });
+                return RedirectToAction(nameof(Index));
             }
             catch (System.Exception)
             {
-                return Json(new { Status = false });
+                return NotFound("hata");
             }
 
         }

@@ -14,10 +14,39 @@
     <link rel="stylesheet" href="~/assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
     <link rel="stylesheet" href="../assets/vendor/datepicker/tempusdominus-bootstrap-4.css">
     <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        .alertmessage {
+            position: fixed;
+            top: 100%;
+            left: 50%;
+            width: 400px;
+            margin-left: -200px;
+            margin-top: -150px;
+            text-align: center;
+            outline: 9999px solid rgba(0,0,0,0.2);
+            display: none;
+            z-index: 999999;
+            border-radius: 0px;
+        }
+    </style>
+
     <title>@ViewData["Title"] - SHAM</title>
 </head>
 
 <body>
+    <div class="alert alert-danger alertmessage" id="danger-alert">
+        <strong>Hata ! </strong><br /> Yanlış giden bir şeyler var. Kontrol ederek tekrar deneyiniz..
+    </div>
+
+    <div class="alert alert-success alertmessage" id="create-success-alert">
+        <strong>Başarılı ! </strong><br /> Başarıyla eklendi.
+    </div>
+
+    <div class="alert alert-success alertmessage" id="edit-succes-alert">
+        <strong>Başarılı ! </strong><br /> Başarıyla düzenlendi.
+    </div>
+
     <div class="dashboard-main-wrapper">
         <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
@@ -286,6 +315,7 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     <script src="~/assets/vendor/inputmask/js/jquery.inputmask.bundle.js"></script>
+    <script src="~/assets/libs/js/ajax.js"></script>
 
 
     @RenderSection("Scripts", false)
@@ -299,8 +329,32 @@
             window.location.href = '/Home/Index';
         }
         if (result.status === 401) {
-            window.location.href = '/Dashboard/NoPermission';
+            window.location.href = '/LogIn/NotFound404';
         }
     });
+
+    $(document).ready(function () {
+        $("#danger-alert").hide();
+        $("#create-success-alert").hide();
+        $("#edit-success-alert").hide();
+    });
+
+    function showAlert() {
+        $("#danger-alert").fadeTo(3000, 500).slideUp(500, function () {
+            $("#danger-alert").slideUp(500);
+        });
+    };
+    function showCreateAlert() {
+        $("#create-success-alert").fadeTo(2000, 500).slideUp(500, function () {
+            $("#create-success-alert").slideUp(500);
+            window.location.reload();
+        });
+    };
+    function showEditAlert() {
+        $("#edit-success-alert").fadeTo(2000, 500).slideUp(500, function () {
+            $("#edit-success-alert").slideUp(500);
+        });
+    };
+
 </script>
 

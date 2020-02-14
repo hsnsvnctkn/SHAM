@@ -28,12 +28,16 @@ namespace SHAM.UI.Controllers
         }
         public IActionResult LoginUser(UserDto user)
         {
-            var userToken = _tokenProvider.LoginUser(user.EMAIL.Trim(), user.PASSWORD.Trim());
+            if (user.EMAIL != null || user.PASSWORD != null)
+            {
+                var userToken = _tokenProvider.LoginUser(user.EMAIL.Trim(), user.PASSWORD.Trim());
 
-            if (userToken != null)
-                HttpContext.Session.SetString("JWToken", userToken);
-            else
-                return Redirect("~/LogIn/Index");
+                if (userToken != null)
+                    HttpContext.Session.SetString("JWToken", userToken);
+                else
+                    return Redirect("~/LogIn/Index");
+            }
+
 
             return Redirect("~/Home/Index");
         }

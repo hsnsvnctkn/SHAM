@@ -309,6 +309,9 @@
                 success: function (result) {
                     if (result.status)
                         window.location.reload();
+                    else
+                        showAlert();
+
                 }
             })
         });
@@ -349,7 +352,7 @@
                         window.location.reload();
                     }
                     else
-                        alert("hata");
+                        showAlert();
                 }
             })
         });

@@ -24,7 +24,7 @@ namespace SHAM.UI.Controllers
             var model = _activityRepository.GetList();
             return View(model);
         }
-        [Authorize(Roles.ADMIN)]
+        [Authorize(Roles.ADMIN, Roles.NORMAL)]
         public JsonResult Create(ActivityDto activity)
         {
             try
@@ -58,7 +58,7 @@ namespace SHAM.UI.Controllers
                 return Json(new { status = false });
             }
         }
-        [Authorize(Roles.ADMIN)]
+        [Authorize(Roles.ADMIN, Roles.NORMAL)]
         public JsonResult Edit(ActivityDto activity)
         {
             try
@@ -107,6 +107,8 @@ namespace SHAM.UI.Controllers
                 return NotFound("Hata");
             }
         }
+
+        [Authorize(Roles.ADMIN, Roles.NORMAL)]
         public IActionResult MyActivity()
         {
             var claimsIndentity = HttpContext.User.Identity as ClaimsIdentity;
@@ -126,8 +128,8 @@ namespace SHAM.UI.Controllers
                     }
                 }
             }
-
             var model = _activityRepository.GetMyActivity(Convert.ToInt16(id));
+
             return View(model);
         }
     }

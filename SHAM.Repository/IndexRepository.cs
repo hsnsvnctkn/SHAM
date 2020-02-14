@@ -28,7 +28,7 @@ namespace SHAM.Repository
                 {
                     NAME = p.PROJECT_NAME,
                     STATUS = p.PROJECT_STATUS,
-                    LEVEL = p.LEVEL,
+                    LEVEL = p.LEVEL
                 }).ToList(),
 
                 MyActivity = _context.Activities.Where(a => a.ACTIVITY_EMPLOYEE == id).Select(a => new ActivityDto

@@ -1,6 +1,7 @@
 ﻿using SHAM.Domain.Entities;
 using SHAM.Repository.Contracts;
 using SHAM.Repository.Dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -76,7 +77,7 @@ namespace SHAM.Repository
         public ActivityAllDto GetMyActivity(int id)
         {
 
-            var activity = _context.Activities.Where(a => a.ACTIVITY_EMPLOYEE == id).Select(a => new ActivityDto
+            var activity = _context.Activities.OrderByDescending(a=>a.ACTIVITY_DATE).Where(a => a.ACTIVITY_EMPLOYEE == id).Select(a => new ActivityDto
             {
                 ID = a.ID,
                 PROJECT_NUMBER = a.PROJECT_NUMBER,
@@ -96,8 +97,9 @@ namespace SHAM.Repository
                 CREATED_EMPLOYEE = a.CREATED_EMPLOYEE,
                 PRIORITY = a.PRIORITY
             }).ToList();
+            var projectID = _context.ProjectEmployees.Where(e => e.EmployeeID == id).Select(p => p.ProjectID);
 
-            var project = _context.Projects.Select(p => new ProjectDto { ID = p.ID, NAME = p.PROJECT_NAME }).ToList();
+            var project = _context.Projects.Where(p => projectID.Contains(p.ID)).Select(p => new ProjectDto { ID = p.ID, NAME = p.PROJECT_NAME }).ToList();
 
             var employee = _context.Employees.Select(e => new EmployeeDto { ID = e.ID, NAME = e.EMPLOYEE_NAME, SURNAME = e.EMPLOYEE_SURNAME }).ToList();
 

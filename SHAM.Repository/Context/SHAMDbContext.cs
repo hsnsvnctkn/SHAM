@@ -65,7 +65,7 @@ namespace SHAM.Repository.Context
                 .HasOne(activity => activity.PROJECT)
                 .WithMany(project => project.ACTIVITIES)
                 .HasForeignKey(activity => activity.PROJECT_NUMBER)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Restrict);
 
                 entity
                 .HasOne(activity => activity.CREATED_EMPLOYEE)
@@ -140,12 +140,12 @@ namespace SHAM.Repository.Context
 
             var levels = new List<Level>
             {
-                new Level { ID = 1, LEVEL_NAME = "Accept" },
-                new Level { ID = 2, LEVEL_NAME = "Planning" },
-                new Level { ID = 3, LEVEL_NAME = "Design" },
-                new Level { ID = 4, LEVEL_NAME = "Coding" },
-                new Level { ID = 5, LEVEL_NAME = "Test" },
-                new Level { ID = 6, LEVEL_NAME = "Completed" }
+                new Level { ID = 1, LEVEL_NAME = "Accept", i = 1 },
+                new Level { ID = 2, LEVEL_NAME = "Planning", i = 2 },
+                new Level { ID = 3, LEVEL_NAME = "Design", i = 3 },
+                new Level { ID = 4, LEVEL_NAME = "Coding", i = 4 },
+                new Level { ID = 5, LEVEL_NAME = "Test", i = 5 },
+                new Level { ID = 6, LEVEL_NAME = "Completed", i = 6 }
             };
             modelBuilder.Entity<Level>().HasData(levels);
 
