@@ -41,7 +41,9 @@ namespace SHAM.Domain.Entities
 
         [Required]
         public TimeSpan CREATED_TIME { get; set; } = DateTime.Now.TimeOfDay;
+        [Required]
         public string PASSWORD { get; set; }
+        [Required]
         public string ROLE { get; set; }
 
         public virtual Title TITLE { get; set; }

@@ -15,18 +15,20 @@ namespace SHAM.Repository
         }
         public void Update(EmployeeDto employee)
         {
-            _context.Employees.Update(new Employee
-            {
-                ID = employee.ID,
-                EMPLOYEE_NAME = employee.NAME,
-                EMPLOYEE_SURNAME = employee.SURNAME,
-                EMPLOYEE_PHONE_NO = employee.PHONE_NO,
-                EMPLOYEE_ADRESS = employee.ADRESS,
-                EMPLOYEE_MAIL = employee.MAIL,
-                EMPLOYEE_STATUS = employee.STATUS,
-                EMPLOYEE_TITLE = employee.TITLE_ID,
-                EMPLOYEE_CREATOR = employee.CREATOR_ID
-            });
+            var newEmployee = _context.Employees.FirstOrDefault(e => e.ID == employee.ID);
+
+            newEmployee.EMPLOYEE_NAME = employee.NAME;
+            newEmployee.EMPLOYEE_SURNAME = employee.SURNAME;
+            newEmployee.EMPLOYEE_PHONE_NO = employee.PHONE_NO;
+            newEmployee.EMPLOYEE_ADRESS = employee.ADRESS;
+            newEmployee.EMPLOYEE_MAIL = employee.MAIL;
+            newEmployee.EMPLOYEE_STATUS = employee.STATUS;
+            newEmployee.EMPLOYEE_TITLE = employee.TITLE_ID;
+            newEmployee.ROLE = Roles.ADMIN;
+            newEmployee.PASSWORD = "test";
+
+            _context.Employees.Update(newEmployee);
+
             _context.SaveChanges();
         }
 
@@ -83,7 +85,7 @@ namespace SHAM.Repository
 
         public void Create(EmployeeDto employee)
         {
-            _context.Employees.Add(new Employee
+            var newEmployee = new Employee
             {
                 ID = employee.ID,
                 EMPLOYEE_NAME = employee.NAME,
@@ -93,8 +95,12 @@ namespace SHAM.Repository
                 EMPLOYEE_MAIL = employee.MAIL,
                 EMPLOYEE_STATUS = employee.STATUS,
                 EMPLOYEE_TITLE = employee.TITLE_ID,
-                EMPLOYEE_CREATOR = employee.CREATOR_ID
-            });
+                EMPLOYEE_CREATOR = employee.CREATOR_ID,
+                ROLE = "ADMIN",
+                PASSWORD = "test"
+            };
+            _context.Employees.Add(newEmployee);
+
             _context.SaveChanges();
         }
 

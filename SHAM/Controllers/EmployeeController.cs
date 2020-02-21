@@ -37,7 +37,6 @@ namespace SHAM.UI.Controllers
             }
         }
 
-        [HttpPost]
         public JsonResult Edit(EmployeeDto employee)
         {
             try

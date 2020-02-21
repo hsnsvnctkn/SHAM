@@ -54,20 +54,6 @@ namespace SHAM.Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ROLE",
-                schema: "SHAM",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ROLE_NAME = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ROLE", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TITLES",
                 schema: "SHAM",
                 columns: table => new
@@ -98,8 +84,8 @@ namespace SHAM.Repository.Migrations
                     EMPLOYEE_CREATOR = table.Column<int>(nullable: false),
                     CREATED_DATE = table.Column<DateTime>(nullable: false),
                     CREATED_TIME = table.Column<TimeSpan>(nullable: false),
-                    PASSWORD = table.Column<string>(nullable: true),
-                    ROLE = table.Column<string>(nullable: true)
+                    PASSWORD = table.Column<string>(nullable: false),
+                    ROLE = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -302,11 +288,11 @@ namespace SHAM.Repository.Migrations
                 columns: new[] { "ID", "PRIORITY_NAME" },
                 values: new object[,]
                 {
-                    { 5, "NOT IMPORTANT" },
-                    { 4, "NOT IMMEDIATE" },
-                    { 3, "NORMAL" },
+                    { 1, "SO IMMEDIATE" },
                     { 2, "IMMEDIATE" },
-                    { 1, "SO IMMEDIATE" }
+                    { 3, "NORMAL" },
+                    { 4, "NOT IMMEDIATE" },
+                    { 5, "NOT IMPORTANT" }
                 });
 
             migrationBuilder.InsertData(
@@ -317,16 +303,6 @@ namespace SHAM.Repository.Migrations
                 {
                     { 1, "Visual" },
                     { 2, "Object - Oriented" }
-                });
-
-            migrationBuilder.InsertData(
-                schema: "SHAM",
-                table: "ROLE",
-                columns: new[] { "ID", "ROLE_NAME" },
-                values: new object[,]
-                {
-                    { 1, "ADMIN" },
-                    { 2, "NORMAL" }
                 });
 
             migrationBuilder.InsertData(
@@ -343,37 +319,43 @@ namespace SHAM.Repository.Migrations
                 schema: "SHAM",
                 table: "EMPLOYEES",
                 columns: new[] { "ID", "CREATED_DATE", "CREATED_TIME", "EMPLOYEE_ADRESS", "EMPLOYEE_CREATOR", "EMPLOYEE_MAIL", "EMPLOYEE_NAME", "EMPLOYEE_PHONE_NO", "EMPLOYEE_STATUS", "EMPLOYEE_SURNAME", "EMPLOYEE_TITLE", "PASSWORD", "ROLE" },
-                values: new object[] { 1, new DateTime(2020, 2, 14, 17, 8, 15, 985, DateTimeKind.Local).AddTicks(1357), new TimeSpan(616959863273), "Sancaktepe/İstanbul", 1, "sevinctekin.hasan@gmail.com", "Hasan", "5363403660", true, "Sevinçtekin", 1, "test", "ADMIN" });
+                values: new object[] { 1, new DateTime(2020, 2, 21, 3, 9, 48, 38, DateTimeKind.Local).AddTicks(7038), new TimeSpan(113880395688), "Sancaktepe/İstanbul", 1, "hasan.sevinctekin@sagita.com.tr", "Hasan", "5363403660", true, "Sevinçtekin", 1, "test", "ADMIN" });
 
             migrationBuilder.InsertData(
                 schema: "SHAM",
                 table: "CUSTOMERS",
                 columns: new[] { "ID", "CREATED_DATE", "CREATED_TIME", "CUSTOMER_ADRESS", "CUSTOMER_CREATOR", "CUSTOMER_MAIL", "CUSTOMER_NAME", "CUSTOMER_PHONE_NO", "CUSTOMER_STATUS", "CUSTOMER_TYPE" },
-                values: new object[] { 3, new DateTime(2020, 2, 14, 17, 8, 15, 987, DateTimeKind.Local).AddTicks(6667), new TimeSpan(616959876668), "Kadıköy/Istanbul", 1, "supppp@foriba.com.tr", "Foriba", "2163112400", true, "Direct" });
+                values: new object[] { 3, new DateTime(2020, 2, 21, 3, 9, 48, 40, DateTimeKind.Local).AddTicks(6050), new TimeSpan(113880406051), "Kadıköy/Istanbul", 1, "supppp@foriba.com.tr", "Foriba", "2163112400", true, "Direct" });
 
             migrationBuilder.InsertData(
                 schema: "SHAM",
                 table: "EMPLOYEES",
                 columns: new[] { "ID", "CREATED_DATE", "CREATED_TIME", "EMPLOYEE_ADRESS", "EMPLOYEE_CREATOR", "EMPLOYEE_MAIL", "EMPLOYEE_NAME", "EMPLOYEE_PHONE_NO", "EMPLOYEE_STATUS", "EMPLOYEE_SURNAME", "EMPLOYEE_TITLE", "PASSWORD", "ROLE" },
-                values: new object[] { 2, new DateTime(2020, 2, 14, 17, 8, 15, 986, DateTimeKind.Local).AddTicks(9013), new TimeSpan(616959869020), "Kartal/İstanbul", 1, "a@gmail.com", "Ömer Faruk", "5322545362", true, "Kaya", 1, "test", "NORMAL" });
+                values: new object[,]
+                {
+                    { 2, new DateTime(2020, 2, 21, 3, 9, 48, 40, DateTimeKind.Local).AddTicks(864), new TimeSpan(113880400871), "Kartal/İstanbul", 1, "omer.kaya@sagita.com.tr", "Ömer Faruk", "5550000000", true, "Kaya", 1, "test", "NORMAL" },
+                    { 3, new DateTime(2020, 2, 21, 3, 9, 48, 40, DateTimeKind.Local).AddTicks(975), new TimeSpan(113880400976), "Üsküdar/İstanbul", 1, "fatih.balcioglu@sagita.com.tr", "Fatih", "5550000000", true, "Balcıoğlu", 1, "test", "NORMAL" },
+                    { 4, new DateTime(2020, 2, 21, 3, 9, 48, 40, DateTimeKind.Local).AddTicks(980), new TimeSpan(113880400981), "Üsküdar/İstanbul", 1, "yunus.gulbeyen@sagita.com.tr", "Yunus", "5550000000", true, "Gülbeyen", 1, "test", "NORMAL" },
+                    { 5, new DateTime(2020, 2, 21, 3, 9, 48, 40, DateTimeKind.Local).AddTicks(983), new TimeSpan(113880400984), "Üsküdar/İstanbul", 1, "ufuk@sagita.com.tr", "Ufuk", "5550000000", true, "Çelik", 1, "test", "NORMAL" }
+                });
 
             migrationBuilder.InsertData(
                 schema: "SHAM",
                 table: "CUSTOMERS",
                 columns: new[] { "ID", "CREATED_DATE", "CREATED_TIME", "CUSTOMER_ADRESS", "CUSTOMER_CREATOR", "CUSTOMER_MAIL", "CUSTOMER_NAME", "CUSTOMER_PHONE_NO", "CUSTOMER_STATUS", "CUSTOMER_TYPE" },
-                values: new object[] { 1, new DateTime(2020, 2, 14, 17, 8, 15, 987, DateTimeKind.Local).AddTicks(2776), new TimeSpan(616959872801), "Maltepe/Istanbul", 2, "shell123@shell.com.tr", "Shell", "21632145215", true, "Indirect" });
+                values: new object[] { 1, new DateTime(2020, 2, 21, 3, 9, 48, 40, DateTimeKind.Local).AddTicks(2469), new TimeSpan(113880402477), "Maltepe/Istanbul", 2, "shell123@shell.com.tr", "Shell", "21632145215", true, "Indirect" });
 
             migrationBuilder.InsertData(
                 schema: "SHAM",
-                table: "EMPLOYEES",
-                columns: new[] { "ID", "CREATED_DATE", "CREATED_TIME", "EMPLOYEE_ADRESS", "EMPLOYEE_CREATOR", "EMPLOYEE_MAIL", "EMPLOYEE_NAME", "EMPLOYEE_PHONE_NO", "EMPLOYEE_STATUS", "EMPLOYEE_SURNAME", "EMPLOYEE_TITLE", "PASSWORD", "ROLE" },
-                values: new object[] { 3, new DateTime(2020, 2, 14, 17, 8, 15, 986, DateTimeKind.Local).AddTicks(9121), new TimeSpan(616959869123), "Üsküdar/İstanbul", 2, "b@gmail.com", "Fatih", "5348796582", true, "Balcıoğlu", 1, "test", "NORMAL" });
+                table: "CUSTOMERS",
+                columns: new[] { "ID", "CREATED_DATE", "CREATED_TIME", "CUSTOMER_ADRESS", "CUSTOMER_CREATOR", "CUSTOMER_MAIL", "CUSTOMER_NAME", "CUSTOMER_PHONE_NO", "CUSTOMER_STATUS", "CUSTOMER_TYPE" },
+                values: new object[] { 2, new DateTime(2020, 2, 21, 3, 9, 48, 40, DateTimeKind.Local).AddTicks(5959), new TimeSpan(113880405965), "Fatih/Istanbul", 3, "hhhsssqqq@solen.com.tr", "Şölen", "2125422311", true, "Direct" });
 
             migrationBuilder.InsertData(
                 schema: "SHAM",
                 table: "PROJECTS",
                 columns: new[] { "ID", "CREATED_DATE", "CREATED_TIME", "CUSTOMER_NUMBER", "END_DATE", "ESTIMATE_END_DATE", "ESTIMATE_START_DATE", "PROJECT_CREATOR", "PROJECT_LEVEL", "PROJECT_NAME", "PROJECT_STATUS", "PROJECT_TYPE", "START_DATE" },
-                values: new object[] { 1, new DateTime(2020, 2, 14, 17, 8, 15, 988, DateTimeKind.Local).AddTicks(2338), new TimeSpan(616959882347), 3, new DateTime(2019, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 8, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 1, "Project Management", true, 2, new DateTime(2019, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+                values: new object[] { 1, new DateTime(2020, 2, 21, 3, 9, 48, 40, DateTimeKind.Local).AddTicks(8366), new TimeSpan(113880408374), 3, new DateTime(2019, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 8, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 1, "Project Management", true, 2, new DateTime(2019, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified) });
 
             migrationBuilder.InsertData(
                 schema: "SHAM",
@@ -381,21 +363,15 @@ namespace SHAM.Repository.Migrations
                 columns: new[] { "ID", "ACTIVITY_CREATOR", "ACTIVITY_DATE", "ACTIVITY_DETAIL", "ACTIVITY_EMPLOYEE", "ACTIVITY_PRIORITY", "ACTIVITY_STATUS", "CREATED_DATE", "CREATED_TIME", "END_TIME", "INVOICE", "PROJECT_NUMBER", "START_TIME" },
                 values: new object[,]
                 {
-                    { 1, 2, new DateTime(2019, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Send to Shell when finished", 1, 3, false, new DateTime(2020, 2, 14, 17, 8, 15, 989, DateTimeKind.Local).AddTicks(6579), new TimeSpan(616959896586), new TimeSpan(0, 18, 15, 0, 0), false, 1, new TimeSpan(0, 10, 45, 0, 0) },
-                    { 2, 2, new DateTime(2019, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Notify Mr. Kaya when finished", 3, 3, true, new DateTime(2020, 2, 14, 17, 8, 15, 990, DateTimeKind.Local).AddTicks(1501), new TimeSpan(616959901508), new TimeSpan(0, 19, 25, 0, 0), false, 1, new TimeSpan(0, 11, 45, 0, 0) }
+                    { 1, 2, new DateTime(2019, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Send to Shell when finished", 1, 3, false, new DateTime(2020, 2, 21, 3, 9, 48, 41, DateTimeKind.Local).AddTicks(6907), new TimeSpan(113880416914), new TimeSpan(0, 18, 15, 0, 0), false, 1, new TimeSpan(0, 10, 45, 0, 0) },
+                    { 2, 2, new DateTime(2019, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Notify Mr. Kaya when finished", 3, 3, true, new DateTime(2020, 2, 21, 3, 9, 48, 42, DateTimeKind.Local).AddTicks(1241), new TimeSpan(113880421247), new TimeSpan(0, 19, 25, 0, 0), false, 1, new TimeSpan(0, 11, 45, 0, 0) }
                 });
-
-            migrationBuilder.InsertData(
-                schema: "SHAM",
-                table: "CUSTOMERS",
-                columns: new[] { "ID", "CREATED_DATE", "CREATED_TIME", "CUSTOMER_ADRESS", "CUSTOMER_CREATOR", "CUSTOMER_MAIL", "CUSTOMER_NAME", "CUSTOMER_PHONE_NO", "CUSTOMER_STATUS", "CUSTOMER_TYPE" },
-                values: new object[] { 2, new DateTime(2020, 2, 14, 17, 8, 15, 987, DateTimeKind.Local).AddTicks(6574), new TimeSpan(616959876581), "Fatih/Istanbul", 3, "hhhsssqqq@solen.com.tr", "Şölen", "2125422311", true, "Direct" });
 
             migrationBuilder.InsertData(
                 schema: "SHAM",
                 table: "PROJECTS",
                 columns: new[] { "ID", "CREATED_DATE", "CREATED_TIME", "CUSTOMER_NUMBER", "END_DATE", "ESTIMATE_END_DATE", "ESTIMATE_START_DATE", "PROJECT_CREATOR", "PROJECT_LEVEL", "PROJECT_NAME", "PROJECT_STATUS", "PROJECT_TYPE", "START_DATE" },
-                values: new object[] { 2, new DateTime(2020, 2, 14, 17, 8, 15, 989, DateTimeKind.Local).AddTicks(3480), new TimeSpan(616959893487), 1, new DateTime(2019, 12, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, 3, "Game Simulator", true, 1, new DateTime(2019, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+                values: new object[] { 2, new DateTime(2020, 2, 21, 3, 9, 48, 41, DateTimeKind.Local).AddTicks(5290), new TimeSpan(113880415297), 1, new DateTime(2019, 12, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, 3, "Game Simulator", true, 1, new DateTime(2019, 10, 5, 0, 0, 0, 0, DateTimeKind.Unspecified) });
 
             migrationBuilder.InsertData(
                 schema: "SHAM",
@@ -500,10 +476,6 @@ namespace SHAM.Repository.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProjectEmployees",
-                schema: "SHAM");
-
-            migrationBuilder.DropTable(
-                name: "ROLE",
                 schema: "SHAM");
 
             migrationBuilder.DropTable(
