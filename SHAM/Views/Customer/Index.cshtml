@@ -291,7 +291,7 @@
                 type: 'post',
                 success: function (result) {
                     if (result.status)
-                        window.location.reload();
+                        showCreateAlert();
                     else
                         showAlert();
 
@@ -330,7 +330,7 @@
                 url: '/Customer/Edit', type: 'post',
                 success: function (result) {
                     if (result.status) {
-                        window.location.reload();
+                        showCreateAlert();
                     }
                     else
                         showAlert();

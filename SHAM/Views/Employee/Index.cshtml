@@ -31,6 +31,7 @@
                                             <th class="border-0">E-Mail</th>
                                             <th class="border-0">Durum</th>
                                             <th class="border-0">Ünvan</th>
+                                            <th class="border-0">Yetki</th>
                                             <th class="border-0">Oluşturan</th>
                                             <th class="border-0">Oluşturma Tarihi</th>
                                             <th class="border-0">Oluşturma Saati</th>
@@ -57,7 +58,8 @@
                                                     <td id="@item.ID-status">Pasif</td>
                                                 }
                                                 <td id="@item.ID-title" data-id="@item.TITLE.ID">@item.TITLE.TITLE_NAME</td>
-                                                <td id="@item.ID-creator" data-id="@item.CREATOR_ID">@item.CREATOR_ID</td>
+                                                <td id="@item.ID-role">@item.ROLE</td>
+                                                <td id="@item.ID-creator" data-id="@item.CREATOR_ID">@item.CREATED_EMPLOYEE.EMPLOYEE_NAME @item.CREATED_EMPLOYEE.EMPLOYEE_SURNAME</td>
                                                 <td>@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
                                                 <td>@item.CREATED_TIME.ToString("hh':'mm':'ss")</td>
                                                 <td>
@@ -175,12 +177,12 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Oluşturan Kişi</label>
+                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Yetkisi</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <select class="custom-select" name="CREATOR_ID">
-                                        @foreach (var item in Model.EmployeeDto)
+                                    <select class="custom-select" name="ROLE">
+                                        @foreach (var item in Model.RoleDto)
                                         {
-                                            <option value="@item.ID">@item.NAME @item.SURNAME</option>
+                                            <option value="@item">@item</option>
                                         }
                                     </select>
                                 </div>
@@ -267,6 +269,17 @@
                                 </div>
                             </div>
                             <div class="form-group row">
+                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Yetkisi</label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <select class="custom-select" name="ROLE" id="ROLE">
+                                        @foreach (var item in Model.RoleDto)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Oluşturan Kişi</label>
                                 <div class="col-12 col-sm-8 col-lg-6">
                                     <select class="custom-select" id="CREATOR_ID" disabled>
@@ -308,7 +321,7 @@
                 type: 'post',
                 success: function (result) {
                     if (result.status)
-                        window.location.reload();
+                        showCreateAlert();
                     else
                         showAlert();
 
@@ -324,6 +337,7 @@
             var adress = $("#" + id + "-adress", "#tb").html();
             var mail = $("#" + id + "-mail", "#tb").html();
             var status = $("#" + id + "-status", "#tb").html();
+            var role = $("#" + id + "-role", "#tb").html();
             var title = $("#" + id + "-title", "#tb").data("id");
             var creator = $("#" + id + "-creator", "#tb").data("id");
 
@@ -332,6 +346,7 @@
             else if (status == "Pasif")
                 status = false;
 
+            document.getElementById("ROLE").value = role;
             document.getElementById("employeeID").value = id;
             document.getElementById("NAME").value = name;
             document.getElementById("SURNAME").value = surname;
@@ -349,7 +364,7 @@
                 url: '/Employee/Edit', type: 'post',
                 success: function (result) {
                     if (result.status) {
-                        window.location.reload();
+                        showCreateAlert();
                     }
                     else
                         showAlert();

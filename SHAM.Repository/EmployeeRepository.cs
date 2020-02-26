@@ -2,6 +2,7 @@
 using SHAM.Repository.Contracts;
 using SHAM.Repository.Dto;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SHAM.Repository
@@ -24,8 +25,7 @@ namespace SHAM.Repository
             newEmployee.EMPLOYEE_MAIL = employee.MAIL;
             newEmployee.EMPLOYEE_STATUS = employee.STATUS;
             newEmployee.EMPLOYEE_TITLE = employee.TITLE_ID;
-            newEmployee.ROLE = Roles.ADMIN;
-            newEmployee.PASSWORD = "test";
+            newEmployee.ROLE = employee.ROLE;
 
             _context.Employees.Update(newEmployee);
 
@@ -96,7 +96,7 @@ namespace SHAM.Repository
                 EMPLOYEE_STATUS = employee.STATUS,
                 EMPLOYEE_TITLE = employee.TITLE_ID,
                 EMPLOYEE_CREATOR = employee.CREATOR_ID,
-                ROLE = "ADMIN",
+                ROLE = employee.ROLE,
                 PASSWORD = "test"
             };
             _context.Employees.Add(newEmployee);
@@ -124,11 +124,18 @@ namespace SHAM.Repository
                 ACTIVITIES = e.ACTIVITIES,
                 CREATED_EMPLOYEE = e.CREATED_EMPLOYEE,
                 PROJECTS = e.PROJECTS,
-                TITLE = e.TITLE
+                TITLE = e.TITLE,
+                ROLE = e.ROLE
             }).ToList();
 
+            List<string> roles = new List<string>();
 
-            return new EmpConsDto { TitleDto = title, EmployeeDto = emp };
+            var propList = typeof(Roles).GetFields();
+            foreach (var item in propList)
+            {
+                roles.Add(item.GetValue(null).ToString());
+            }
+            return new EmpConsDto { TitleDto = title, EmployeeDto = emp, RoleDto = roles };
 
         }
 

@@ -8,5 +8,6 @@ namespace SHAM.Repository.Dto
     {
         public const string ADMIN = "ADMIN";
         public const string NORMAL = "NORMAL";
+
     }
 }

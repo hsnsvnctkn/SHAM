@@ -161,17 +161,17 @@ namespace SHAM.Repository.Context
             var employee = new List<Employee>
             {
                 new Employee{ ID = 1, EMPLOYEE_NAME = "Hasan", EMPLOYEE_SURNAME = "Sevinçtekin", EMPLOYEE_PHONE_NO = "5363403660", EMPLOYEE_ADRESS = "Sancaktepe/İstanbul", EMPLOYEE_MAIL = "hasan.sevinctekin@sagita.com.tr", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 1, EMPLOYEE_CREATOR = 1, PASSWORD = "test", ROLE = Dto.Roles.ADMIN.ToString() },
-                new Employee{ ID = 2, EMPLOYEE_NAME = "Ömer Faruk", EMPLOYEE_SURNAME = "Kaya", EMPLOYEE_PHONE_NO = "5550000000", EMPLOYEE_ADRESS = "Kartal/İstanbul", EMPLOYEE_MAIL = "omer.kaya@sagita.com.tr", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 1, EMPLOYEE_CREATOR = 1, PASSWORD = "test", ROLE = Dto.Roles.NORMAL.ToString() },
-                new Employee{ ID = 3, EMPLOYEE_NAME = "Fatih", EMPLOYEE_SURNAME = "Balcıoğlu", EMPLOYEE_PHONE_NO = "5550000000", EMPLOYEE_ADRESS = "Üsküdar/İstanbul", EMPLOYEE_MAIL = "fatih.balcioglu@sagita.com.tr", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 1, EMPLOYEE_CREATOR = 1, PASSWORD = "test", ROLE = Dto.Roles.NORMAL.ToString() },
-                new Employee{ ID = 4, EMPLOYEE_NAME = "Yunus", EMPLOYEE_SURNAME = "Gülbeyen", EMPLOYEE_PHONE_NO = "5550000000", EMPLOYEE_ADRESS = "Üsküdar/İstanbul", EMPLOYEE_MAIL = "yunus.gulbeyen@sagita.com.tr", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 1, EMPLOYEE_CREATOR = 1, PASSWORD = "test", ROLE = Dto.Roles.NORMAL.ToString() },
-                new Employee{ ID = 5, EMPLOYEE_NAME = "Ufuk", EMPLOYEE_SURNAME = "Çelik", EMPLOYEE_PHONE_NO = "5550000000", EMPLOYEE_ADRESS = "Üsküdar/İstanbul", EMPLOYEE_MAIL = "ufuk@sagita.com.tr", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 1, EMPLOYEE_CREATOR = 1, PASSWORD = "test", ROLE = Dto.Roles.NORMAL.ToString() }
+                new Employee{ ID = 2, EMPLOYEE_NAME = "Ömer Faruk", EMPLOYEE_SURNAME = "Kaya", EMPLOYEE_PHONE_NO = "5550000000", EMPLOYEE_ADRESS = "Kartal/İstanbul", EMPLOYEE_MAIL = "omer.kaya@sagita.com.tr", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 2, EMPLOYEE_CREATOR = 1, PASSWORD = "test", ROLE = Dto.Roles.ADMIN.ToString() },
+                new Employee{ ID = 3, EMPLOYEE_NAME = "Fatih", EMPLOYEE_SURNAME = "Balcıoğlu", EMPLOYEE_PHONE_NO = "5550000000", EMPLOYEE_ADRESS = "Üsküdar/İstanbul", EMPLOYEE_MAIL = "fatih.balcioglu@sagita.com.tr", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 2, EMPLOYEE_CREATOR = 2, PASSWORD = "test", ROLE = Dto.Roles.ADMIN.ToString() },
+                new Employee{ ID = 4, EMPLOYEE_NAME = "Yunus", EMPLOYEE_SURNAME = "Gülbeyen", EMPLOYEE_PHONE_NO = "5550000000", EMPLOYEE_ADRESS = "Üsküdar/İstanbul", EMPLOYEE_MAIL = "yunus.gulbeyen@sagita.com.tr", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 2, EMPLOYEE_CREATOR = 2, PASSWORD = "test", ROLE = Dto.Roles.NORMAL.ToString() },
+                new Employee{ ID = 5, EMPLOYEE_NAME = "Ufuk", EMPLOYEE_SURNAME = "Çelik", EMPLOYEE_PHONE_NO = "5550000000", EMPLOYEE_ADRESS = "Üsküdar/İstanbul", EMPLOYEE_MAIL = "ufuk@sagita.com.tr", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 2, EMPLOYEE_CREATOR = 2, PASSWORD = "test", ROLE = Dto.Roles.NORMAL.ToString() }
             };
             modelBuilder.Entity<Employee>().HasData(employee);
 
             var customer = new List<Customer>
             {
                 new Customer{ ID = 1, CUSTOMER_TYPE = "Indirect", CUSTOMER_NAME = "Shell", CUSTOMER_PHONE_NO = "21632145215", CUSTOMER_ADRESS = "Maltepe/Istanbul", CUSTOMER_MAIL = "shell123@shell.com.tr", CUSTOMER_STATUS = true, CUSTOMER_CREATOR = 2 },
-                new Customer{ ID = 2, CUSTOMER_TYPE = "Direct", CUSTOMER_NAME = "Şölen", CUSTOMER_PHONE_NO = "2125422311", CUSTOMER_ADRESS = "Fatih/Istanbul", CUSTOMER_MAIL = "hhhsssqqq@solen.com.tr", CUSTOMER_STATUS = true, CUSTOMER_CREATOR = 3 },
+                new Customer{ ID = 2, CUSTOMER_TYPE = "Direct", CUSTOMER_NAME = "Şölen", CUSTOMER_PHONE_NO = "2125422311", CUSTOMER_ADRESS = "Fatih/Istanbul", CUSTOMER_MAIL = "hhhsssqqq@solen.com.tr", CUSTOMER_STATUS = true, CUSTOMER_CREATOR = 2 },
                 new Customer{ ID = 3, CUSTOMER_TYPE = "Direct", CUSTOMER_NAME = "Foriba", CUSTOMER_PHONE_NO = "2163112400", CUSTOMER_ADRESS = "Kadıköy/Istanbul", CUSTOMER_MAIL = "supppp@foriba.com.tr", CUSTOMER_STATUS = true, CUSTOMER_CREATOR = 1 }
             };
             modelBuilder.Entity<Customer>().HasData(customer);

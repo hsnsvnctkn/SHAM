@@ -8,5 +8,6 @@ namespace SHAM.Repository.Dto
     {
         public List<TitleDto> TitleDto { get; set; }
         public List<EmployeeDto> EmployeeDto { get; set; }
+        public List<string> RoleDto { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace SHAM.Domain.Entities
         [Required, StringLength(50)]
         public string EMPLOYEE_SURNAME { get; set; }
 
-        [Required, StringLength(13)]
+        [Required, StringLength(14)]
         public string EMPLOYEE_PHONE_NO { get; set; }
 
         [Required, StringLength(100)]
