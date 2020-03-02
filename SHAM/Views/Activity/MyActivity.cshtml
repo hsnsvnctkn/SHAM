@@ -16,76 +16,77 @@
             <div class="card">
                 <h5 class="card-header">Aktivite Bilgileri</h5>
                 <button class="btn btn-outline-success" data-toggle="modal" data-target="#create">Yeni Aktivite ekle</button>
-                <div class="row" style="margin-top:5px;">
-                    <div class="col-xl-1">
+                <div class="row" style="margin:5px;">
+                    <div class="col-md-auto">
                         <button class="btn" onclick="getAllActivity()" id="AllActivity">Hepsini Göster</button>
                     </div>
-                    <div class="col-xl-1">
+                    <div class="col-md-auto">
                         <button class="btn" onclick="getMouthActivity()">Sadece Bu Ay'ı Göster</button>
                     </div>
+                    <div class="col text-right">
+                        <button class="btn btn-outline-success fas fa-file-excel" tableexport-id="a70aea2-xlsx"> &nbsp; Excel Olarak Indir</button>
+                    </div>
                 </div>
-                <div class="text-center">
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <div id="refresh" class="table-hover">
-                                <table class="table table-striped table-bordered first" id="tb">
-                                    <thead class="bg-light">
-                                        <tr class="border-0">
-                                            <th class="border-0"></th>
-                                            <th class="border-0">#</th>
-                                            <th class="border-0">Proje</th>
-                                            <th class="border-0">Oluşturan</th>
-                                            <th class="border-0">Durum</th>
-                                            <th class="border-0">Önceliği</th>
-                                            <th class="border-0">Fatura</th>
-                                            <th class="border-0">Detay</th>
-                                            <th class="border-0">Aktivite Tarihi</th>
-                                            <th class="border-0">Başlama Saati</th>
-                                            <th class="border-0">Bitiş Saati</th>
-                                            <th class="border-0">Oluşturma Tarihi</th>
-                                            <th class="border-0">Oluşturma Saati</th>
-                                            <th class="border-0"></th>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <div id="refresh" class="table-hover">
+                            <table class="table table-striped table-bordered dataTable" style="width: 100%;" role="grid" aria-describedby="example_info" id="tb" data-name="cool-table">
+                                <thead class="bg-light">
+                                    <tr class="border-0">
+                                        <th class="border-0"></th>
+                                        <th class="border-0">#</th>
+                                        <th class="border-0">Proje</th>
+                                        <th class="border-0">Oluşturan</th>
+                                        <th class="border-0">Durum</th>
+                                        <th class="border-0">Önceliği</th>
+                                        <th class="border-0">Fatura</th>
+                                        <th class="border-0">Detay</th>
+                                        <th class="border-0">Aktivite Tarihi</th>
+                                        <th class="border-0">Başlama Saati</th>
+                                        <th class="border-0">Bitiş Saati</th>
+                                        <th class="border-0">Oluşturma Tarihi</th>
+                                        <th class="border-0">Oluşturma Saati</th>
+                                        <th class="border-0"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.ActivityDto)
+                                    {
+                                        <tr>
+                                            <td><button type="button" data-id="@item.ID" data-toggle="modal" data-target="#edit" class="btn btn-outline-primary fBtnEdit">Düzenle</button></td>
+                                            <td id="@item.ID">@item.ID </td>
+                                            <td id="@item.ID-project" data-id="@item.PROJECT.ID">@item.PROJECT.PROJECT_NAME</td>
+                                            <td id="@item.ID-creator" data-id="@item.CREATED_EMPLOYEE.ID">@item.CREATED_EMPLOYEE.EMPLOYEE_NAME @item.CREATED_EMPLOYEE.EMPLOYEE_SURNAME</td>
+                                            @if (item.STATUS == true)
+                                            {
+                                                <td id="@item.ID-status">Aktif</td>
+                                            }
+                                            @if (item.STATUS == false)
+                                            {
+                                                <td id="@item.ID-status">Pasif</td>
+                                            }
+                                            <td id="@item.ID-priority" data-id="@item.PRIORITY.ID">@item.PRIORITY.PRIORITY_NAME</td>
+                                            @if (item.INVOICE == true)
+                                            {
+                                                <td id="@item.ID-invoice">Evet</td>
+                                            }
+                                            @if (item.INVOICE == false)
+                                            {
+                                                <td id="@item.ID-invoice">Hayır</td>
+                                            }
+                                            <td id="@item.ID-detail">@item.ACTIVITY_DETAIL</td>
+                                            <td id="@item.ID-estStart">@item.ACTIVITY_DATE.ToString("dd/MM/yyyy")</td>
+                                            <td id="@item.ID-start">@item.START_TIME.ToString("hh':'mm':'ss")</td>
+                                            <td id="@item.ID-end">@item.END_TIME.ToString("hh':'mm':'ss")</td>
+                                            <td>@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.CREATED_TIME.ToString("hh':'mm':'ss")</td>
+                                            <td>
+                                                <button type="button" class="btn btn-outline-danger viewModelDel" data-toggle="modal" data-target="#delete" data-id="@item.ID">Sil</button>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model.ActivityDto)
-                                        {
-                                            <tr>
-                                                <td><button type="button" data-id="@item.ID" data-toggle="modal" data-target="#edit" class="btn btn-outline-primary fBtnEdit">Düzenle</button></td>
-                                                <td id="@item.ID">@item.ID </td>
-                                                <td id="@item.ID-project" data-id="@item.PROJECT.ID">@item.PROJECT.PROJECT_NAME</td>
-                                                <td id="@item.ID-creator" data-id="@item.CREATED_EMPLOYEE.ID">@item.CREATED_EMPLOYEE.EMPLOYEE_NAME @item.CREATED_EMPLOYEE.EMPLOYEE_SURNAME</td>
-                                                @if (item.STATUS == true)
-                                                {
-                                                    <td id="@item.ID-status">Aktif</td>
-                                                }
-                                                @if (item.STATUS == false)
-                                                {
-                                                    <td id="@item.ID-status">Pasif</td>
-                                                }
-                                                <td id="@item.ID-priority" data-id="@item.PRIORITY.ID">@item.PRIORITY.PRIORITY_NAME</td>
-                                                @if (item.INVOICE == true)
-                                                {
-                                                    <td id="@item.ID-invoice">Evet</td>
-                                                }
-                                                @if (item.INVOICE == false)
-                                                {
-                                                    <td id="@item.ID-invoice">Hayır</td>
-                                                }
-                                                <td id="@item.ID-detail">@item.ACTIVITY_DETAIL</td>
-                                                <td id="@item.ID-estStart">@item.ACTIVITY_DATE.ToString("dd/MM/yyyy")</td>
-                                                <td id="@item.ID-start">@item.START_TIME.ToString("hh':'mm':'ss")</td>
-                                                <td id="@item.ID-end">@item.END_TIME.ToString("hh':'mm':'ss")</td>
-                                                <td>@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
-                                                <td>@item.CREATED_TIME.ToString("hh':'mm':'ss")</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-outline-danger viewModelDel" data-toggle="modal" data-target="#delete" data-id="@item.ID">Sil</button>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -338,9 +339,25 @@
 
 @section scripts{
     <script>
-
         $(document).ready(function () {
             getMouthActivity();
+
+            $('table').DataTable();
+
+            $('table').tableExport({
+                headers: true,
+                footers: true,
+                formats: ["xlsx", "csv", "txt"],
+                filename: "Aktiviteler",
+                bootstrap: true,
+                exportButtons: false,
+                position: "bottom",
+                ignoreRows: null,
+                ignoreCols: [0, 13],
+                trimWhitespace: true,
+                RTL: false,
+                sheetname: "Aktiviteler"
+            });
         });
 
         function getMouthActivity() {
@@ -462,6 +479,23 @@
             deselectAllText: 'Hiçbiri',
             size: 'auto',
 
+        });
+        $('#tb').DataTable({
+            language: {
+                info: "_TOTAL_ kayıttan _START_ - _END_ kayıt gösteriliyor.",
+                infoEmpty: "Gösterilecek hiç kayıt yok.",
+                loadingRecords: "Kayıtlar yükleniyor.",
+                zeroRecords: "Tablo boş",
+                search: "Arama:",
+                infoFiltered: "(toplam _MAX_ kayıttan filtrelenenler)",
+                paginate: {
+                    first: "İlk",
+                    previous: "Önceki",
+                    next: "Sonraki",
+                    last: "Son"
+                },
+            },
+            responsive: true
         });
     </script>
 }
