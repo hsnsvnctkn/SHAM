@@ -17,12 +17,18 @@
                 <h5 class="card-header">Aktivite Bilgileri</h5>
                 <button class="btn btn-outline-success" data-toggle="modal" data-target="#create">Yeni Aktivite ekle</button>
                 <div class="row" style="margin:5px;">
-                    <div class="col-md-auto">
-                        <button class="btn" onclick="getAllActivity()" id="AllActivity">Hepsini Göster</button>
-                    </div>
-                    <div class="col-md-auto">
-                        <button class="btn" onclick="getMouthActivity()">Sadece Bu Ay'ı Göster</button>
-                    </div>
+                    <form asp-action="MyActivity">
+                        <div class="col-md-auto">
+                            <input type="hidden" name="All" value="true" />
+                            <input type="submit" class="btn" value="Hepsini Göster" />
+                        </div>
+                    </form>
+                    <form>
+                        <div class="col-md-auto">
+                            <input type="hidden" name="All" value="false" />
+                            <input type="submit" class="btn" value="Sadece Bu Ay'ı Göster" />
+                        </div>
+                    </form>
                     <div class="col text-right">
                         <button class="btn btn-outline-success fas fa-file-excel" tableexport-id="a70aea2-xlsx"> &nbsp; Excel Olarak Indir</button>
                     </div>
@@ -340,8 +346,6 @@
 @section scripts{
     <script>
         $(document).ready(function () {
-            getMouthActivity();
-
             $('table').DataTable();
 
             $('table').tableExport({
@@ -360,38 +364,6 @@
             });
         });
 
-        function getMouthActivity() {
-            var d = new Date();
-            var m = d.getMonth() + 1;
-            m = (m < 10 ? '0' : '') + m;
-
-            var filter, table, tr, td, i, txtValue;
-            filter = m;
-            table = document.getElementById("tb");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[8];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    txtValue = txtValue.substring(3, 5);
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        };
-
-        function getAllActivity() {
-
-            var table, tr, td, i;
-            table = document.getElementById("tb");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                tr[i].style.display = "";
-            }
-        };
 
 
         $(".viewModelDel").click(function () {
@@ -426,10 +398,6 @@
             var end = $("#" + id + "-end", "#tb").html();
             var status = $("#" + id + "-status", "#tb").html();
 
-            //var employees = new Array();
-            //$("#" + id + "-employee>option").each(function () {
-            //    employees.push($(this).val());
-            //})
 
             if (status == "Aktif")
                 status = true;
@@ -452,8 +420,6 @@
             document.getElementById("END_TIME").value = end;
 
 
-            //$('select[name=NEWACTIVITYEMPLOYEE]').val(employees);
-            //$('.selectpicker').selectpicker('refresh');
         })
 
         $("#BtnEdit").click(function () {
@@ -461,7 +427,7 @@
                 url: '/Activity/Edit', type: 'post',
                 success: function (result) {
                     if (result.status) {
-                        window.location.reload();
+                        showCreateAlert();
                     }
                     else
                         showAlert();
@@ -488,6 +454,7 @@
                 zeroRecords: "Tablo boş",
                 search: "Arama:",
                 infoFiltered: "(toplam _MAX_ kayıttan filtrelenenler)",
+                lengthMenu: "Sayfada _MENU_ Kayıt Göster",
                 paginate: {
                     first: "İlk",
                     previous: "Önceki",

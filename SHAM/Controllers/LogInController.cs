@@ -26,20 +26,24 @@ namespace SHAM.UI.Controllers
         {
             return View();
         }
-        public IActionResult LoginUser(UserDto user)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult LoginUser(UserDto user)
         {
             if (user.EMAIL != null || user.PASSWORD != null)
             {
-                var userToken = _tokenProvider.LoginUser(user.EMAIL.Trim(), user.PASSWORD.Trim());
+                var pass = _tokenProvider.EncryptString(user.PASSWORD);
+                var userToken = _tokenProvider.LoginUser(user.EMAIL.Trim(), pass);
 
                 if (userToken != null)
+                {
                     HttpContext.Session.SetString("JWToken", userToken);
+                    return Json(new { status = true });
+                }
                 else
-                    return Redirect("~/LogIn/Index");
+                    return Json(new { status = false });
             }
-
-
-            return Redirect("~/Home/Index");
+            return Json(new { status = false });
         }
         public IActionResult NotFound404()
         {
@@ -84,6 +88,10 @@ namespace SHAM.UI.Controllers
         //    }
         //}
         public IActionResult ResetPassword(string token)
+        {
+            return View();
+        }
+        public IActionResult NewMember()
         {
             return View();
         }

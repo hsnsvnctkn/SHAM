@@ -25,17 +25,62 @@
             padding-top: 40px;
             padding-bottom: 40px;
         }
+
+        .alertmessage {
+            position: fixed;
+            top: 100%;
+            left: 50%;
+            width: 400px;
+            margin-left: -200px;
+            margin-top: -150px;
+            text-align: center;
+            outline: 9999px solid rgba(0,0,0,0.2);
+            display: none;
+            z-index: 999999;
+            border-radius: 0px;
+        }
     </style>
 </head>
 
 <body>
+    <div class="alert alert-danger alertmessage" id="danger-alert">
+        <strong>Hata ! </strong><br /> Mail Adresi Veya Şifre Yanlış ..
+    </div>
+
     <!-- ============================================================== -->
     <!-- login page  -->
     <!-- end login page  -->
     @RenderBody()
     <!-- Optional JavaScript -->
-    <script src="~/assets/vendor/jquery/jquery-3.3.1.min.js"></script>
-    <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/assets/libs/js/ajax.js"></script>
+
+
+    @RenderSection("Scripts", false)
+
 </body>
 
 </html>
+
+
+<script>
+    $(document).ajaxError(function (xhr, result) {
+        if (result.status === 403) {
+            window.location.href = '/Home/Index';
+        }
+        if (result.status === 401) {
+            window.location.href = '/LogIn/NotFound404';
+        }
+    });
+
+
+    $(document).ready(function () {
+        $("#danger-alert").hide();
+    });
+
+    function showAlert() {
+        $("#danger-alert").fadeTo(3000, 500).slideUp(500, function () {
+            $("#danger-alert").slideUp(500);
+        });
+    };
+</script>

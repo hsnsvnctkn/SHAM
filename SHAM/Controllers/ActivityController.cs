@@ -132,5 +132,36 @@ namespace SHAM.UI.Controllers
 
             return View(model);
         }
+
+        [Authorize(Roles.ADMIN, Roles.NORMAL)]
+        [HttpPost]
+        public IActionResult MyActivity(bool All)
+        {
+            if (All == true)
+            {
+                var claimsIndentity = HttpContext.User.Identity as ClaimsIdentity;
+                var userClaims = claimsIndentity.Claims;
+                string id = "";
+                if (HttpContext.User.Identity.IsAuthenticated)
+                {
+                    foreach (var claim in userClaims)
+                    {
+                        var cType = claim.Type;
+                        var cValue = claim.Value;
+                        switch (cType)
+                        {
+                            case "ID":
+                                id = cValue;
+                                break;
+                        }
+                    }
+                }
+                var model = _activityRepository.GetMyAllActivity(Convert.ToInt16(id));
+
+                return View(model);
+            }
+            else
+                return RedirectToAction(nameof(MyActivity));
+        }
     }
 }

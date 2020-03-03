@@ -76,8 +76,43 @@ namespace SHAM.Repository
 
         public ActivityAllDto GetMyActivity(int id)
         {
+            DateTime dt = DateTime.Now;
 
-            var activity = _context.Activities.OrderByDescending(a=>a.ACTIVITY_DATE).Where(a => a.ACTIVITY_EMPLOYEE == id).Select(a => new ActivityDto
+            var activity = _context.Activities.OrderByDescending(a => a.ACTIVITY_DATE).Where(a => a.ACTIVITY_EMPLOYEE == id && a.ACTIVITY_DATE.Month == dt.Month).Select(a => new ActivityDto
+            {
+                ID = a.ID,
+                PROJECT_NUMBER = a.PROJECT_NUMBER,
+                ACTIVITY_DETAIL = a.ACTIVITY_DETAIL,
+                CREATOR = a.ACTIVITY_CREATOR,
+                ACTIVITY_EMPLOYEE = a.ACTIVITY_EMPLOYEE,
+                ACTIVITY_DATE = a.ACTIVITY_DATE,
+                START_TIME = a.START_TIME,
+                END_TIME = a.END_TIME,
+                STATUS = a.ACTIVITY_STATUS,
+                ACTIVITY_PRIORITY = a.ACTIVITY_PRIORITY,
+                INVOICE = a.INVOICE,
+                CREATED_DATE = a.CREATED_DATE,
+                CREATED_TIME = a.CREATED_TIME,
+                EMPLOYEE = a.EMPLOYEE,
+                PROJECT = a.PROJECT,
+                CREATED_EMPLOYEE = a.CREATED_EMPLOYEE,
+                PRIORITY = a.PRIORITY
+            }).ToList();
+            var projectID = _context.ProjectEmployees.Where(e => e.EmployeeID == id).Select(p => p.ProjectID);
+
+            var project = _context.Projects.Where(p => projectID.Contains(p.ID)).Select(p => new ProjectDto { ID = p.ID, NAME = p.PROJECT_NAME }).ToList();
+
+            var employee = _context.Employees.Select(e => new EmployeeDto { ID = e.ID, NAME = e.EMPLOYEE_NAME, SURNAME = e.EMPLOYEE_SURNAME }).ToList();
+
+            var priority = _context.Priorities.Select(p => new PriorityDto { ID = p.ID, NAME = p.PRIORITY_NAME }).ToList();
+
+            return new ActivityAllDto { ActivityDto = activity, ProjectDto = project, EmployeeDto = employee, PriorityDto = priority };
+        }
+        public ActivityAllDto GetMyAllActivity(int id)
+        {
+            DateTime dt = DateTime.Now;
+
+            var activity = _context.Activities.OrderByDescending(a => a.ACTIVITY_DATE).Where(a => a.ACTIVITY_EMPLOYEE == id).Select(a => new ActivityDto
             {
                 ID = a.ID,
                 PROJECT_NUMBER = a.PROJECT_NUMBER,

@@ -346,7 +346,7 @@
                 type: 'post',
                 success: function (result) {
                     if (result.status)
-                        window.location.reload();
+                        showCreateAlert();
                     else
                         showAlert();
                 }
@@ -399,7 +399,7 @@
                 url: '/Activity/Edit', type: 'post',
                 success: function (result) {
                     if (result.status) {
-                        window.location.reload();
+                        showCreateAlert();
                     }
                     else
                         showAlert();

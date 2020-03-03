@@ -54,44 +54,50 @@ namespace SHAM.UI.Controllers
         {
             try
             {
-                var userToken = _tokenProvider.LoginUser(user.EMAIL.Trim(), user.PASSWORD.Trim());
-
-                if (userToken != null)
+                if (user.EMAIL != null && user.PASSWORD != null)
                 {
-                    UserDto loggedUser = new UserDto();
-                    if (User.Identity.IsAuthenticated)
+                    var pass = _tokenProvider.EncryptString(user.PASSWORD);
+                    var userToken = _tokenProvider.LoginUser(user.EMAIL.Trim(), pass);
+
+                    if (userToken != null)
                     {
-                        var claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
-                        var userClaims = claimsIdentity.Claims;
-
-                        if (HttpContext.User.Identity.IsAuthenticated)
+                        UserDto loggedUser = new UserDto();
+                        if (User.Identity.IsAuthenticated)
                         {
-                            foreach (var claim in userClaims)
+                            var claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
+                            var userClaims = claimsIdentity.Claims;
+
+                            if (HttpContext.User.Identity.IsAuthenticated)
                             {
-                                var cType = claim.Type;
-                                var cValue = claim.Value;
-
-                                switch (cType)
+                                foreach (var claim in userClaims)
                                 {
-                                    case "ID":
-                                        loggedUser.ID = cValue;
-                                        break;
-                                }
-                            }
-                            user.ID = loggedUser.ID;
+                                    var cType = claim.Type;
+                                    var cValue = claim.Value;
 
-                            _employeeRepository.UpdateMyInfo(user);
-                            HttpContext.Session.Clear();
-                            HttpContext.Session.SetString("JWToken", userToken);
+                                    switch (cType)
+                                    {
+                                        case "ID":
+                                            loggedUser.ID = cValue;
+                                            break;
+                                    }
+                                }
+                                user.ID = loggedUser.ID;
+
+                                _employeeRepository.UpdateMyInfo(user);
+                                HttpContext.Session.Clear();
+                                HttpContext.Session.SetString("JWToken", userToken);
+
+                            }
+
+                            return RedirectToAction(nameof(Index));
 
                         }
-
-                        return RedirectToAction(nameof(Index));
-
                     }
+                    else
+                        return NotFound("Yanlış şifre");
                 }
                 else
-                    return NotFound("Yanlış şifre");
+                    return NotFound("Hatalı Giriş");
             }
             catch (Exception)
             {
@@ -106,7 +112,7 @@ namespace SHAM.UI.Controllers
         {
             try
             {
-                if (p2 == p3)
+                if (p2 == p3 && p1 != null && p2 != null && p3 != null)
                 {
                     UserDto loggedUser = new UserDto();
                     if (User.Identity.IsAuthenticated)
@@ -131,11 +137,14 @@ namespace SHAM.UI.Controllers
                                         break;
                                 }
                             }
-                            var userToken = _tokenProvider.LoginUser(loggedUser.EMAIL.Trim(), p1.Trim());
+                            var pass = _tokenProvider.EncryptString(p1);
+
+                            var userToken = _tokenProvider.LoginUser(loggedUser.EMAIL.Trim(), pass);
 
                             if (userToken != null)
                             {
-                                _employeeRepository.UpdateMyPass(Convert.ToInt16(loggedUser.ID), p2);
+                                var newPass = _tokenProvider.EncryptString(p2);
+                                _employeeRepository.UpdateMyPass(Convert.ToInt16(loggedUser.ID), newPass);
                                 HttpContext.Session.Clear();
                             }
                             else
