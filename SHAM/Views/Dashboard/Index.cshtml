@@ -31,45 +31,67 @@
                                     <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             <div style="padding-top:10px;">
-                                                <div>
-                                                    <table class="table">
-                                                        <tr>
-                                                            <td>Ad</td>
-                                                            <td><p class="lead"> @Model.NAME  @Model.SURNAME </p></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Email</td>
-                                                            <td>@Model.MAIL</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Ünvan</td>
-                                                            <td>@Model.TITLE.TITLE_NAME</td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td>Yetki</td>
-                                                            <td>@Model.ROLE</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Tel No</td>
-                                                            <td>@Model.PHONE_NO</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Adres</td>
-                                                            <td>@Model.ADRESS</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Üye Durumu</td>
-                                                            @if (Model.STATUS == true)
-                                                            {
-                                                                <td>Aktif</td>
-                                                            }
-                                                            else
-                                                            {
-                                                                <td>Pasif</td>
-                                                            }
-                                                        </tr>
-                                                    </table>
+                                                <div class="col">
+                                                    <div class="row">
+                                                        Ad - Soyad
+                                                    </div>
+                                                    <div class="col">
+                                                        <p class="lead">@Model.NAME @Model.SURNAME</p>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="col">
+                                                    <div class="row">
+                                                        E-Mail
+                                                    </div>
+                                                    <div class="col">
+                                                        <p class="lead">@Model.MAIL</p>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="col">
+                                                    <div class="row">
+                                                        Ünvan
+                                                    </div>
+                                                    <div class="col">
+                                                        <p class="lead">@Model.TITLE.TITLE_NAME</p>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="col">
+                                                    <div class="row">
+                                                        Yetki
+                                                    </div>
+                                                    <div class="col">
+                                                        <p class="lead">@Model.ROLE</p>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="col">
+                                                    <div class="row">
+                                                        Tel No
+                                                    </div>
+                                                    <div class="col">
+                                                        <p class="lead">@Model.PHONE_NO</p>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="col">
+                                                    <div class="row">
+                                                        Adres
+                                                    </div>
+                                                    <div class="col">
+                                                        <p class="lead">@Model.ADRESS</p>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="col">
+                                                    <div class="row">
+                                                        Üye Durumu
+                                                    </div>
+                                                    <div class="col">
+                                                        <p class="lead">@Model.STATUS</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

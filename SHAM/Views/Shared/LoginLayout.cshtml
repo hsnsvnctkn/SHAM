@@ -1,5 +1,5 @@
 ﻿<!doctype html>
-<html lang="en">
+<html lang="tr">
 
 <head>
     <!-- Required meta tags -->
@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Login</title>
     <!-- Bootstrap CSS -->
+    <link href="~/images/logo.ico" rel="icon" type="image/x-icon" />
     <link rel="stylesheet" href="~/assets/vendor/bootstrap/css/bootstrap.min.css">
     <link href="~/assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
     <link rel="stylesheet" href="~/assets/libs/css/style.css">
@@ -43,18 +44,30 @@
 </head>
 
 <body>
-    <div class="alert alert-danger alertmessage" id="danger-alert">
-        <strong>Hata ! </strong><br /> Mail Adresi Veya Şifre Yanlış ..
+    <div class="container">
+
+        <partial name="_CookieConsentPartial" />
+        <div class="alert alert-danger alertmessage" id="danger-alert">
+            <strong>Hata ! </strong><br /> Mail Adresi Veya Şifre Yanlış ..
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- login page  -->
+        <!-- end login page  -->
+        <main role="main" class="pb-3">
+            <div class="splash-container">
+                <div class="card">
+
+                    @RenderBody()
+                </div>
+            </div>
+        </main>
+        <!-- Optional JavaScript -->
     </div>
 
-    <!-- ============================================================== -->
-    <!-- login page  -->
-    <!-- end login page  -->
-    @RenderBody()
-    <!-- Optional JavaScript -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/assets/libs/js/ajax.js"></script>
-
+    <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
 
     @RenderSection("Scripts", false)
 

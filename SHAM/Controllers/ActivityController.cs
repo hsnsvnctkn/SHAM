@@ -49,13 +49,16 @@ namespace SHAM.UI.Controllers
                 activity.CREATOR = Convert.ToInt16(id);
                 activity.ACTIVITY_EMPLOYEE = Convert.ToInt16(id);
 
+                if (activity.END_TIME <= activity.START_TIME)
+                    return Json(new { status = false, error = "EndTimeSmall" });
+
                 _activityRepository.Create(activity);
                 return Json(new { status = true });
             }
             catch (Exception)
             {
 
-                return Json(new { status = false });
+                return Json(new { status = false, error = "any" });
             }
         }
         [Authorize(Roles.ADMIN, Roles.NORMAL)]
@@ -63,13 +66,16 @@ namespace SHAM.UI.Controllers
         {
             try
             {
+                if (activity.END_TIME <= activity.START_TIME)
+                    return Json(new { status = false, error = "EndTimeSmall" });
+
                 _activityRepository.Update(activity);
                 return Json(new { status = true });
             }
             catch (Exception)
             {
 
-                return Json(new { status = false });
+                return Json(new { status = false, error = "any" });
             }
         }
 

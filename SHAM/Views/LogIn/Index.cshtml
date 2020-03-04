@@ -9,37 +9,41 @@
 }
 else
 {
-    <div class="splash-container">
-        <div class="card ">
-            <div class="card-header text-center">
-                <h2 class="text-primary font-weight-bold">SHAM</h2><span class="splash-description">Lütfen Giris Yapınız.</span>
-            </div>
-            <div class="card-body">
-                <form id="loginForm" role="form" asp-action="LoginUser">
-                    <div class="form-group">
-                        <input type="email" name="EMAIL" required="" data-parsley-type="email" placeholder="Mail Adresi" class="form-control form-control-lg">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" name="PASSWORD" required="" data-parsley-type="email" placeholder="Şifre" class="form-control form-control-lg">
-                    </div>
-                    <div class="form-group">
-                        <label class="custom-control custom-checkbox">
-                            <input class="custom-control-input" type="checkbox"><span class="custom-control-label">Beni Hatırla</span>
-                        </label>
-                    </div>
-                    <button type="button" id="BtnLogin" class="btn btn-primary btn-lg btn-block">Giriş Yap</button>
-                </form>
-            </div>
-            <div class="card-footer bg-white p-0  ">
-                <div class="card-footer-item card-footer-item-bordered">
-                    <a asp-controller="LogIn" asp-action="NewMember" class="footer-link">Yeni Hesap Oluştur</a>
-                </div>
-                <div class="card-footer-item card-footer-item-bordered">
-                    <a asp-controller="LogIn" asp-action="ForgotPassword" class="footer-link">Şifremi Unuttum</a>
-                </div>
-            </div>
+<div class="card-header text-center">
+    <h2 class="text-primary font-weight-bold">
+        <img src="~/images/logo.png" height="60" width="60" />SHAM
+    </h2><span class="splash-description">Lütfen Giris Yapınız.</span>
+</div>
+<div class="card-body">
+    <form id="loginForm" role="form" asp-action="LoginUser">
+        <div class="form-group">
+            <input type="email" name="EMAIL" required="" data-parsley-type="email" placeholder="Mail Adresi" class="form-control form-control-lg">
         </div>
-    </div>
+        <div class="form-group">
+            <input type="password" name="PASSWORD" required="" data-parsley-type="email" placeholder="Sifre" class="form-control form-control-lg">
+        </div>
+        <div class="form-group">
+            <label class="custom-control custom-checkbox">
+                <input class="custom-control-input" type="checkbox"><span class="custom-control-label">Beni Hatırla</span>
+            </label>
+        </div>
+        <button type="button" id="BtnLogin" class="btn btn-primary btn-lg btn-block">Giris Yap</button>
+    </form>
+</div>
+<div class="card-footer" style="padding:0">
+    <a href="#" class="footer-link">
+        <div class="card-footer-item card-footer-item-bordered col">
+            Yeni Hesap
+
+        </div>
+    </a>
+    <a asp-controller="LogIn" asp-action="ForgotPassword" class="footer-link">
+        <div class="card-footer-item card-footer-item-bordered col" style="border-top: 1px solid #e6e6f2;">
+            Sifremi Unuttum
+
+        </div>
+    </a>
+</div>
 }
 
 

@@ -8,7 +8,7 @@
     <div class="row" style="justify-content: center;">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="page-header">
-                <h2 class="pageheader-title">Activiteler</h2>
+                <h2 class="pageheader-title">Aktiviteler</h2>
             </div>
         </div>
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -335,7 +335,6 @@
     <script>
         $(".viewModelDel").click(function () {
             var id = $(this).data("id");
-            var name = $(this).data("name");
 
             document.getElementById("IdDel").value = id;
         });
@@ -348,7 +347,10 @@
                     if (result.status)
                         showCreateAlert();
                     else
-                        showAlert();
+                        if (result.error == "EndTimeSmall")
+                            showAlert2("Aktivite başlangıcı bitişten küçük olamaz");
+                        else if (result.error == "any")
+                            showAlert();
                 }
             })
         });
@@ -402,7 +404,10 @@
                         showCreateAlert();
                     }
                     else
-                        showAlert();
+                        if (result.error == "EndTimeSmall")
+                            showAlert2("Aktivite başlangıcı bitişten küçük olamaz");
+                        else if (result.error == "any")
+                            showAlert();
                 }
             })
         });
