@@ -21,14 +21,32 @@ namespace SHAM.UI.Controllers
         [Authorize(Roles.ADMIN)]
         public IActionResult Index()
         {
-            var model = _activityRepository.GetList();
+            var model = _activityRepository.GetMonthList();
             return View(model);
         }
+
+        [Authorize(Roles.ADMIN)]
+        [HttpPost]
+        public IActionResult Index(bool All)
+        {
+            if (All == true)
+            {
+                var model = _activityRepository.GetList();
+                return View(model);
+            }
+            else
+                return RedirectToAction(nameof(Index));
+
+        }
+
         [Authorize(Roles.ADMIN, Roles.NORMAL)]
         public JsonResult Create(ActivityDto activity)
         {
             try
             {
+                if (activity.START_TIME == TimeSpan.Zero || activity.WHOUR == 0 || activity.ACTIVITY_DATE == DateTime.MinValue)
+                    return Json(new { status = false, error = "any" });
+
                 var claimsIndentity = HttpContext.User.Identity as ClaimsIdentity;
                 var userClaims = claimsIndentity.Claims;
                 string id = "";
@@ -62,12 +80,18 @@ namespace SHAM.UI.Controllers
             }
         }
         [Authorize(Roles.ADMIN, Roles.NORMAL)]
+        [HttpPost]
         public JsonResult Edit(ActivityDto activity)
         {
             try
             {
+                if (activity.START_TIME == TimeSpan.Zero || activity.WHOUR == 0 || activity.ACTIVITY_DATE == DateTime.MinValue)
+                    return Json(new { status = false, error = "any" });
+
                 if (activity.END_TIME <= activity.START_TIME)
                     return Json(new { status = false, error = "EndTimeSmall" });
+
+                activity.WHOUR = Math.Round(activity.WHOUR, 2);
 
                 _activityRepository.Update(activity);
                 return Json(new { status = true });

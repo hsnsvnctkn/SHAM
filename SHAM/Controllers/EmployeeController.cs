@@ -14,9 +14,12 @@ namespace SHAM.UI.Controllers
     public class EmployeeController : Controller
     {
         readonly IEmployeeRepository _employeeRepository;
-        public EmployeeController(IEmployeeRepository employeeRepository)
+        readonly ITokenProvider _tokenProvider;
+
+        public EmployeeController(IEmployeeRepository employeeRepository,ITokenProvider tokenProvider)
         {
             _employeeRepository = employeeRepository;
+            _tokenProvider = tokenProvider;
         }
         public IActionResult Index()
         {
@@ -28,32 +31,38 @@ namespace SHAM.UI.Controllers
         {
             try
             {
-                var claimsIndentity = HttpContext.User.Identity as ClaimsIdentity;
-                var userClaims = claimsIndentity.Claims;
-                string id = "";
-                if (HttpContext.User.Identity.IsAuthenticated)
+                if (!_employeeRepository.IsAnyEmployee(employee.MAIL))
                 {
-                    foreach (var claim in userClaims)
+                    var claimsIndentity = HttpContext.User.Identity as ClaimsIdentity;
+                    var userClaims = claimsIndentity.Claims;
+                    string id = "";
+                    if (HttpContext.User.Identity.IsAuthenticated)
                     {
-                        var cType = claim.Type;
-                        var cValue = claim.Value;
-                        switch (cType)
+                        foreach (var claim in userClaims)
                         {
-                            case "ID":
-                                id = cValue;
-                                break;
+                            var cType = claim.Type;
+                            var cValue = claim.Value;
+                            switch (cType)
+                            {
+                                case "ID":
+                                    id = cValue;
+                                    break;
+                            }
                         }
                     }
-                }
-                employee.CREATOR_ID = Convert.ToInt16(id);
+                    employee.CREATOR_ID = Convert.ToInt16(id);
+                    employee.PASSWORD = _tokenProvider.EncryptString("test");
 
-                _employeeRepository.Create(employee);
-                return Json(new { status = true });
+                    _employeeRepository.Create(employee);
+                    return Json(new { status = true });
+                }
+                else
+                    return Json(new { status = false, error = "thereIsEmployee" });
             }
             catch (Exception)
             {
 
-                return Json(new { status = false });
+                return Json(new { status = false, error = "any" });
             }
         }
 

@@ -8,12 +8,6 @@ namespace SHAM.Domain.Entities
     [Table("PROJECTS")]
     public class Project
     {
-        public Project()
-        {
-            EMPLOYEES = new HashSet<ProjectEmployee>();
-            ACTIVITIES = new HashSet<Activity>();
-        }
-        [Key]
         public int ID { get; set; }
 
         [Required]
@@ -64,7 +58,7 @@ namespace SHAM.Domain.Entities
 
         public virtual Customer CUSTOMER { get; set; }
 
-        public virtual ICollection<ProjectEmployee> EMPLOYEES { get; set; }
+        public List<ProjectEmployee> PROJECTEMPLOYEE { get; set; }
 
         public virtual Level LEVEL { get; set; }
 

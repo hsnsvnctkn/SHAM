@@ -14,7 +14,7 @@ namespace SHAM.Domain.Entities
         [Required]
         public int PROJECT_NUMBER { get; set; }//FK --
 
-        [Required, StringLength(100)]
+        [Required]
         public string ACTIVITY_DETAIL { get; set; }
 
         [Required]
@@ -28,11 +28,16 @@ namespace SHAM.Domain.Entities
         [Required]
         public TimeSpan START_TIME { get; set; }
 
+        public TimeSpan? END_TIME { get; set; }
+
         [Required]
-        public TimeSpan END_TIME { get; set; }
+        public double WHOUR { get; set; }
 
         [Required]
         public bool ACTIVITY_STATUS { get; set; }
+
+        [Required]
+        public string LOCATION { get; set; }
 
         [Required]
         public int ACTIVITY_PRIORITY { get; set; }//FK--

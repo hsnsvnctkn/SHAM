@@ -3,10 +3,9 @@
     public class ProjectEmployee
     {
         public int ProjectID { get; set; }
+        public Project PROJECT { get; set; }
+
         public int EmployeeID { get; set; }
-
-
-        public virtual Project PROJECT { get; set; }
-        public virtual Employee EMPLOYEE { get; set; }
+        public Employee EMPLOYEE { get; set; }
     }
 }

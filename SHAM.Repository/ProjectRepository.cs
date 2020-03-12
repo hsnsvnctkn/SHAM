@@ -1,4 +1,5 @@
-﻿using SHAM.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using SHAM.Domain.Entities;
 using SHAM.Repository.Contracts;
 using SHAM.Repository.Dto;
 using System.Collections.Generic;
@@ -17,13 +18,7 @@ namespace SHAM.Repository
         public void Create(ProjectDto project)
         {
             var emp = new List<ProjectEmployee>();
-
-            foreach (var item in project.NEWPROJECTEMPLOYEE)
-            {
-                emp.Add(new ProjectEmployee { EmployeeID = item });
-            }
-
-            _context.Projects.Add(new Project
+            var newProject = new Project
             {
                 ID = project.ID,
                 PROJECT_NAME = project.NAME,
@@ -35,36 +30,42 @@ namespace SHAM.Repository
                 PROJECT_LEVEL = project.LEVEL_ID,
                 PROJECT_CREATOR = project.CREATOR,
                 END_DATE = project.END_DATE,
-                START_DATE = project.START_DATE,
-                EMPLOYEES = emp
-            });
+                START_DATE = project.START_DATE
+            };
+
+            foreach (var item in project.NEWPROJECTEMPLOYEE)
+            {
+                _context.ProjectEmployees.Add(new ProjectEmployee { EMPLOYEE = _context.Employees.FirstOrDefault(e => e.ID == item), PROJECT = newProject });
+            }
             _context.SaveChanges();
 
         }
 
         public ProjectAllDto GetList()
         {
-
+            //var pe = _context.Projects.Include(x => x.PROJECTEMPLOYEE).ThenInclude(c => c.EmployeeID);
             var project = _context.Projects.Select(p => new ProjectDto
             {
                 ID = p.ID,
                 NAME = p.PROJECT_NAME,
-                TYPE = p.PROJECT_TYPE,
-                CUSTOMER_ID = p.CUSTOMER_NUMBER,
                 EST_START_DATE = p.ESTIMATE_START_DATE,
                 EST_END_DATE = p.ESTIMATE_END_DATE,
                 STATUS = p.PROJECT_STATUS,
-                LEVEL_ID = p.PROJECT_LEVEL,
-                CREATOR = p.PROJECT_CREATOR,
                 CREATED_DATE = p.CREATED_DATE,
                 CREATED_TIME = p.CREATED_TIME,
                 END_DATE = p.END_DATE,
                 START_DATE = p.START_DATE,
                 CREATED_EMPLOYEE = p.CREATED_EMPLOYEE,
                 CUSTOMER = p.CUSTOMER,
-                EMPLOYEES = p.EMPLOYEES,
+                EMPLOYEES = p.PROJECTEMPLOYEE,
                 LEVEL = p.LEVEL,
-                PROJECT_TYPE_ = p.PROJECT_TYPE_
+                PROJECT_TYPE_ = p.PROJECT_TYPE_,
+                CREATOR = p.PROJECT_CREATOR,
+                CUSTOMER_ID = p.CUSTOMER_NUMBER,
+                LEVEL_ID = p.PROJECT_LEVEL,
+                TYPE = p.PROJECT_TYPE,
+                ACTIVITIES = p.ACTIVITIES
+
             }).ToList();
 
             var type = _context.Project_Types.Select(pt => new ProjectTypeDto
@@ -174,7 +175,7 @@ namespace SHAM.Repository
                 START_DATE = p.START_DATE,
                 CREATED_EMPLOYEE = p.CREATED_EMPLOYEE,
                 CUSTOMER = p.CUSTOMER,
-                EMPLOYEES = p.EMPLOYEES,
+                EMPLOYEES = p.PROJECTEMPLOYEE,
                 LEVEL = p.LEVEL,
                 PROJECT_TYPE_ = p.PROJECT_TYPE_
             }).ToList();
@@ -195,8 +196,7 @@ namespace SHAM.Repository
             {
                 ID = e.ID,
                 NAME = e.EMPLOYEE_NAME,
-                SURNAME = e.EMPLOYEE_SURNAME,
-                PROJECTS=e.PROJECTS
+                SURNAME = e.EMPLOYEE_SURNAME
             }).ToList();
 
             var level = _context.Levels.Select(l => new LevelDto

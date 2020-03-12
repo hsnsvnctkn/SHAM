@@ -31,13 +31,13 @@ namespace SHAM.Repository.Context
 
             modelBuilder.Entity<ProjectEmployee>()
                 .HasOne(pe => pe.PROJECT)
-                .WithMany(e => e.EMPLOYEES)
+                .WithMany(e => e.PROJECTEMPLOYEE)
                 .HasForeignKey(pe => pe.ProjectID)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ProjectEmployee>()
                 .HasOne(pe => pe.EMPLOYEE)
-                .WithMany(p => p.PROJECTS)
+                .WithMany(p => p.PROJECTEMPLOYEE)
                 .HasForeignKey(pe => pe.EmployeeID)
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -160,11 +160,11 @@ namespace SHAM.Repository.Context
 
             var employee = new List<Employee>
             {
-                new Employee{ ID = 1, EMPLOYEE_NAME = "Hasan", EMPLOYEE_SURNAME = "Sevinçtekin", EMPLOYEE_PHONE_NO = "5363403660", EMPLOYEE_ADRESS = "Sancaktepe/İstanbul", EMPLOYEE_MAIL = "hasan.sevinctekin@sagita.com.tr", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 1, EMPLOYEE_CREATOR = 1, PASSWORD = "test", ROLE = Dto.Roles.ADMIN.ToString() },
-                new Employee{ ID = 2, EMPLOYEE_NAME = "Ömer Faruk", EMPLOYEE_SURNAME = "Kaya", EMPLOYEE_PHONE_NO = "5550000000", EMPLOYEE_ADRESS = "Kartal/İstanbul", EMPLOYEE_MAIL = "omer.kaya@sagita.com.tr", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 2, EMPLOYEE_CREATOR = 1, PASSWORD = "test", ROLE = Dto.Roles.ADMIN.ToString() },
-                new Employee{ ID = 3, EMPLOYEE_NAME = "Fatih", EMPLOYEE_SURNAME = "Balcıoğlu", EMPLOYEE_PHONE_NO = "5550000000", EMPLOYEE_ADRESS = "Üsküdar/İstanbul", EMPLOYEE_MAIL = "fatih.balcioglu@sagita.com.tr", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 2, EMPLOYEE_CREATOR = 2, PASSWORD = "test", ROLE = Dto.Roles.ADMIN.ToString() },
-                new Employee{ ID = 4, EMPLOYEE_NAME = "Yunus", EMPLOYEE_SURNAME = "Gülbeyen", EMPLOYEE_PHONE_NO = "5550000000", EMPLOYEE_ADRESS = "Üsküdar/İstanbul", EMPLOYEE_MAIL = "yunus.gulbeyen@sagita.com.tr", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 2, EMPLOYEE_CREATOR = 2, PASSWORD = "test", ROLE = Dto.Roles.NORMAL.ToString() },
-                new Employee{ ID = 5, EMPLOYEE_NAME = "Ufuk", EMPLOYEE_SURNAME = "Çelik", EMPLOYEE_PHONE_NO = "5550000000", EMPLOYEE_ADRESS = "Üsküdar/İstanbul", EMPLOYEE_MAIL = "ufuk@sagita.com.tr", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 2, EMPLOYEE_CREATOR = 2, PASSWORD = "test", ROLE = Dto.Roles.NORMAL.ToString() }
+                new Employee{ ID = 1, EMPLOYEE_NAME = "Hasan", EMPLOYEE_SURNAME = "Sevinçtekin", EMPLOYEE_PHONE_NO = "5363403660", EMPLOYEE_ADRESS = "Sancaktepe/İstanbul", EMPLOYEE_MAIL = "hasan.sevinctekin@sagita.com.tr", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 1, EMPLOYEE_CREATOR = 1, PASSWORD = "qPHubpjeaXvlBFg8JJb0DA==", ROLE = Dto.Roles.ADMIN.ToString() },
+                new Employee{ ID = 2, EMPLOYEE_NAME = "Ömer Faruk", EMPLOYEE_SURNAME = "Kaya", EMPLOYEE_PHONE_NO = "5550000000", EMPLOYEE_ADRESS = "Kartal/İstanbul", EMPLOYEE_MAIL = "omer.kaya@sagita.com.tr", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 2, EMPLOYEE_CREATOR = 1, PASSWORD = "qPHubpjeaXvlBFg8JJb0DA==", ROLE = Dto.Roles.ADMIN.ToString() },
+                new Employee{ ID = 3, EMPLOYEE_NAME = "Fatih", EMPLOYEE_SURNAME = "Balcıoğlu", EMPLOYEE_PHONE_NO = "5550000000", EMPLOYEE_ADRESS = "Üsküdar/İstanbul", EMPLOYEE_MAIL = "fatih.balcioglu@sagita.com.tr", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 2, EMPLOYEE_CREATOR = 2, PASSWORD = "qPHubpjeaXvlBFg8JJb0DA==", ROLE = Dto.Roles.ADMIN.ToString() },
+                new Employee{ ID = 4, EMPLOYEE_NAME = "Yunus", EMPLOYEE_SURNAME = "Gülbeyen", EMPLOYEE_PHONE_NO = "5550000000", EMPLOYEE_ADRESS = "Üsküdar/İstanbul", EMPLOYEE_MAIL = "yunus.gulbeyen@sagita.com.tr", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 2, EMPLOYEE_CREATOR = 2, PASSWORD = "qPHubpjeaXvlBFg8JJb0DA==", ROLE = Dto.Roles.NORMAL.ToString() },
+                new Employee{ ID = 5, EMPLOYEE_NAME = "Ufuk", EMPLOYEE_SURNAME = "Çelik", EMPLOYEE_PHONE_NO = "5550000000", EMPLOYEE_ADRESS = "Üsküdar/İstanbul", EMPLOYEE_MAIL = "ufuk.celik@sagita.com.tr", EMPLOYEE_STATUS = true, EMPLOYEE_TITLE = 2, EMPLOYEE_CREATOR = 2, PASSWORD = "qPHubpjeaXvlBFg8JJb0DA==", ROLE = Dto.Roles.NORMAL.ToString() }
             };
             modelBuilder.Entity<Employee>().HasData(employee);
 
@@ -185,19 +185,19 @@ namespace SHAM.Repository.Context
 
             var activity = new List<Activity>
             {
-                new Activity{ ID = 1, PROJECT_NUMBER = 1, ACTIVITY_EMPLOYEE = 1, ACTIVITY_DETAIL = "Send to Shell when finished", ACTIVITY_DATE = new DateTime(2019,06,20), START_TIME = new TimeSpan(10,45,00), END_TIME = new TimeSpan(18,15,00), ACTIVITY_STATUS = false, ACTIVITY_PRIORITY = 3, ACTIVITY_CREATOR = 2 },
-                new Activity{ ID = 2, PROJECT_NUMBER = 1, ACTIVITY_EMPLOYEE = 3, ACTIVITY_DETAIL = "Notify Mr. Kaya when finished", ACTIVITY_DATE = new DateTime(2019,08,10), START_TIME = new TimeSpan(11,45,00),  END_TIME = new TimeSpan(19,25,00), ACTIVITY_STATUS = true, ACTIVITY_PRIORITY = 3, ACTIVITY_CREATOR = 2 }
+                new Activity{ ID = 1, PROJECT_NUMBER = 1, ACTIVITY_EMPLOYEE = 1, ACTIVITY_DETAIL = "Send to Shell when finished", ACTIVITY_DATE = new DateTime(2019,06,20), START_TIME = new TimeSpan(10,45,00), END_TIME = new TimeSpan(18,15,00),WHOUR = 8, LOCATION = "Onsite", ACTIVITY_STATUS = false, ACTIVITY_PRIORITY = 3, ACTIVITY_CREATOR = 1 },
+                new Activity{ ID = 2, PROJECT_NUMBER = 1, ACTIVITY_EMPLOYEE = 3, ACTIVITY_DETAIL = "Notify Mr. Kaya when finished", ACTIVITY_DATE = new DateTime(2019,08,10), START_TIME = new TimeSpan(11,45,00),  WHOUR = 4.45, LOCATION = "Remote", ACTIVITY_STATUS = true, ACTIVITY_PRIORITY = 3, ACTIVITY_CREATOR = 3 }
             };
             modelBuilder.Entity<Activity>().HasData(activity);
 
-            var projectEmployee = new List<ProjectEmployee>
-            {
-                new ProjectEmployee{ ProjectID = project[0].ID, EmployeeID = employee[2].ID },
-                new ProjectEmployee{ ProjectID = project[0].ID, EmployeeID = employee[1].ID },
-                new ProjectEmployee{ ProjectID = project[1].ID, EmployeeID = employee[1].ID },
-                new ProjectEmployee{ ProjectID = project[1].ID, EmployeeID = employee[0].ID }
-            };
-            modelBuilder.Entity<ProjectEmployee>().HasData(projectEmployee);
+            //var projectEmployee = new List<ProjectEmployee>
+            //{
+            //    new ProjectEmployee{ PROJECT = project[0], EMPLOYEE = employee[2], ProjectID = project[0].ID, EmployeeID = employee[2].ID },
+            //    new ProjectEmployee{ PROJECT = project[1], EMPLOYEE = employee[1], ProjectID = project[1].ID, EmployeeID = employee[1].ID },
+            //    new ProjectEmployee{ PROJECT = project[0], EMPLOYEE = employee[1], ProjectID = project[0].ID, EmployeeID = employee[1].ID },
+            //    new ProjectEmployee{ PROJECT = project[1], EMPLOYEE = employee[0], ProjectID = project[1].ID, EmployeeID = employee[0].ID }
+            //};
+            //modelBuilder.Entity<ProjectEmployee>().HasData(projectEmployee);
         }
     }
 }

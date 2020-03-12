@@ -30,6 +30,8 @@ namespace SHAM.Repository
                 ACTIVITY_STATUS = activity.STATUS,
                 ACTIVITY_PRIORITY = activity.ACTIVITY_PRIORITY,
                 INVOICE = activity.INVOICE,
+                WHOUR = activity.WHOUR,
+                LOCATION = activity.LOCATION
             });
             _context.SaveChanges();
         }
@@ -62,17 +64,56 @@ namespace SHAM.Repository
                 PROJECT = a.PROJECT,
                 CREATED_EMPLOYEE = a.CREATED_EMPLOYEE,
                 PRIORITY = a.PRIORITY,
-                EMPLOYEE = a.EMPLOYEE
+                EMPLOYEE = a.EMPLOYEE,
+                WHOUR = a.WHOUR,
+                LOCATION = a.LOCATION
             }).ToList();
 
             var project = _context.Projects.Select(p => new ProjectDto { ID = p.ID, NAME = p.PROJECT_NAME }).ToList();
 
-            var employee = _context.Employees.Select(e => new EmployeeDto { ID = e.ID, NAME = e.EMPLOYEE_NAME, SURNAME = e.EMPLOYEE_SURNAME, PROJECTS = e.PROJECTS }).ToList();
+            var employee = _context.Employees.Select(e => new EmployeeDto { ID = e.ID, NAME = e.EMPLOYEE_NAME, SURNAME = e.EMPLOYEE_SURNAME, PROJECTS = e.PROJECTEMPLOYEE }).ToList();
 
             var priority = _context.Priorities.Select(p => new PriorityDto { ID = p.ID, NAME = p.PRIORITY_NAME }).ToList();
 
             return new ActivityAllDto { ActivityDto = activity, ProjectDto = project, EmployeeDto = employee, PriorityDto = priority };
         }
+
+        public ActivityAllDto GetMonthList()
+        {
+            DateTime dt = DateTime.Now;
+
+            var activity = _context.Activities.OrderByDescending(a => a.ACTIVITY_DATE).Where(a => a.ACTIVITY_DATE.Month == dt.Month).Select(a => new ActivityDto
+            {
+                ID = a.ID,
+                PROJECT_NUMBER = a.PROJECT_NUMBER,
+                ACTIVITY_DETAIL = a.ACTIVITY_DETAIL,
+                CREATOR = a.ACTIVITY_CREATOR,
+                ACTIVITY_EMPLOYEE = a.ACTIVITY_EMPLOYEE,
+                ACTIVITY_DATE = a.ACTIVITY_DATE,
+                START_TIME = a.START_TIME,
+                END_TIME = a.END_TIME,
+                STATUS = a.ACTIVITY_STATUS,
+                ACTIVITY_PRIORITY = a.ACTIVITY_PRIORITY,
+                INVOICE = a.INVOICE,
+                CREATED_DATE = a.CREATED_DATE,
+                CREATED_TIME = a.CREATED_TIME,
+                PROJECT = a.PROJECT,
+                CREATED_EMPLOYEE = a.CREATED_EMPLOYEE,
+                PRIORITY = a.PRIORITY,
+                EMPLOYEE = a.EMPLOYEE,
+                WHOUR = a.WHOUR,
+                LOCATION = a.LOCATION
+            }).ToList();
+
+            var project = _context.Projects.Select(p => new ProjectDto { ID = p.ID, NAME = p.PROJECT_NAME }).ToList();
+
+            var employee = _context.Employees.Select(e => new EmployeeDto { ID = e.ID, NAME = e.EMPLOYEE_NAME, SURNAME = e.EMPLOYEE_SURNAME, PROJECTS = e.PROJECTEMPLOYEE }).ToList();
+
+            var priority = _context.Priorities.Select(p => new PriorityDto { ID = p.ID, NAME = p.PRIORITY_NAME }).ToList();
+
+            return new ActivityAllDto { ActivityDto = activity, ProjectDto = project, EmployeeDto = employee, PriorityDto = priority };
+        }
+
 
         public ActivityAllDto GetMyActivity(int id)
         {
@@ -96,7 +137,9 @@ namespace SHAM.Repository
                 EMPLOYEE = a.EMPLOYEE,
                 PROJECT = a.PROJECT,
                 CREATED_EMPLOYEE = a.CREATED_EMPLOYEE,
-                PRIORITY = a.PRIORITY
+                PRIORITY = a.PRIORITY,
+                WHOUR = a.WHOUR,
+                LOCATION = a.LOCATION
             }).ToList();
             var projectID = _context.ProjectEmployees.Where(e => e.EmployeeID == id).Select(p => p.ProjectID);
 
@@ -130,8 +173,11 @@ namespace SHAM.Repository
                 EMPLOYEE = a.EMPLOYEE,
                 PROJECT = a.PROJECT,
                 CREATED_EMPLOYEE = a.CREATED_EMPLOYEE,
-                PRIORITY = a.PRIORITY
+                PRIORITY = a.PRIORITY,
+                WHOUR = a.WHOUR,
+                LOCATION = a.LOCATION
             }).ToList();
+
             var projectID = _context.ProjectEmployees.Where(e => e.EmployeeID == id).Select(p => p.ProjectID);
 
             var project = _context.Projects.Where(p => projectID.Contains(p.ID)).Select(p => new ProjectDto { ID = p.ID, NAME = p.PROJECT_NAME }).ToList();
@@ -155,6 +201,8 @@ namespace SHAM.Repository
             thisActivity.ACTIVITY_STATUS = activity.STATUS;
             thisActivity.ACTIVITY_PRIORITY = activity.ACTIVITY_PRIORITY;
             thisActivity.INVOICE = activity.INVOICE;
+            thisActivity.WHOUR = activity.WHOUR;
+            thisActivity.LOCATION = activity.LOCATION;
 
 
             _context.Activities.Update(thisActivity);

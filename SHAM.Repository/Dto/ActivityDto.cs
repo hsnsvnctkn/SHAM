@@ -19,7 +19,7 @@ namespace SHAM.Repository.Dto
 
         public TimeSpan START_TIME { get; set; }
 
-        public TimeSpan END_TIME { get; set; }
+        public TimeSpan? END_TIME { get; set; }
 
         public DateTime CREATED_DATE { get; set; }
 
@@ -30,6 +30,9 @@ namespace SHAM.Repository.Dto
         public int ACTIVITY_PRIORITY { get; set; }//FK--
 
         public bool INVOICE { get; set; }
+        public double WHOUR { get; set; }
+        public string LOCATION { get; set; }
+
 
 
         public virtual Project PROJECT { get; set; }

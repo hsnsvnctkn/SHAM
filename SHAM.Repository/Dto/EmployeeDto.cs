@@ -18,6 +18,8 @@ namespace SHAM.Repository.Dto
         public DateTime CREATED_DATE { get; set; }
         public TimeSpan CREATED_TIME { get; set; }
         public string ROLE { get; set; }
+        public string PASSWORD { get; set; }
+
 
 
 

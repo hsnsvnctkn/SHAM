@@ -5,11 +5,13 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SHAM.Repository.Authorize;
 using SHAM.Repository.Contracts;
 using SHAM.Repository.Dto;
 
 namespace SHAM.UI.Controllers
 {
+    [Authorize(Roles.ADMIN, Roles.NORMAL)]
     public class DashboardController : Controller
     {
         readonly IEmployeeRepository _employeeRepository;

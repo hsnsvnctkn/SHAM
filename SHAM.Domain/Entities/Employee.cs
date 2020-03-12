@@ -8,8 +8,6 @@ namespace SHAM.Domain.Entities
     [Table("EMPLOYEES")]
     public class Employee
     {
-
-        [Key]
         public int ID { get; set; } //PK
 
         [Required, StringLength(50)]
@@ -57,7 +55,7 @@ namespace SHAM.Domain.Entities
 
         public virtual ICollection<Customer> CUSTOMERS { get; set; }
 
-        public virtual ICollection<ProjectEmployee> PROJECTS { get; set; }
+        public List<ProjectEmployee> PROJECTEMPLOYEE { get; set; }
 
         public virtual ICollection<Project> CREATED_PROJECTS { get; set; }
 

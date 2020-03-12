@@ -90,7 +90,14 @@
                                                         Üye Durumu
                                                     </div>
                                                     <div class="col">
-                                                        <p class="lead">@Model.STATUS</p>
+                                                        @if (Model.STATUS == true)
+                                                        {
+                                                            <p class="lead">Aktif</p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p class="lead">Pasif</p>
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>

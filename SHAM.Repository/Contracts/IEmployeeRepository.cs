@@ -14,5 +14,6 @@ namespace SHAM.Repository.Contracts
         void Update(EmployeeDto employee);
         void UpdateMyInfo(UserDto user);
         void UpdateMyPass(int id, string pass);
+        bool IsAnyEmployee(string mail);
     }
 }

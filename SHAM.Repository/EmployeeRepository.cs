@@ -97,7 +97,7 @@ namespace SHAM.Repository
                 EMPLOYEE_TITLE = employee.TITLE_ID,
                 EMPLOYEE_CREATOR = employee.CREATOR_ID,
                 ROLE = employee.ROLE,
-                PASSWORD = "test"
+                PASSWORD = employee.PASSWORD
             };
             _context.Employees.Add(newEmployee);
 
@@ -123,7 +123,7 @@ namespace SHAM.Repository
                 CREATED_TIME = e.CREATED_TIME,
                 ACTIVITIES = e.ACTIVITIES,
                 CREATED_EMPLOYEE = e.CREATED_EMPLOYEE,
-                PROJECTS = e.PROJECTS,
+                PROJECTS = e.PROJECTEMPLOYEE,
                 TITLE = e.TITLE,
                 ROLE = e.ROLE
             }).ToList();
@@ -148,6 +148,16 @@ namespace SHAM.Repository
             _context.Employees.Update(employee);
 
             _context.SaveChanges();
+        }
+
+        public bool IsAnyEmployee(string mail)
+        {
+            var employee = _context.Employees.FirstOrDefault(e => e.EMPLOYEE_MAIL == mail);
+
+            if (employee != null)
+                return true;
+            else
+                return false;
         }
     }
 }

@@ -41,31 +41,31 @@
                                     <tbody>
                                         @foreach (var item in Model.EmployeeDto)
                                         {
-                                            <tr>
-                                                <td><button type="button" data-id="@item.ID" data-toggle="modal" data-target="#edit" class="btn btn-outline-primary fBtnEdit">Düzenle</button></td>
-                                                <td id="@item.ID">@item.ID </td>
-                                                <td id="@item.ID-name">@item.NAME</td>
-                                                <td id="@item.ID-phone">@item.PHONE_NO</td>
-                                                <td id="@item.ID-surname">@item.SURNAME</td>
-                                                <td id="@item.ID-adress">@item.ADRESS</td>
-                                                <td id="@item.ID-mail">@item.MAIL</td>
-                                                @if (item.STATUS == true)
-                                                {
-                                                    <td id="@item.ID-status">Aktif</td>
-                                                }
-                                                @if (item.STATUS == false)
-                                                {
-                                                    <td id="@item.ID-status">Pasif</td>
-                                                }
-                                                <td id="@item.ID-title" data-id="@item.TITLE.ID">@item.TITLE.TITLE_NAME</td>
-                                                <td id="@item.ID-role">@item.ROLE</td>
-                                                <td id="@item.ID-creator" data-id="@item.CREATOR_ID">@item.CREATED_EMPLOYEE.EMPLOYEE_NAME @item.CREATED_EMPLOYEE.EMPLOYEE_SURNAME</td>
-                                                <td>@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
-                                                <td>@item.CREATED_TIME.ToString("hh':'mm':'ss")</td>
-                                                <td>
-                                                    <button class="btn btn-outline-danger viewModelDel" data-toggle="modal" data-target="#delete" data-name="@item.NAME" data-surname="@item.SURNAME" data-id="@item.ID">Sil</button>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td><button type="button" data-id="@item.ID" data-toggle="modal" data-target="#edit" class="btn btn-outline-primary fBtnEdit">Düzenle</button></td>
+                                            <td id="@item.ID">@item.ID </td>
+                                            <td id="@item.ID-name">@item.NAME</td>
+                                            <td id="@item.ID-surname">@item.SURNAME</td>
+                                            <td id="@item.ID-phone">@item.PHONE_NO</td>
+                                            <td id="@item.ID-adress">@item.ADRESS</td>
+                                            <td id="@item.ID-mail">@item.MAIL</td>
+                                            @if (item.STATUS == true)
+                                            {
+                                                <td id="@item.ID-status">Aktif</td>
+                                            }
+                                            @if (item.STATUS == false)
+                                            {
+                                                <td id="@item.ID-status">Pasif</td>
+                                            }
+                                            <td id="@item.ID-title" data-id="@item.TITLE.ID">@item.TITLE.TITLE_NAME</td>
+                                            <td id="@item.ID-role">@item.ROLE</td>
+                                            <td id="@item.ID-creator" data-id="@item.CREATOR_ID">@item.CREATED_EMPLOYEE.EMPLOYEE_NAME @item.CREATED_EMPLOYEE.EMPLOYEE_SURNAME</td>
+                                            <td>@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.CREATED_TIME.ToString("hh':'mm':'ss")</td>
+                                            <td>
+                                                <button class="btn btn-outline-danger viewModelDel" data-toggle="modal" data-target="#delete" data-name="@item.NAME" data-surname="@item.SURNAME" data-id="@item.ID">Sil</button>
+                                            </td>
+                                        </tr>
                                         }
                                     </tbody>
                                 </table>
@@ -322,7 +322,9 @@
                 success: function (result) {
                     if (result.status)
                         showCreateAlert();
-                    else
+                    else if (result.error == "thereIsEmployee")
+                        showAlert2("Bu Mail adresine kayıtlı çalışan mevcut !");
+                    else if (result.error == "any")
                         showAlert();
 
                 }

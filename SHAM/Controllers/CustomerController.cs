@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SHAM.Repository.Authorize;
@@ -26,6 +27,25 @@ namespace SHAM.UI.Controllers
         {
             try
             {
+                var claimsIndentity = HttpContext.User.Identity as ClaimsIdentity;
+                var userClaims = claimsIndentity.Claims;
+                string id = "";
+                if (HttpContext.User.Identity.IsAuthenticated)
+                {
+                    foreach (var claim in userClaims)
+                    {
+                        var cType = claim.Type;
+                        var cValue = claim.Value;
+                        switch (cType)
+                        {
+                            case "ID":
+                                id = cValue;
+                                break;
+                        }
+                    }
+                }
+                employee.CREATOR_ID = Convert.ToInt16(id);
+
                 _customerRepository.Create(employee);
                 return Json(new { status = true });
             }

@@ -55,7 +55,7 @@
                                                 {
                                                     <td id="@item.ID-status">Pasif</td>
                                                 }
-                                                <td id="@item.ID-creator" data-id="@item.CREATOR_ID">@item.CREATOR_ID</td>
+                                                <td id="@item.ID-creator" data-id="@item.CREATOR_ID">@item.CREATED_CUSTOMER.EMPLOYEE_NAME @item.CREATED_CUSTOMER.EMPLOYEE_SURNAME</td>
                                                 <td>@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
                                                 <td>@item.CREATED_TIME.ToString("hh':'mm':'ss")</td>
                                                 <td>
@@ -160,17 +160,6 @@
                                     <select class="custom-select" name="STATUS" typeof="bool">
                                         <option selected value="true">Aktif</option>
                                         <option value="false">Pasif</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Oluşturan Kişi</label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <select class="custom-select" name="CREATOR_ID">
-                                        @foreach (var item in Model.EmployeeDto)
-                                        {
-                                            <option value="@item.ID">@item.NAME @item.SURNAME</option>
-                                        }
                                     </select>
                                 </div>
                             </div>

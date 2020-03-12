@@ -63,7 +63,8 @@ namespace SHAM.Repository
                 STATUS = c.CUSTOMER_STATUS,
                 CREATOR_ID = c.CUSTOMER_CREATOR,
                 CREATED_DATE = c.CREATED_DATE,
-                CREATED_TIME = c.CREATED_TIME
+                CREATED_TIME = c.CREATED_TIME,
+                CREATED_CUSTOMER = c.CREATED_CUSTOMER
             }).ToList();
             var employee = _context.Employees.Select(e => new EmployeeDto
             {
