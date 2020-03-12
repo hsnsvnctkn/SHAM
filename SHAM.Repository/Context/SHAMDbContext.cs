@@ -27,7 +27,7 @@ namespace SHAM.Repository.Context
             modelBuilder.HasDefaultSchema("SHAM");
 
             modelBuilder.Entity<ProjectEmployee>()
-                .HasKey(pe => new { pe.ProjectID, pe.EmployeeID });
+                .HasKey(pe => new { pe.EmployeeID, pe.ProjectID });
 
             modelBuilder.Entity<ProjectEmployee>()
                 .HasOne(pe => pe.PROJECT)

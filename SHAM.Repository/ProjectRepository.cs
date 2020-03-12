@@ -44,7 +44,7 @@ namespace SHAM.Repository
         public ProjectAllDto GetList()
         {
             //var pe = _context.Projects.Include(x => x.PROJECTEMPLOYEE).ThenInclude(c => c.EmployeeID);
-            var project = _context.Projects.Select(p => new ProjectDto
+            var project = _context.Projects.Include(p => p.PROJECTEMPLOYEE).ThenInclude(ep=>ep.EMPLOYEE).Select(p => new ProjectDto
             {
                 ID = p.ID,
                 NAME = p.PROJECT_NAME,
@@ -57,14 +57,14 @@ namespace SHAM.Repository
                 START_DATE = p.START_DATE,
                 CREATED_EMPLOYEE = p.CREATED_EMPLOYEE,
                 CUSTOMER = p.CUSTOMER,
-                EMPLOYEES = p.PROJECTEMPLOYEE,
                 LEVEL = p.LEVEL,
                 PROJECT_TYPE_ = p.PROJECT_TYPE_,
                 CREATOR = p.PROJECT_CREATOR,
                 CUSTOMER_ID = p.CUSTOMER_NUMBER,
                 LEVEL_ID = p.PROJECT_LEVEL,
                 TYPE = p.PROJECT_TYPE,
-                ACTIVITIES = p.ACTIVITIES
+                ACTIVITIES = p.ACTIVITIES,
+                EMPLOYEES = p.PROJECTEMPLOYEE
 
             }).ToList();
 
@@ -84,7 +84,8 @@ namespace SHAM.Repository
             {
                 ID = e.ID,
                 NAME = e.EMPLOYEE_NAME,
-                SURNAME = e.EMPLOYEE_SURNAME
+                SURNAME = e.EMPLOYEE_SURNAME,
+                PROJECTS = e.PROJECTEMPLOYEE
             }).ToList();
 
             var level = _context.Levels.Select(l => new LevelDto
