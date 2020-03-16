@@ -41,7 +41,7 @@
             padding-right: 5px;
             padding-top: 3px;
             padding-bottom: 3px;
-            border-radius: 10px;
+            border-radius: 0px 10px 10px 0px;
         }
     </style>
 
@@ -294,31 +294,35 @@
         }
     });
 
-    $("#sidebarMenu").animate({ "margin-left": "-264px" }, { queue: false });
-    $(".btndisplaymenu").animate({ "margin-left": "-10" }, {
-        complete: function () {
-            $("#renderbody").animate({ "margin-left": "5px" });
-        }
-    });
+    var windowWidth = $(window).width();
+    if (windowWidth > 600) {
+        $("#sidebarMenu").animate({ "margin-left": "-264px" }, { queue: false });
+        $(".btndisplaymenu").animate({ "margin-left": "-10" }, {
+            complete: function () {
+                $("#renderbody").animate({ "margin-left": "5px" });
+            }
+        });
 
 
 
-    $(".btndisplaymenu").click(function () {
-        if ($(this).css("margin-left") == "251px") {
-            $("#sidebarMenu").animate({ "margin-left": "-264px" }, { queue: false });
-            $(".btndisplaymenu").animate({ "margin-left": "-10" }, {
-                complete: function () {
-                    $("#renderbody").animate({ "margin-left": "5px" });
-                }
-            });
-        }
-        else {
-            $("#renderbody").animate({ "margin-left": "264px" });
-            $(".btndisplaymenu").animate({ "margin-left": "251px" });
-            $("#sidebarMenu").animate({ "margin-left": "0px" });
-        }
-    });
-
+        $(".btndisplaymenu").click(function () {
+            if ($(this).css("margin-left") == "251px") {
+                $("#sidebarMenu").animate({ "margin-left": "-264px" }, { queue: false });
+                $(".btndisplaymenu").animate({ "margin-left": "-10" }, {
+                    complete: function () {
+                        $("#renderbody").animate({ "margin-left": "5px" });
+                    }
+                });
+            }
+            else {
+                $("#renderbody").animate({ "margin-left": "264px" });
+                $(".btndisplaymenu").animate({ "margin-left": "251px" });
+                $("#sidebarMenu").animate({ "margin-left": "0px" });
+            }
+        });
+    }
+    else
+        $(".btndisplaymenu").css("display", "none");
 
     $(document).ready(function () {
         $("#danger-alert").hide();

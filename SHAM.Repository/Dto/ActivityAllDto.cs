@@ -10,5 +10,6 @@ namespace SHAM.Repository.Dto
         public List<ProjectDto> ProjectDto { get; set; }
         public List<EmployeeDto> EmployeeDto { get; set; }
         public List<PriorityDto> PriorityDto { get; set; }
+        public List<CustomerDto> customerDto { get; set; }
     }
 }
