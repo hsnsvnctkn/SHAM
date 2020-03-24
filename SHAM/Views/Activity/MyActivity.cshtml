@@ -16,6 +16,11 @@
         padding: 20px;
         border-radius: 0px 0px .25rem .25rem;
         opacity: 0.9;
+        z-index: 99;
+    }
+
+    .table td {
+        position: relative;
     }
 </style>
 
@@ -50,152 +55,215 @@
                 <hr />
                 <div class="card-body p-0">
                     <div class="table-responsive">
-                        <div id="refresh" class="table-hover">
-                            <table class="table table-striped table-bordered dataTable" style="font-size: small;" role="grid" aria-describedby="example_info" id="tb" data-name="cool-table">
-                                <thead class="bg-light" style="text-align: center;">
-                                    <tr class="border-0">
-                                        <th class="border-0"></th>
-                                        <th class="border-0" style="font-weight: bold;">#</th>
-                                        <th class="border-0" style="font-weight: bold;">Proje</th>
-                                        <th class="border-0" style="font-weight: bold;">Durum</th>
-                                        <th class="border-0" style="font-weight: bold;">Önceliği</th>
-                                        <th class="border-0" style="font-weight: bold;">Fatura</th>
-                                        <th class="border-0" style="font-weight: bold;">Lokasyon</th>
-                                        <th class="border-0" style="font-weight: bold;">Detay</th>
-                                        <th class="border-0" style="font-weight: bold;">Aktivite Tarihi</th>
-                                        <th class="border-0" style="font-weight: bold;">Başlama Saati</th>
-                                        <th class="border-0" style="font-weight: bold;">Bitiş Saati</th>
-                                        <th class="border-0" style="font-weight: bold;">Çalışma Saati</th>
-                                        <th class="border-0" style="font-weight: bold;">Oluşturma Tarihi</th>
-                                        <th class="border-0" style="font-weight: bold;">Oluşturma Saati</th>
-                                        <th class="border-0"></th>
+                        <table class="table table-striped table-bordered dataTable table-hover" style="font-size: small;" role="grid" aria-describedby="example_info" id="tb" data-name="cool-table">
+                            <thead class="bg-light" style="text-align: center;">
+                                <tr class="border-0">
+                                    <th class="border-0"></th>
+                                    <th class="border-0" style="font-weight: bold;">#</th>
+                                    <th class="border-0" style="font-weight: bold;">Müşteri</th>
+                                    <th class="border-0" style="font-weight: bold;">Proje</th>
+                                    <th class="border-0" style="font-weight: bold;">Durum</th>
+                                    <th class="border-0" style="font-weight: bold;">Önceliği</th>
+                                    <th class="border-0" style="font-weight: bold;">Fatura</th>
+                                    <th class="border-0" style="font-weight: bold;">Lokasyon</th>
+                                    <th class="border-0" style="font-weight: bold;">Detay</th>
+                                    <th class="border-0" style="font-weight: bold;">Aktivite Tarihi</th>
+                                    <th class="border-0" style="font-weight: bold;">Başlama Saati</th>
+                                    <th class="border-0" style="font-weight: bold;">Bitiş Saati</th>
+                                    <th class="border-0" style="font-weight: bold;">Çalışma Saati</th>
+                                    <th class="border-0" style="font-weight: bold;">Oluşturma Tarihi</th>
+                                    <th class="border-0" style="font-weight: bold;">Oluşturma Saati</th>
+                                    <th class="border-0"></th>
+                                </tr>
+                            </thead>
+                            <thead class="bg-light" style="text-align: center;">
+                                <tr class="border-0 tableexport-ignore">
+                                    <th class="border-0" style="padding: 0px;">Filtreler : </th>
+                                    <th class="border-0" style="padding: 0px;"></th>
+                                    <th class="border-0" style="padding: 0px;">
+                                        <div class="f-icon" style="padding: 0px;" id="btnCustomerFilter">
+                                            <i class="fas fa-filter"></i>
+                                        </div>
+                                        <div id="divfilterCustomer" class="filter-div card shadow">
+                                            <select class="custom-select" id="filterCustomer" style="width: auto;">
+                                                <option value="all" class="all">Hepsi</option>
+                                                @foreach (var item in Model.customerDto)
+                                                {
+                                                    <option value="@item.NAME" class="@item.ID">@item.NAME</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </th>
+                                    <th class="border-0" style="padding: 0px;">
+                                        <div class="f-icon" style="padding: 0px;" id="btnProjectFilter">
+                                            <i class="fas fa-filter"></i>
+                                        </div>
+                                        <div id="divfilterProject" class="filter-div card shadow">
+                                            <select class="custom-select" id="filterProject" style="width: auto;">
+                                                <option value="Hepsi">Hepsi</option>
+                                                @foreach (var item in Model.ProjectDto)
+                                                {
+                                                    <option value="@item.NAME" class="@item.CUSTOMER.ID">@item.NAME</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </th>
+                                    <th class="border-0" style="padding: 0px;">
+                                        <div class="f-icon" style="padding: 0px;" id="btnStatusFilter">
+                                            <i class="fas fa-filter"></i>
+                                        </div>
+                                        <div id="divfilterStatus" class="filter-div card shadow">
+                                            <select class="custom-select" id="filterStatus" style="width: auto;">
+                                                <option value="Hepsi">Hepsi</option>
+                                                <option value="Aktif">Aktif</option>
+                                                <option value="Pasif">Pasif</option>
+                                            </select>
+                                        </div>
+                                    </th>
+                                    <th class="border-0" style="padding: 0px;">
+                                        <div class="f-icon" style="padding: 0px;" id="btnPriorityFilter">
+                                            <i class="fas fa-filter"></i>
+                                        </div>
+                                        <div id="divfilterPriority" class="filter-div card shadow">
+                                            <select class="custom-select" id="filterPriority" style="width: auto;">
+                                                <option value="">Hepsi</option>
+                                                @foreach (var item in Model.PriorityDto)
+                                                {
+                                                    <option value="@item.NAME">@item.NAME</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </th>
+                                    <th class="border-0" style="padding: 0px;">
+                                        <div class="f-icon" style="padding: 0px;" id="btnInvoiceFilter">
+                                            <i class="fas fa-filter"></i>
+                                        </div>
+                                        <div id="divfilterInvoice" class="filter-div card shadow">
+                                            <select class="custom-select" id="filterInvoice" style="width: auto;">
+                                                <option value="Hepsi">Hepsi</option>
+                                                <option value="Evet">Evet</option>
+                                                <option value="Hayır">Hayır</option>
+                                            </select>
+                                        </div>
+                                    </th>
+                                    <th class="border-0" style="padding: 0px;">
+                                        <div class="f-icon" style="padding: 0px;" id="btnLocationFilter">
+                                            <i class="fas fa-filter"></i>
+                                        </div>
+                                        <div id="divfilterLocation" class="filter-div card shadow">
+                                            <select class="custom-select" id="filterLocation" style="width: auto;">
+                                                <option value="Hepsi">Hepsi</option>
+                                                <option value="Onsite">Onsite</option>
+                                                <option value="Remote">Remote</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                        </div>
+                                    </th>
+                                    <th class="border-0" style="padding: 0px;">
+                                        <div class="f-icon" style="padding: 0px;" id="btnDetailSearch">
+                                            <i class="fas fa-filter"></i>
+                                        </div>
+                                        <div id="divsearchDetail" class="filter-div card shadow">
+                                            <input type="text" id="searchDetail" placeholder="Ara" class="custom-control-label" />
+                                        </div>
+                                    </th>
+                                    <th class="border-0" style="padding: 0px; padding-right: 15px;">
+                                        <div class="f-icon" style="padding: 0px;" id="btnFilterRangeDate">
+                                            <i class="fas fa-filter"></i>
+                                        </div>
+                                        <div id="divfilterRangeDate" class="filter-div card shadow" style="padding-top:0px;">
+                                            <center>
+                                                Aralık Giriniz..
+                                                <div class="input-group date datePicker" id="mydatetimepicker2" data-target-input="nearest" style="width: 200px;">
+                                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker2" id="fromActivityDate">
+                                                    <div class="input-group-append" data-target="#mydatetimepicker2" data-toggle="datetimepicker">
+                                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                                    </div>
+                                                </div>
+                                                <input type="button" class="btn" id="btnResetActivityDateFilter" value="Sıfırla" />
+                                                <i class="fas fa-arrows-alt-v"></i>
+                                                <input type="button" class="btn" id="btnFilterActivityDate" value="Filtrele" />
+                                                <div class="input-group date datePicker" id="mydatetimepicker3" data-target-input="nearest" style="width: 200px;">
+                                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker3" id="toActivityDate">
+                                                    <div class="input-group-append" data-target="#mydatetimepicker3" data-toggle="datetimepicker">
+                                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                                    </div>
+                                                </div>
+                                            </center>
+                                        </div>
+                                    </th>
+                                    <th class="border-0" style="padding: 0px;"></th>
+                                    <th class="border-0" style="padding: 0px;"></th>
+                                    <th class="border-0" style="padding: 0px;"></th>
+                                    <th class="border-0" style="padding: 0px; padding-right: 15px;">
+                                        <div class="f-icon" style="padding: 0px;" id="btnFilterCreateRangeDate">
+                                            <i class="fas fa-filter"></i>
+                                        </div>
+                                        <div id="divfilterCreateRangeDate" class="filter-div card shadow" style="padding-top:0px;">
+                                            <center>
+                                                Aralık Giriniz..
+                                                <div class="input-group date datePicker" id="mydatetimepicker6" data-target-input="nearest" style="width: 200px;">
+                                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker6" id="fromCreateDate">
+                                                    <div class="input-group-append" data-target="#mydatetimepicker6" data-toggle="datetimepicker">
+                                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                                    </div>
+                                                </div>
+                                                <input type="button" class="btn" id="btnResetCreateyDateFilter" value="Sıfırla" />
+                                                <i class="fas fa-arrows-alt-v"></i>
+                                                <input type="button" class="btn" id="btnFilterCreateDate" value="Filtrele" />
+                                                <div class="input-group date datePicker" id="mydatetimepicker7" data-target-input="nearest" style="width: 200px;">
+                                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker7" id="toCreateDate">
+                                                    <div class="input-group-append" data-target="#mydatetimepicker7" data-toggle="datetimepicker">
+                                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                                    </div>
+                                                </div>
+                                            </center>
+                                        </div>
+                                    </th>
+                                    <th class="border-0" style="padding: 0px;"></th>
+                                    <th class="border-0" style="padding: 0px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.ActivityDto)
+                                {
+                                    <tr>
+                                        <td><button type="button" data-id="@item.ID" data-toggle="modal" data-target="#edit" class="btn btn-outline-primary fBtnEdit">Düzenle</button></td>
+                                        <td id="@item.ID">@item.ID </td>
+                                        <td id="@item.ID">@item.PROJECT.CUSTOMER.CUSTOMER_NAME </td>
+                                        <td id="@item.ID-project" class="tableexport-string" data-id="@item.PROJECT.ID">@item.PROJECT.PROJECT_NAME</td>
+                                        @if (item.STATUS == true)
+                                        {
+                                            <td id="@item.ID-status" class="tableexport-string">Aktif</td>
+                                        }
+                                        @if (item.STATUS == false)
+                                        {
+                                            <td id="@item.ID-status" class="tableexport-string">Pasif</td>
+                                        }
+                                        <td id="@item.ID-priority" class="tableexport-string" data-id="@item.PRIORITY.ID">@item.PRIORITY.PRIORITY_NAME</td>
+                                        @if (item.INVOICE == true)
+                                        {
+                                            <td id="@item.ID-invoice" class="tableexport-string">Evet</td>
+                                        }
+                                        @if (item.INVOICE == false)
+                                        {
+                                            <td id="@item.ID-invoice" class="tableexport-string">Hayır</td>
+                                        }
+                                        <td id="@item.ID-location" class="tableexport-string">@item.LOCATION</td>
+                                        <td id="@item.ID-detail" class="tableexport-string">@item.ACTIVITY_DETAIL</td>
+                                        <td id="@item.ID-estStart" class="tableexport-string">@item.ACTIVITY_DATE.ToString("dd/MM/yyyy")</td>
+                                        <td id="@item.ID-start" class="tableexport-string">@item.START_TIME.ToString("hh':'mm':'ss")</td>
+                                        <td id="@item.ID-end" class="tableexport-string">@item.END_TIME?.ToString("hh':'mm':'ss")</td>
+                                        <td id="@item.ID-whour" class="tableexport-string">@item.WHOUR</td>
+                                        <td class="tableexport-string">@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
+                                        <td class="tableexport-string">@item.CREATED_TIME.ToString("hh':'mm':'ss")</td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline-danger viewModelDel" data-toggle="modal" data-target="#delete" data-id="@item.ID">Sil</button>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <thead class="bg-light" style="text-align: center;">
-                                    <tr class="border-0 tableexport-ignore">
-                                        <th class="border-0" style="padding: 0px;" colspan="2">Filtrele : </th>
-                                        <th class="border-0" style="padding: 0px; padding-right: 15px;">
-                                            <div class="f-icon" style="padding: 0px;" id="btnProjectFilter">
-                                                <i class="fas fa-filter"></i>
-                                            </div>
-                                            <div id="divfilterProject" class="filter-div card shadow">
-                                                <select class="custom-select" id="filterProject" style="width: auto;">
-                                                    <option value="Hepsi">Hepsi</option>
-                                                    @foreach (var item in Model.ProjectDto)
-                                                    {
-                                                        <option value="@item.NAME">@item.NAME</option>
-                                                    }
-                                                </select>
-                                            </div>
-                                        </th>
-                                        <th class="border-0" style="padding: 0px; padding-right: 15px;">
-                                            <div class="f-icon" style="padding: 0px;" id="btnStatusFilter">
-                                                <i class="fas fa-filter"></i>
-                                            </div>
-                                            <div id="divfilterStatus" class="filter-div card shadow">
-                                                <select class="custom-select" id="filterStatus" style="width: auto;">
-                                                    <option value="Hepsi">Hepsi</option>
-                                                    <option value="Aktif">Aktif</option>
-                                                    <option value="Pasif">Pasif</option>
-                                                </select>
-                                            </div>
-                                        </th>
-                                        <th class="border-0" style="padding: 0px; padding-right: 15px;">
-                                            <div class="f-icon" style="padding: 0px;" id="btnPriorityFilter">
-                                                <i class="fas fa-filter"></i>
-                                            </div>
-                                            <div id="divfilterPriority" class="filter-div card shadow">
-                                                <select class="custom-select" id="filterPriority" style="width: auto;">
-                                                    <option value="">Hepsi</option>
-                                                    @foreach (var item in Model.PriorityDto)
-                                                    {
-                                                        <option value="@item.NAME">@item.NAME</option>
-                                                    }
-                                                </select>
-                                            </div>
-                                        </th>
-                                        <th class="border-0" style="padding: 0px; padding-right: 15px;">
-                                            <div class="f-icon" style="padding: 0px;" id="btnInvoiceFilter">
-                                                <i class="fas fa-filter"></i>
-                                            </div>
-                                            <div id="divfilterInvoice" class="filter-div card shadow">
-                                                <select class="custom-select" id="filterInvoice" style="width: auto;">
-                                                    <option value="Hepsi">Hepsi</option>
-                                                    <option value="Evet">Evet</option>
-                                                    <option value="Hayır">Hayır</option>
-                                                </select>
-                                            </div>
-                                        </th>
-                                        <th class="border-0" style="padding: 0px; padding-right: 15px;">
-                                            <div class="f-icon" style="padding: 0px;" id="btnLocationFilter">
-                                                <i class="fas fa-filter"></i>
-                                            </div>
-                                            <div id="divfilterLocation" class="filter-div card shadow">
-                                                <select class="custom-select" id="filterLocation" style="width: auto;">
-                                                    <option value="Hepsi">Hepsi</option>
-                                                    <option value="Onsite">Onsite</option>
-                                                    <option value="Remote">Remote</option>
-                                                    <option value="Other">Other</option>
-                                                </select>
-                                            </div>
-                                        </th>
-                                        <th class="border-0" style="padding: 0px; padding-right: 15px;">
-                                            <div class="f-icon" style="padding: 0px;" id="btnDetailSearch">
-                                                <i class="fas fa-filter"></i>
-                                            </div>
-                                            <div id="divsearchDetail" class="filter-div card shadow">
-                                                <input type="text" id="searchDetail" placeholder="Ara" class="custom-control-label" style="width: auto;" />
-                                            </div>
-                                        </th>
-                                        <th class="border-0" style="padding: 0px;"></th>
-                                        <th class="border-0" style="padding: 0px;"></th>
-                                        <th class="border-0" style="padding: 0px;"></th>
-                                        <th class="border-0" style="padding: 0px;"></th>
-                                        <th class="border-0" style="padding: 0px;"></th>
-                                        <th class="border-0" style="padding: 0px;"></th>
-                                        <th class="border-0" style="padding: 0px;"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model.ActivityDto)
-                                    {
-                                        <tr>
-                                            <td><button type="button" data-id="@item.ID" data-toggle="modal" data-target="#edit" class="btn btn-outline-primary fBtnEdit">Düzenle</button></td>
-                                            <td id="@item.ID">@item.ID </td>
-                                            <td id="@item.ID-project" data-id="@item.PROJECT.ID">@item.PROJECT.PROJECT_NAME</td>
-                                            @if (item.STATUS == true)
-                                            {
-                                                <td id="@item.ID-status">Aktif</td>
-                                            }
-                                            @if (item.STATUS == false)
-                                            {
-                                                <td id="@item.ID-status">Pasif</td>
-                                            }
-                                            <td id="@item.ID-priority" data-id="@item.PRIORITY.ID">@item.PRIORITY.PRIORITY_NAME</td>
-                                            @if (item.INVOICE == true)
-                                            {
-                                                <td id="@item.ID-invoice">Evet</td>
-                                            }
-                                            @if (item.INVOICE == false)
-                                            {
-                                                <td id="@item.ID-invoice">Hayır</td>
-                                            }
-                                            <td id="@item.ID-location">@item.LOCATION</td>
-                                            <td id="@item.ID-detail">@item.ACTIVITY_DETAIL</td>
-                                            <td id="@item.ID-estStart">@item.ACTIVITY_DATE.ToString("dd/MM/yyyy")</td>
-                                            <td id="@item.ID-start">@item.START_TIME.ToString("hh':'mm':'ss")</td>
-                                            <td id="@item.ID-end">@item.END_TIME?.ToString("hh':'mm':'ss")</td>
-                                            <td id="@item.ID-whour" class="tableexport-string">@item.WHOUR</td>
-                                            <td>@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
-                                            <td>@item.CREATED_TIME.ToString("hh':'mm':'ss")</td>
-                                            <td>
-                                                <button type="button" class="btn btn-outline-danger viewModelDel" data-toggle="modal" data-target="#delete" data-id="@item.ID">Sil</button>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
+                                }
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -265,7 +333,7 @@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Projesi</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
-                                    <select class="custom-select" name="PROJECT_NUMBER" id="selectProject">
+                                    <select class="custom-select" name="PROJECT_NUMBER" id="selectProject" disabled>
                                         @foreach (var item in Model.ProjectDto)
                                         {
                                             <option value="@item.ID" class="@item.CUSTOMER.ID">@item.NAME</option>
@@ -346,7 +414,7 @@
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Çalışma Saati*</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
                                     <div id="div_c_whour">
-                                        <input id="C_WHOUR" name="WHOUR" type="text" style="height:inherit;" maxlength="6" class="form-control">
+                                        <input id="C_WHOUR" name="WHOUR" autocomplete="off" type="text" style="height:inherit;" maxlength="6" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -476,7 +544,7 @@
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Çalışma Saati*</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
                                     <div id="div_whour">
-                                        <input id="WHOUR" name="WHOUR" style="height:inherit;" maxlength="6" class="form-control">
+                                        <input id="WHOUR" name="WHOUR" autocomplete="off" style="height:inherit;" maxlength="6" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -498,7 +566,20 @@
 @section scripts{
     <script>
 
+        $("#btnResetActivityDateFilter").click(function () {
+            $("#fromActivityDate").val('');
+            $("#toActivityDate").val('');
+            $("#tb").DataTable().columns('').search('').draw();
+        });
+        $("#btnResetCreateyDateFilter").click(function () {
+            $("#fromCreateDate").val('');
+            $("#toCreateDate").val('');
+            $("#tb").DataTable().columns('').search('').draw();
+        });
 
+        $("#btnCustomerFilter").click(function () {
+            $("#divfilterCustomer").toggle("slow");
+        });
         $("#btnProjectFilter").click(function () {
             $("#divfilterProject").toggle("slow");
         });
@@ -517,6 +598,13 @@
         $("#btnDetailSearch").click(function () {
             $("#divsearchDetail").toggle("slow");
         });
+        $("#btnFilterRangeDate").click(function () {
+            $("#divfilterRangeDate").toggle("slow");
+        });
+        $("#btnFilterCreateRangeDate").click(function () {
+            $("#divfilterCreateRangeDate").toggle("slow");
+        });
+
         //slideToggle();
 
         $("#END_TIME").on('keyup change', function () {
@@ -607,6 +695,12 @@
             var allProject = $('#selectProject').html();
             $("#selectCustomer").change(function () {
                 var selectedCustomer = $("#selectCustomer option:selected").prop("class");
+
+                if (selectedCustomer != "all")
+                    $("#selectProject").attr("disabled", false);
+                else
+                    $("#selectProject").attr("disabled", true);
+
                 $("#selectProject").html(allProject);
                 if (selectedCustomer == "all") return;
                 $('#selectProject :not([class^="' + selectedCustomer + '"])').remove();
@@ -620,23 +714,68 @@
                 $('#PROJECT_NUMBER :not([class^="' + selectedCustomer + '"])').remove();
             });
 
+            var AllFilterProject = $('#filterProject').html();
+            $("#filterCustomer").change(function () {
+                var selectedFilterCustomer = $("#filterCustomer option:selected").prop("class");
+                $("#filterProject").html(AllFilterProject);
+                if (selectedFilterCustomer == "all") return;
+                $('#filterProject :not([class^="' + selectedFilterCustomer + '"])').remove();
+            });
+
         });
 
         function filterExport() {
-            var table = $('#tb').DataTable();
+            var exportDate = new Date();
             var tableeexport = $('#tb').tableExport({
                 headers: true,
                 footers: false,
                 formats: ["xlsx"],
-                filename: "Aktiviteler",
+                filename: "Aktivitelerim " + exportDate.getDate() + "." + (exportDate.getMonth() + 1) + "." + exportDate.getFullYear(),
                 bootstrap: true,
                 exportButtons: false,
                 position: "top",
                 ignoreRows: null,
-                ignoreCols: [0, 14],
+                ignoreCols: [0, 1, 15],
                 trimWhitespace: true,
                 RTL: false,
-                sheetname: "Aktiviteler"
+                sheetname: "Aktivitelerim " + exportDate.getDate() + "." + (exportDate.getMonth() + 1) + "." + exportDate.getFullYear()
+            });
+            var table = $('#tb').DataTable({
+                "columnDefs": [
+                    { "orderable": false, "targets": [0, 2, 3, 4, 5, 6, 7, 14] }
+                ],
+                "order": [[1, "desc"]],
+                language: {
+                    info: "_TOTAL_ kayıttan _START_ - _END_ kayıt gösteriliyor.",
+                    infoEmpty: "Gösterilecek hiç kayıt yok.",
+                    loadingRecords: "Kayıtlar yükleniyor.",
+                    zeroRecords: "Tablo boş",
+                    search: "Arama:",
+                    infoFiltered: "(toplam _MAX_ kayıttan filtrelenenler)",
+                    lengthMenu: "Sayfada _MENU_ Kayıt Göster",
+                    paginate: {
+                        first: "İlk",
+                        previous: "Önceki",
+                        next: "Sonraki",
+                        last: "Son"
+                    }
+                },
+                responsive: true,
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Hepsi"]],
+                "fnDrawCallback": function (oSettings) {
+                    tableeexport.reset();
+                }
+            });
+
+            $("#filterCustomer").on("change", function () {
+                var filter = $(this).children("option:selected").val();
+
+                if (filter == "all") {
+                    filter = "";
+                    $("#filterCustomer").val("all")
+                }
+
+                table.columns(2).search(filter).draw();
             });
 
             $("#filterProject").on("change", function () {
@@ -645,8 +784,7 @@
                 if (filter == "Hepsi")
                     filter = "";
 
-                table.columns(2).search(filter).draw();
-                tableeexport.reset();
+                table.columns(3).search(filter).draw();
             });
 
             $("#filterStatus").on("change", function () {
@@ -655,8 +793,7 @@
                 if (filter == "Hepsi")
                     filter = "";
 
-                table.columns(3).search(filter).draw();
-                tableeexport.reset();
+                table.columns(4).search(filter).draw();
             });
 
             $("#filterPriority").on("change", function () {
@@ -665,8 +802,7 @@
                 if (filter == "Hepsi")
                     filter = "";
 
-                table.columns(4).search(filter).draw();
-                tableeexport.reset();
+                table.columns(5).search(filter).draw();
             });
 
             $("#filterInvoice").on("change", function () {
@@ -675,8 +811,7 @@
                 if (filter == "Hepsi")
                     filter = "";
 
-                table.columns(5).search(filter).draw();
-                tableeexport.reset();
+                table.columns(6).search(filter).draw();
             });
 
             $("#filterLocation").on("change", function () {
@@ -685,14 +820,71 @@
                 if (filter == "Hepsi")
                     filter = "";
 
-                table.columns(6).search(filter).draw();
-                tableeexport.reset();
+                table.columns(7).search(filter).draw();
             });
 
             $("#searchDetail").on("keyup", function () {
                 var search = $(this).val();
 
-                table.columns(7).search(search).draw();
+                table.columns(8).search(search).draw();
+            });
+            $("#btnFilterActivityDate").on("click", function () {
+                var from = $("#fromActivityDate").val();
+                var to = $("#toActivityDate").val();
+
+                var f = from.split('.');
+                var t = to.split('.');
+
+                var day = 1000 * 60 * 60 * 24;
+                var fromDate = new Date(f[2], f[1], f[0]);
+                var toDate = new Date(t[2], t[1], t[0]);
+                var allDate = [];
+                var diff = (toDate.getTime() - fromDate.getTime()) / day;
+                for (var i = 0; i <= diff; i++) {
+                    var xx = fromDate.getTime() + day * i;
+                    var yy = new Date(xx);
+                    var d = yy.getDate();
+                    var m = yy.getMonth();
+
+                    if (d < 10)
+                        d = "0" + d;
+                    if (m < 10)
+                        m = "0" + m;
+
+                    allDate.push(d + "." + m + "." + yy.getFullYear());
+                }
+
+                table.columns(9).search(allDate.join("|"), true, false, true).draw();
+                tableeexport.reset();
+            });
+
+            $("#btnFilterCreateDate").on("click", function () {
+                var from = $("#fromCreateDate").val();
+                var to = $("#toCreateDate").val();
+
+                var f = from.split('.');
+                var t = to.split('.');
+
+                var day = 1000 * 60 * 60 * 24;
+                var fromDate = new Date(f[2], f[1], f[0]);
+                var toDate = new Date(t[2], t[1], t[0]);
+                var allDate = [];
+                var diff = (toDate.getTime() - fromDate.getTime()) / day;
+                for (var i = 0; i <= diff; i++) {
+                    var xx = fromDate.getTime() + day * i;
+                    var yy = new Date(xx);
+                    var d = yy.getDate();
+                    var m = yy.getMonth();
+
+                    if (d < 10)
+                        d = "0" + d;
+                    if (m < 10)
+                        m = "0" + m;
+
+                    allDate.push(d + "." + m + "." + yy.getFullYear());
+                }
+
+                table.columns(13).search(allDate.join("|"), true, false, true).draw();
                 tableeexport.reset();
             });
         };
@@ -778,7 +970,7 @@
         });
 
         $('.datePicker').datetimepicker({
-            format: 'DD.MM.YYYY',
+            format: 'DD.MM.YYYY'
         });
 
         $('.selectpicker').selectpicker({
@@ -787,24 +979,6 @@
             deselectAllText: 'Hiçbiri',
             size: 'auto',
 
-        });
-        $('#tb').DataTable({
-            language: {
-                info: "_TOTAL_ kayıttan _START_ - _END_ kayıt gösteriliyor.",
-                infoEmpty: "Gösterilecek hiç kayıt yok.",
-                loadingRecords: "Kayıtlar yükleniyor.",
-                zeroRecords: "Tablo boş",
-                search: "Arama:",
-                infoFiltered: "(toplam _MAX_ kayıttan filtrelenenler)",
-                lengthMenu: "Sayfada _MENU_ Kayıt Göster",
-                paginate: {
-                    first: "İlk",
-                    previous: "Önceki",
-                    next: "Sonraki",
-                    last: "Son"
-                },
-            },
-            responsive: true
         });
 
         function setInputFilter(textbox, inputFilter) {

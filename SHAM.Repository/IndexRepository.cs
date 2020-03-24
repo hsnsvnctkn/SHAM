@@ -20,6 +20,8 @@ namespace SHAM.Repository
 
             var projectID = _context.ProjectEmployees.Where(pe => pe.EmployeeID == id).Select(p => p.ProjectID).ToList();
 
+            var notifi = _context.Notifications.Where(n => (n.END_TIME >= DateTime.Now || n.END_TIME == null) && n.START_TIME <= DateTime.Now).Select(n => new NotificationDto { TEXT_INFO = n.TEXT_INFO }).ToList();
+
             var getIndex = new IndexDto
             {
                 levelCount = _context.Levels.Count(),
@@ -44,6 +46,7 @@ namespace SHAM.Repository
             if (getIndex.MyProject != null)
                 getIndex.myProjectCount = getIndex.MyProject.Count();
 
+            getIndex.Notification = notifi;
 
             if (isAdmin == true)
             {

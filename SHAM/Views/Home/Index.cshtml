@@ -3,7 +3,32 @@
     ViewData["Title"] = "Ana Sayfa";
 }
 
+@if (Model.Notification.Count != 0)
+{
+    <div class="modal fade" id="notificationModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="fas fa-fw fa-bell text-danger"></i>
+                        Duyurular
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    @foreach (var item in Model.Notification)
+                    {
+                        <p>@item.TEXT_INFO</p><hr />
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                </div>
+            </div>
 
+        </div>
+    </div>
+}
 
 
 <div class="ecommerce-widget">
@@ -114,42 +139,42 @@
             }
         </div>
         @*<div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="page-header">
-                    <h2 class="pageheader-title">Aktiviteler</h2><hr>
-                </div>
-            </div>
-
-            @foreach (var item in Model.Activity)
-            {
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-                    <div class="card" style="border-bottom-color: #5969ff">
-                        <h5 class="card-header"><b>@item.PROJECT.PROJECT_NAME</b> Projesine Ait</h5>
-                        <div class="card-body">
-                            <b> Aktivite Açıklaması :</b>
-                            <p>@item.ACTIVITY_DETAIL</p>
-                            <div style="margin-top:10px">
-                                Durumu:
-                                @if (item.STATUS == false)
-                                {
-                                    <i class="fa fas fa-minus-circle fa-fw fa-sm text-danger"></i>
-                                }
-                                else
-                                {
-                                    <i class="fa fas fa-check-circle fa-fw fa-sm text-success"></i>
-                                }
-                            </div>
-                        </div>
-                        <div class="card-footer d-flex text-muted">
-                            <div>
-                                Aktivite Önceliği: &nbsp;<b> @item.PRIORITY.PRIORITY_NAME</b>
-                            </div><br />
-                        </div>
-
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Aktiviteler</h2><hr>
                     </div>
                 </div>
-            }
-        </div>*@
+
+                @foreach (var item in Model.Activity)
+                {
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="card" style="border-bottom-color: #5969ff">
+                            <h5 class="card-header"><b>@item.PROJECT.PROJECT_NAME</b> Projesine Ait</h5>
+                            <div class="card-body">
+                                <b> Aktivite Açıklaması :</b>
+                                <p>@item.ACTIVITY_DETAIL</p>
+                                <div style="margin-top:10px">
+                                    Durumu:
+                                    @if (item.STATUS == false)
+                                    {
+                                        <i class="fa fas fa-minus-circle fa-fw fa-sm text-danger"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fas fa-check-circle fa-fw fa-sm text-success"></i>
+                                    }
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex text-muted">
+                                <div>
+                                    Aktivite Önceliği: &nbsp;<b> @item.PRIORITY.PRIORITY_NAME</b>
+                                </div><br />
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            </div>*@
 
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -204,42 +229,42 @@
         </div>
 
         @*<div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="page-header">
-                    <h2 class="pageheader-title">Aktivitelerim</h2><hr>
-                </div>
-            </div>
-
-            @foreach (var item in Model.MyActivity)
-            {
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-                    <div class="card" style="border-bottom-color: #5969ff">
-                        <h5 class="card-header"><b>@item.PROJECT.PROJECT_NAME</b> Projesine Ait</h5>
-                        <div class="card-body">
-                            <b> Aktivite Açıklaması :</b>
-                            <p>@item.ACTIVITY_DETAIL</p>
-                            <div style="margin-top:10px">
-                                Durumu:
-                                @if (item.STATUS == false)
-                                {
-                                    <i class="fa fas fa-minus-circle fa-fw fa-sm text-danger"></i>
-                                }
-                                else
-                                {
-                                    <i class="fa fas fa-check-circle fa-fw fa-sm text-success"></i>
-                                }
-                            </div>
-                        </div>
-                        <div class="card-footer d-flex text-muted">
-                            <div>
-                                Aktivite Önceliği: &nbsp;<b> @item.PRIORITY.PRIORITY_NAME</b>
-                            </div><br />
-                        </div>
-
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Aktivitelerim</h2><hr>
                     </div>
                 </div>
-            }
-        </div>*@
+
+                @foreach (var item in Model.MyActivity)
+                {
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="card" style="border-bottom-color: #5969ff">
+                            <h5 class="card-header"><b>@item.PROJECT.PROJECT_NAME</b> Projesine Ait</h5>
+                            <div class="card-body">
+                                <b> Aktivite Açıklaması :</b>
+                                <p>@item.ACTIVITY_DETAIL</p>
+                                <div style="margin-top:10px">
+                                    Durumu:
+                                    @if (item.STATUS == false)
+                                    {
+                                        <i class="fa fas fa-minus-circle fa-fw fa-sm text-danger"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fas fa-check-circle fa-fw fa-sm text-success"></i>
+                                    }
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex text-muted">
+                                <div>
+                                    Aktivite Önceliği: &nbsp;<b> @item.PRIORITY.PRIORITY_NAME</b>
+                                </div><br />
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            </div>*@
     }
     else
     {
@@ -326,42 +351,48 @@
         </div>
 
         @*<div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="page-header">
-                    <h2 class="pageheader-title">Aktivitelerim</h2><hr>
-                </div>
-            </div>
-
-            @foreach (var item in Model.MyActivity)
-            {
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-                    <div class="card" style="border-bottom-color: #5969ff">
-                        <h5 class="card-header"><b>@item.PROJECT.PROJECT_NAME</b> Projesine Ait</h5>
-                        <div class="card-body">
-                            <b> Aktivite Açıklaması :</b>
-                            <p>@item.ACTIVITY_DETAIL</p>
-                            <div style="margin-top:10px">
-                                Durumu:
-                                @if (item.STATUS == false)
-                                {
-                                    <i class="fa fas fa-minus-circle fa-fw fa-sm text-danger"></i>
-                                }
-                                else
-                                {
-                                    <i class="fa fas fa-check-circle fa-fw fa-sm text-success"></i>
-                                }
-                            </div>
-                        </div>
-                        <div class="card-footer d-flex text-muted">
-                            <div>
-                                Aktivite Önceliği: &nbsp;<b> @item.PRIORITY.PRIORITY_NAME</b>
-                            </div><br />
-                        </div>
-
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Aktivitelerim</h2><hr>
                     </div>
                 </div>
-            }
-        </div>*@
+
+                @foreach (var item in Model.MyActivity)
+                {
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="card" style="border-bottom-color: #5969ff">
+                            <h5 class="card-header"><b>@item.PROJECT.PROJECT_NAME</b> Projesine Ait</h5>
+                            <div class="card-body">
+                                <b> Aktivite Açıklaması :</b>
+                                <p>@item.ACTIVITY_DETAIL</p>
+                                <div style="margin-top:10px">
+                                    Durumu:
+                                    @if (item.STATUS == false)
+                                    {
+                                        <i class="fa fas fa-minus-circle fa-fw fa-sm text-danger"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fas fa-check-circle fa-fw fa-sm text-success"></i>
+                                    }
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex text-muted">
+                                <div>
+                                    Aktivite Önceliği: &nbsp;<b> @item.PRIORITY.PRIORITY_NAME</b>
+                                </div><br />
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            </div>*@
     }
 </div>
-
+@section scripts{
+    <script>
+        $(window).on('load', function () {
+            $('#notificationModal').modal('show');
+        });
+    </script>
+}

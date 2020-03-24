@@ -13,7 +13,7 @@ namespace SHAM.Repository.Dto
         public int levelCount { get; set; }
         public List<ProjectDto> Project { get; set; }
         public List<ActivityDto> Activity { get; set; }
-
+        public List<NotificationDto> Notification { get; set; }
 
         public int myProjectCount { get; set; }
         public int myActivityCount { get; set; }
