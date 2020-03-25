@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit;
 using SHAM.Repository;
 using SHAM.Repository.Contracts;
 using SHAM.Repository.Dto;
@@ -15,12 +16,14 @@ namespace SHAM.UI.Controllers
     {
         readonly ITokenProvider _tokenProvider;
         readonly IEmployeeRepository _employeeRepository;
+        readonly IEmailSender _emailSender;
         //readonly UserManager<IdentityUser> _userManager;
 
-        public LogInController(ITokenProvider tokenProvider, IEmployeeRepository employeeRepository)
+        public LogInController(ITokenProvider tokenProvider, IEmployeeRepository employeeRepository, IEmailSender emailSender)
         {
             _employeeRepository = employeeRepository;
             _tokenProvider = tokenProvider;
+            _emailSender = emailSender;
         }
         public IActionResult Index()
         {
@@ -94,6 +97,27 @@ namespace SHAM.UI.Controllers
         public IActionResult NewMember()
         {
             return View();
+        }
+
+        [HttpPost]
+        public JsonResult SendNewMember(string name, string surname, string email, string note)
+        {
+            if (name == null)
+                return Json(new { status = false, error = "null", text = "Isim Bos Olamaz." });
+            else if (surname == null)
+                return Json(new { status = false, error = "null", text = "Soyad Bos Olamaz." });
+            else if (email == null)
+                return Json(new { status = false, error = "null", text = "Email Bos Olamaz." });
+
+            var msg = new MimeMessage();
+
+            var subject = "SHAM - Yeni Üye İsteği";
+            var body = "<b>Ad</b> : " + name + "<br>" + "<b>Soyad</b> : " + surname + "<br>" + "<b>Mail Adresi </b>: " + email + "<br>" + "<b>Notu</b> : " + note;
+            var adress = "sevinctekin.hasan@gmail.com";
+
+            _emailSender.Send(adress, subject, body);
+
+            return Json(new { status = true });
         }
     }
 }

@@ -4,20 +4,54 @@
     Layout = "~/Views/Shared/LoginLayout.cshtml";
 }
 
-        <div class="card-header text-center"><h2 class="text-primary font-weight-bold">SHAM</h2><span class="splash-description">Yeni üyelik için yönetici ile iletişime geçiniz.</span></div>
-        <div class="card-body">
-            <form action="/LogIn/SendPasswordResetLink" role="form" method="post">
-                <p>Parolanızı sıfırlamanız için size mail göndereceğiz.</p>
-                <div class="form-group">
-                    <input id="levelName" name="EMAIL" type="text" data-parsley-trigger="change" value="" required="" placeholder="Mail Adresi" autocomplete="off" class="form-control">
-                </div>
-                <button type="button" class="btn btn-primary btn-lg btn-block">Gönder</button>
-            </form>
-            <strong>@ViewBag.Message</strong>
-            <div asp-validation-summary="All"></div>
+<div class="card-header text-center"><h2 class="text-primary font-weight-bold">SHAM</h2><span class="splash-description">Yeni üyelik için bilgileri doldurup hesap onay mail'i bekleyiniz.</span></div>
+<div class="card-body">
+    <form role="form" id="newMember">
+        <div class="form-group">
+            <input id="name" name="name" type="text" data-parsley-trigger="change" value="" required="" placeholder="Ad" autocomplete="off" class="form-control">
         </div>
-        <div class="card-footer text-center">
-            <span>Zaten hesabınız var mı ? <a asp-controller="LogIn" asp-action="Index">Giris Yap</a></span>
+        <div class="form-group">
+            <input id="surname" name="surname" type="text" data-parsley-trigger="change" value="" required="" placeholder="Soyad" autocomplete="off" class="form-control">
         </div>
+        <div class="form-group">
+            <input id="email" name="email" type="text" data-parsley-trigger="change" value="" required="" placeholder="Mail Adresi" autocomplete="off" class="form-control">
+        </div>
+        <div class="form-group">
+            <textarea id="note" rows="3" class="form-control" name="note" placeholder="Mesajınız (istege bagli)"></textarea>
+        </div>
+        <button id="sendMember" type="button" class="btn btn-primary btn-lg btn-block">Gönder</button>
+    </form>
+    <strong>@ViewBag.Message</strong>
+    <div asp-validation-summary="All"></div>
+</div>
+<div class="card-footer text-center">
+    <span>Zaten hesabınız var mı ? <a asp-controller="LogIn" asp-action="Index">Giris Yap</a></span>
+</div>
 
+@section scripts{
+    <script>
+        $("#note").keyup(function (e) {
+            if (e.keyCode == 13) {
+                send();
+            }
+        });
 
+        $("#sendMember").click(function () {
+            send();
+        });
+
+        function send() {
+            $("#newMember").ajaxSubmit({
+                url: '/LogIn/SendNewMember',
+                type: 'post',
+                success: function (result) {
+                    if (result.status)
+                        showSendAlert();
+                    else if (result.error == "null") {
+                        showAlert2(result.text);
+                    }
+                }
+            });
+        };
+    </script>
+}

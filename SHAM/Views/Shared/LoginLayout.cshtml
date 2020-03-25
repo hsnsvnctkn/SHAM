@@ -50,6 +50,12 @@
         <div class="alert alert-danger alertmessage" id="danger-alert">
             <strong>Hata ! </strong><br /> Mail Adresi Veya Şifre Yanlış ..
         </div>
+        <div class="alert alert-danger alertmessage" id="danger-alert2">
+            <strong>Hata ! </strong><br /><p id="errorMsg"></p>
+        </div>
+        <div class="alert alert-success alertmessage" id="send-success-alert">
+            <strong>Başarılı !  </strong><br /> Isteginiz Basarılı Bir Sekilde Iletilmistir.<br /><span class="dashboard-spinner spinner-secondary spinner-xs"></span>
+        </div>
 
         <!-- ============================================================== -->
         <!-- login page  -->
@@ -90,10 +96,22 @@
     $(document).ready(function () {
         $("#danger-alert").hide();
     });
-
+    function showAlert2(msg) {
+        document.getElementById("errorMsg").innerHTML = msg;
+        $("#danger-alert2").fadeTo(3000, 500).slideUp(500, function () {
+            $("#danger-alert2").slideUp(500);
+        });
+    };
     function showAlert() {
         $("#danger-alert").fadeTo(3000, 500).slideUp(500, function () {
             $("#danger-alert").slideUp(500);
         });
     };
+    function showSendAlert() {
+        $("#send-success-alert").fadeTo(2000, 500).slideUp(500, function () {
+            $("#send-success-alert").slideUp(500);
+            window.location.reload();
+        });
+    };
+
 </script>
