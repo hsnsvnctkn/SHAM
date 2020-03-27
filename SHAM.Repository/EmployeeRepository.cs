@@ -159,5 +159,18 @@ namespace SHAM.Repository
             else
                 return false;
         }
+        public List<EmployeeDto> EntryDailyActivity()
+        {
+            var activity = _context.Activities.Where(a => a.ACTIVITY_DATE.Date == DateTime.Now.Date).Select(a => a.ACTIVITY_EMPLOYEE);
+
+            var emp = _context.Employees.Where(e => !activity.Contains(e.ID)).Select(e => new EmployeeDto
+            {
+                NAME = e.EMPLOYEE_NAME,
+                SURNAME = e.EMPLOYEE_SURNAME,
+                MAIL = e.EMPLOYEE_MAIL,
+            }).ToList();
+
+            return emp;
+        }
     }
 }

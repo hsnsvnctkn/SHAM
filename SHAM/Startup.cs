@@ -2,15 +2,18 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
 using SHAM.Repository;
 using SHAM.Repository.Context;
 using SHAM.Repository.Contracts;
+using SHAM.Repository.Quartz;
 using System;
 using System.Text;
 
@@ -29,6 +32,20 @@ namespace SHAM.UI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IJobFactory, JobFactory>();
+            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+            services.AddSingleton<QuartzJobRunner>();
+            services.AddHostedService<QuartzHostedService>();
+
+            // Add our job
+            services.AddScoped<DailyActivityReminder>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(DailyActivityReminder),
+                cronExpression: "0 0 18 ? * MON-FRI")); // run at 18:00 every MONDAY-FRIDAY  "0 0 18 ? * MON-FRI"
+
+            services.AddHostedService<QuartzHostedService>();
+
+
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(240);
