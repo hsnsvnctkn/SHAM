@@ -14,12 +14,13 @@
             <input id="surname" name="surname" type="text" data-parsley-trigger="change" value="" required="" placeholder="Soyad" autocomplete="off" class="form-control">
         </div>
         <div class="form-group">
-            <input id="email" name="email" type="text" data-parsley-trigger="change" value="" required="" placeholder="Mail Adresi" autocomplete="off" class="form-control">
+            <input id="email" name="email" type="text" value="" required="" placeholder="Mail Adresi" autocomplete="off" class="form-control email-inputmask">
         </div>
         <div class="form-group">
             <textarea id="note" rows="3" class="form-control" name="note" placeholder="Mesajınız (istege bagli)"></textarea>
         </div>
         <button id="sendMember" type="button" class="btn btn-primary btn-lg btn-block">Gönder</button>
+        <center><span id="waiting" class="dashboard-spinner spinner-secondary spinner-xs" style="display:none"></span></center>
     </form>
     <strong>@ViewBag.Message</strong>
     <div asp-validation-summary="All"></div>
@@ -42,16 +43,43 @@
 
         function send() {
             $("#newMember").ajaxSubmit({
+                beforeSubmit: function () {
+                    $("#waiting").toggle("slow");
+                },
                 url: '/LogIn/SendNewMember',
                 type: 'post',
                 success: function (result) {
+                    $("#waiting").toggle("slow");
                     if (result.status)
                         showSendAlert();
-                    else if (result.error == "null") {
+                    else if (result.error == "null" && result.status == false) {
                         showAlert2(result.text);
                     }
+                    else
+                        showAlert2("Mail gönderilirken hata olustu, Lütfen daha sonra tekrar deneyiniz");
                 }
             });
         };
+
+        $(function (e) {
+            "use strict";
+            $(".date-inputmask").inputmask("dd/mm/yyyy"),
+                $(".phone-inputmask").inputmask("(999) 999-9999"),
+                $(".email-inputmask").inputmask({
+                    mask: "*{1,20}[.*{1,20}][.*{1,20}][.*{1,20}]@@*{1,20}[*{2,6}][*{1,2}].*{1,}[.*{2,6}][.*{1,2}]",
+                    greedy: !1,
+                    onBeforePaste: function (n, a) {
+                        return (e = e.toLowerCase()).replace("mailto:", "")
+                    },
+                    definitions: {
+                        "*": {
+                            validator: "[0-9A-Za-z!#$%&'*+/=?^_`{|}~/-]",
+                            cardinality: 1,
+                            casing: "lower"
+                        }
+                    }
+                })
+        });
+
     </script>
 }

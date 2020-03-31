@@ -22,6 +22,40 @@
     .table td {
         position: relative;
     }
+
+    #module {
+        line-height: 1.5;
+        margin-bottom: 0px !important;
+    }
+
+
+        #module .read-more.collapse:not(.show) {
+            display: block;
+            height: 1.5rem;
+            overflow: hidden;
+            margin-bottom: 0px !important;
+        }
+
+        #module .read-more.collapsing {
+            height: 1.5rem;
+            margin-bottom: 0px !important;
+        }
+
+        #module a.collapsed::after {
+            content: '+ Daha Fazla';
+            margin-top: 0px !important;
+        }
+
+        #module a:not(.collapsed)::after {
+            content: '- Daha Az';
+            margin-top: 0px !important;
+        }
+
+    .table td {
+        vertical-align: middle;
+        padding: 5px !important;
+        text-align: center;
+    }
 </style>
 
 
@@ -35,22 +69,22 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
                 <h5 class="card-header">Aktivite Bilgileri</h5>
-                <button class="btn btn-outline-success" data-toggle="modal" data-target="#create">Yeni Aktivite ekle</button>
+                <button class="btn btn-outline-success" data-toggle="modal" data-target="#create">Yeni Aktivite Ekle</button>
                 <div class="row" style="margin:5px;">
                     <form asp-action="Index">
                         <div class="col-md-auto">
                             <input type="hidden" name="All" value="true" />
-                            <input type="submit" class="btn" value="Hepsini Göster" />
+                            <input type="submit" class="btn btn-outline-secondary" value="Hepsini Göster" />
                         </div>
                     </form>
                     <form>
                         <div class="col-md-auto">
                             <input type="hidden" name="All" value="false" />
-                            <input type="submit" class="btn" value="Sadece Bu Ay'ı Göster" />
+                            <input type="submit" class="btn btn-outline-secondary" value="Sadece Bu Ay'ı Göster" />
                         </div>
                     </form>
                     <div class="col text-right">
-                        <button class="btn btn-outline-success fas fa-file-excel" tableexport-id="a70aea2-xlsx"> &nbsp; Excel Olarak Indir</button>
+                        <button class="btn btn-outline-secondary" tableexport-id="a70aea2-xlsx"> <i class="fas fa-file-excel"></i> Excel Olarak Indir</button>
                     </div>
                 </div>
                 <hr />
@@ -82,7 +116,7 @@
                             </thead>
                             <thead class="bg-light" style="text-align: center;">
                                 <tr class="border-0 tableexport-ignore">
-                                    <th class="border-0" style="padding: 0px;">Filtrele : </th>
+                                    <th class="border-0" style="padding: 0px;">Düzenle</th>
                                     <th class="border-0" style="padding: 0px;"></th>
                                     <th class="border-0" style="padding: 0px;">
                                         <div class="f-icon" style="padding: 0px;" id="btnCustomerFilter">
@@ -93,7 +127,7 @@
                                                 <option value="all" class="all">Hepsi</option>
                                                 @foreach (var item in Model.customerDto)
                                                 {
-                                                    <option value="@item.NAME" class="@item.ID">@item.NAME</option>
+                                                <option value="@item.NAME" class="@item.ID">@item.NAME</option>
                                                 }
                                             </select>
                                         </div>
@@ -107,7 +141,7 @@
                                                 <option value="Hepsi">Hepsi</option>
                                                 @foreach (var item in Model.ProjectDto)
                                                 {
-                                                    <option value="@item.NAME" class="@item.CUSTOMER.ID">@item.NAME</option>
+                                                <option value="@item.NAME" class="@item.CUSTOMER.ID">@item.NAME</option>
                                                 }
                                             </select>
                                         </div>
@@ -121,7 +155,7 @@
                                                 <option value="Hepsi">Hepsi</option>
                                                 @foreach (var item in Model.EmployeeDto)
                                                 {
-                                                    <option value="@item.NAME">@item.NAME</option>
+                                                <option value="@item.NAME">@item.NAME</option>
                                                 }
                                             </select>
                                         </div>
@@ -136,7 +170,7 @@
                                                 <option value="Hepsi">Hepsi</option>
                                                 @foreach (var item in Model.EmployeeDto)
                                                 {
-                                                    <option value="@item.NAME">@item.NAME</option>
+                                                <option value="@item.NAME">@item.NAME</option>
                                                 }
                                             </select>
                                         </div>
@@ -162,7 +196,7 @@
                                                 <option value="">Hepsi</option>
                                                 @foreach (var item in Model.PriorityDto)
                                                 {
-                                                    <option value="@item.NAME">@item.NAME</option>
+                                                <option value="@item.NAME">@item.NAME</option>
                                                 }
                                             </select>
                                         </div>
@@ -254,49 +288,61 @@
                                         </div>
                                     </th>
                                     <th class="border-0" style="padding: 0px;"></th>
-                                    <th class="border-0" style="padding: 0px;"></th>
+                                    <th class="border-0" style="padding: 0px;">Sil</th>
                                 </tr>
                             </thead>
 
                             <tbody>
                                 @foreach (var item in Model.ActivityDto)
                                 {
-                                    <tr>
-                                        <td><button type="button" data-id="@item.ID" data-toggle="modal" data-target="#edit" class="btn btn-outline-primary fBtnEdit">Düzenle</button></td>
-                                        <td id="@item.ID">@item.ID </td>
-                                        <td id="@item.ID">@item.PROJECT.CUSTOMER.CUSTOMER_NAME </td>
-                                        <td id="@item.ID-project" class="tableexport-string" data-id="@item.PROJECT.ID">@item.PROJECT.PROJECT_NAME</td>
-                                        <td id="@item.EMPLOYEE.ID" class="tableexport-string"> @item.EMPLOYEE.EMPLOYEE_NAME @item.EMPLOYEE.EMPLOYEE_SURNAME</td>
-                                        <td id="@item.ID-creator" class="tableexport-string" data-id="@item.CREATED_EMPLOYEE.ID">@item.CREATED_EMPLOYEE.EMPLOYEE_NAME @item.CREATED_EMPLOYEE.EMPLOYEE_SURNAME</td>
-                                        @if (item.STATUS == true)
+                                <tr>
+                                    <td><button type="button" data-id="@item.ID" data-toggle="modal" data-target="#edit" class="btn btn-outline-primary fBtnEdit"><i class="far fa-edit"></i></button></td>
+                                    <td id="@item.ID">@item.ID </td>
+                                    <td id="@item.ID-customer" data-id="@item.PROJECT.CUSTOMER.ID">@item.PROJECT.CUSTOMER.CUSTOMER_NAME </td>
+                                    <td id="@item.ID-project" class="tableexport-string" data-id="@item.PROJECT.ID">@item.PROJECT.PROJECT_NAME</td>
+                                    <td id="@item.EMPLOYEE.ID" class="tableexport-string"> @item.EMPLOYEE.EMPLOYEE_NAME @item.EMPLOYEE.EMPLOYEE_SURNAME</td>
+                                    <td id="@item.ID-creator" class="tableexport-string" data-id="@item.CREATED_EMPLOYEE.ID">@item.CREATED_EMPLOYEE.EMPLOYEE_NAME @item.CREATED_EMPLOYEE.EMPLOYEE_SURNAME</td>
+                                    @if (item.STATUS == true)
                                         {
-                                            <td id="@item.ID-status" class="tableexport-string">Aktif</td>
+                                    <td id="@item.ID-status" class="tableexport-string">Aktif</td>
                                         }
-                                        @if (item.STATUS == false)
+                                    @if (item.STATUS == false)
                                         {
-                                            <td id="@item.ID-status" class="tableexport-string">Pasif</td>
+                                    <td id="@item.ID-status" class="tableexport-string">Pasif</td>
                                         }
-                                        <td id="@item.ID-priority" class="tableexport-string" data-id="@item.PRIORITY.ID">@item.PRIORITY.PRIORITY_NAME</td>
-                                        @if (item.INVOICE == true)
+                                    <td id="@item.ID-priority" class="tableexport-string" data-id="@item.PRIORITY.ID">@item.PRIORITY.PRIORITY_NAME</td>
+                                    @if (item.INVOICE == true)
                                         {
-                                            <td id="@item.ID-invoice" class="tableexport-string">Evet</td>
+                                    <td id="@item.ID-invoice" class="tableexport-string">Evet</td>
                                         }
-                                        @if (item.INVOICE == false)
+                                    @if (item.INVOICE == false)
                                         {
-                                            <td id="@item.ID-invoice" class="tableexport-string">Hayır</td>
+                                    <td id="@item.ID-invoice" class="tableexport-string">Hayır</td>
                                         }
-                                        <td id="@item.ID-location" class="tableexport-string">@item.LOCATION</td>
-                                        <td id="@item.ID-detail" class="tableexport-string">@item.ACTIVITY_DETAIL</td>
-                                        <td id="@item.ID-estStart" class="tableexport-string">@item.ACTIVITY_DATE.ToString("dd/MM/yyyy")</td>
-                                        <td id="@item.ID-start" class="tableexport-string">@item.START_TIME.ToString("hh':'mm':'ss")</td>
-                                        <td id="@item.ID-end" class="tableexport-string">@item.END_TIME?.ToString("hh':'mm':'ss")</td>
-                                        <td id="@item.ID-whour" class="tableexport-string">@item.WHOUR</td>
-                                        <td class="tableexport-string">@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
-                                        <td class="tableexport-string">@item.CREATED_TIME.ToString("hh':'mm':'ss")</td>
-                                        <td>
-                                            <button type="button" class="btn btn-outline-danger viewModelDel" data-toggle="modal" data-target="#delete" data-id="@item.ID">Sil</button>
-                                        </td>
-                                    </tr>
+                                    <td id="@item.ID-location" class="tableexport-string">@item.LOCATION</td>
+                                    @if (item.ACTIVITY_DETAIL.Length > 40)
+                                        {
+                                    <td id="@item.ID-detail" class="tableexport-string">
+                                        <div id="module" class="container">
+                                            <p style="margin:0px!important" class="collapse read-more" id="collapseExample-@item.ID" aria-expanded="false">@item.ACTIVITY_DETAIL</p>
+                                            <a role="button" class="collapsed" data-toggle="collapse" href="#collapseExample-@item.ID" style="font-size:small" aria-expanded="false" aria-controls="collapseExample-@item.ID"></a>
+                                        </div>
+                                    </td>
+                                        }
+                                        else
+                                        {
+                                    <td id="@item.ID-detail" class="tableexport-string">@item.ACTIVITY_DETAIL</td>
+                                        }
+                                    <td id="@item.ID-estStart" class="tableexport-string">@item.ACTIVITY_DATE.ToString("dd/MM/yyyy")</td>
+                                    <td id="@item.ID-start" class="tableexport-string">@item.START_TIME.ToString("hh':'mm':'ss")</td>
+                                    <td id="@item.ID-end" class="tableexport-string">@item.END_TIME?.ToString("hh':'mm':'ss")</td>
+                                    <td id="@item.ID-whour" class="tableexport-string">@item.WHOUR</td>
+                                    <td class="tableexport-string">@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
+                                    <td class="tableexport-string">@item.CREATED_TIME.ToString("hh':'mm':'ss")</td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-danger viewModelDel" data-toggle="modal" data-target="#delete" data-id="@item.ID"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
                                 }
                             </tbody>
                         </table>
@@ -361,7 +407,7 @@
                                         <option class="all">Müşteri Seçiniz..</option>
                                         @foreach (var item in Model.customerDto)
                                         {
-                                            <option class="@item.ID">@item.NAME</option>
+                                        <option class="@item.ID">@item.NAME</option>
                                         }
                                     </select>
                                 </div>
@@ -372,7 +418,7 @@
                                     <select class="custom-select" name="PROJECT_NUMBER" id="selectProject" disabled>
                                         @foreach (var item in Model.ProjectDto)
                                         {
-                                            <option value="@item.ID" class="@item.CUSTOMER.ID">@item.NAME</option>
+                                        <option value="@item.ID" class="@item.CUSTOMER.ID">@item.NAME</option>
                                         }
                                     </select>
                                 </div>
@@ -392,7 +438,7 @@
                                     <select class="custom-select" name="ACTIVITY_PRIORITY">
                                         @foreach (var item in Model.PriorityDto)
                                         {
-                                            <option value="@item.ID">@item.NAME</option>
+                                        <option value="@item.ID">@item.NAME</option>
                                         }
                                     </select>
                                 </div>
@@ -491,7 +537,7 @@
                                         <option class="all">Müşteri Seçiniz..</option>
                                         @foreach (var item in Model.customerDto)
                                         {
-                                            <option class="@item.ID">@item.NAME</option>
+                                        <option value="@item.ID" class="@item.ID">@item.NAME</option>
                                         }
                                     </select>
                                 </div>
@@ -502,7 +548,7 @@
                                     <select class="custom-select" id="PROJECT_NUMBER" name="PROJECT_NUMBER">
                                         @foreach (var item in Model.ProjectDto)
                                         {
-                                            <option value="@item.ID" class="@item.CUSTOMER.ID">@item.NAME</option>
+                                        <option value="@item.ID" class="@item.CUSTOMER.ID">@item.NAME</option>
                                         }
                                     </select>
                                 </div>
@@ -522,7 +568,7 @@
                                     <select class="custom-select" id="ACTIVITY_PRIORITY" name="ACTIVITY_PRIORITY">
                                         @foreach (var item in Model.PriorityDto)
                                         {
-                                            <option value="@item.ID">@item.NAME</option>
+                                        <option value="@item.ID">@item.NAME</option>
                                         }
                                     </select>
                                 </div>
@@ -547,20 +593,6 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Oluşturan Kişi</label>
-                                <div class="col-12 col-sm-6 col-lg-6">
-                                    <select class="custom-select" id="CREATOR" disabled>
-                                        @foreach (var item in Model.EmployeeDto)
-                                        {
-                                            <option value="@item.ID">@item.NAME @item.SURNAME</option>
-                                        }
-                                    </select>
-                                    <input type="hidden" id="hideCreator" name="CREATOR" value="" />
-                                    <input type="hidden" id="hideCreator" name="ACTIVITY_EMPLOYEE" value="" />
-
-                                </div>
-                            </div>
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Detay</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
@@ -665,30 +697,31 @@
 
 
 
-        $("#END_TIME").on('keyup change', function () {
+        $("#END_TIME,#START_TIME").on('keyup change', function () {
             $("#WHOUR").attr("disabled", true);
 
             var start = $("#START_TIME").val();
             var end = $("#END_TIME").val();
+            if (start != "" && end != "") {
 
-            s = start.split(':');
-            e = end.split(':');
+                s = start.split(':');
+                e = end.split(':');
 
-            min = e[1] - s[1];
-            hour_carry = 0;
-            if (min < 0) {
-                min += 60;
-                hour_carry += 1;
+                min = e[1] - s[1];
+                hour_carry = 0;
+                if (min < 0) {
+                    min += 60;
+                    hour_carry += 1;
+                }
+                if (min == 30)
+                    min = 5;
+
+                hour = e[0] - s[0] - hour_carry;
+
+                diff = hour + "," + min;
+
+                $("#WHOUR").val(diff);
             }
-            if (min == 30)
-                min = 5;
-
-            hour = e[0] - s[0] - hour_carry;
-
-            diff = hour + "," + min;
-
-            $("#WHOUR").val(diff);
-
         });
 
         $("#WHOUR").keyup(function () {
@@ -707,30 +740,31 @@
         });
 
 
-        $("#C_END_TIME").on('keyup change', function () {
+        $('#C_END_TIME,#C_START_TIME').on('keyup change', function () {
             $("#C_WHOUR").attr("disabled", true);
 
             var start = $("#C_START_TIME").val();
             var end = $("#C_END_TIME").val();
 
-            s = start.split(':');
-            e = end.split(':');
+            if (start != "" && end != "") {
+                s = start.split(':');
+                e = end.split(':');
 
-            min = e[1] - s[1];
-            hour_carry = 0;
-            if (min < 0) {
-                min += 60;
-                hour_carry += 1;
+                min = e[1] - s[1];
+                hour_carry = 0;
+                if (min < 0) {
+                    min += 60;
+                    hour_carry += 1;
+                }
+                if (min == 30)
+                    min = 5;
+
+                hour = e[0] - s[0] - hour_carry;
+
+                diff = hour + "," + min;
+
+                $("#C_WHOUR").val(diff);
             }
-            if (min == 30)
-                min = 5;
-
-            hour = e[0] - s[0] - hour_carry;
-
-            diff = hour + "," + min;
-
-            $("#C_WHOUR").val(diff);
-
         });
 
         $("#C_WHOUR").keyup(function () {
@@ -783,7 +817,6 @@
             });
         });
 
-
         function filterExport() {
             var exportDate = new Date();
             var tableeexport = $('#tb').tableExport({
@@ -802,7 +835,7 @@
             });
             var table = $('#tb').DataTable({
                 "columnDefs": [
-                    { "orderable": false, "targets": [0, 2, 3, 4, 5, 6, 7, 8, 9, 16] }
+                    { "orderable": false, "targets": [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 16, 17] }
                 ],
                 "order": [[1, "desc"]],
                 language: {
@@ -994,18 +1027,15 @@
             var project = $("#" + id + "-project", "#tb").data("id");
             var invoice = $("#" + id + "-invoice", "#tb").html();
             var priority = $("#" + id + "-priority", "#tb").data("id");
-            var detail = $("#" + id + "-detail", "#tb").html();
+            var detail = $("#" + id + "-detail", "#tb").text();
             var actDate = $("#" + id + "-estStart", "#tb").html();
             var start = $("#" + id + "-start", "#tb").html();
             var end = $("#" + id + "-end", "#tb").html();
             var status = $("#" + id + "-status", "#tb").html();
             var whour = $("#" + id + "-whour", "#tb").html();
             var location = $("#" + id + "-location", "#tb").html();
+            var customer = $("#" + id + "-customer", "#tb").data("id");
 
-            //var employees = new Array();
-            //$("#" + id + "-employee>option").each(function () {
-            //    employees.push($(this).val());
-            //})
 
             if (status == "Aktif")
                 status = true;
@@ -1021,13 +1051,14 @@
             document.getElementById("PROJECT_NUMBER").value = project;
             document.getElementById("INVOICE").value = invoice;
             document.getElementById("ACTIVITY_PRIORITY").value = priority;
-            document.getElementById("DETAIL").value = detail;
+            document.getElementById("DETAIL").value = $.trim(detail);
             document.getElementById("STATUS").value = status;
             document.getElementById("ACTIVITY_DATE").value = actDate;
             document.getElementById("START_TIME").value = start;
             document.getElementById("END_TIME").value = end;
             document.getElementById("WHOUR").value = whour;
             document.getElementById("LOCATION").value = location;
+            document.getElementById("e_selectCustomer").value = customer;
         });
 
         $("#BtnEdit").click(function () {

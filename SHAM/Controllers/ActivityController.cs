@@ -44,7 +44,9 @@ namespace SHAM.UI.Controllers
         {
             try
             {
-                if (activity.START_TIME == TimeSpan.Zero || activity.WHOUR == 0 || activity.ACTIVITY_DATE == DateTime.MinValue)
+                var x = activity.START_TIME == null;
+
+                if (x == true || activity.WHOUR == 0 || activity.ACTIVITY_DATE == DateTime.MinValue)
                     return Json(new { status = false, error = "any" });
 
                 var claimsIndentity = HttpContext.User.Identity as ClaimsIdentity;

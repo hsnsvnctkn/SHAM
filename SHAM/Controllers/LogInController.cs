@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MimeKit;
 using SHAM.Repository;
 using SHAM.Repository.Contracts;
 using SHAM.Repository.Dto;
@@ -16,14 +17,13 @@ namespace SHAM.UI.Controllers
     {
         readonly ITokenProvider _tokenProvider;
         readonly IEmployeeRepository _employeeRepository;
-        readonly IEmailSender _emailSender;
-        //readonly UserManager<IdentityUser> _userManager;
+        private readonly ISendEmail _sendEmail;
 
-        public LogInController(ITokenProvider tokenProvider, IEmployeeRepository employeeRepository, IEmailSender emailSender)
+        public LogInController(ITokenProvider tokenProvider, IEmployeeRepository employeeRepository, ISendEmail sendEmail)
         {
             _employeeRepository = employeeRepository;
             _tokenProvider = tokenProvider;
-            _emailSender = emailSender;
+            _sendEmail = sendEmail;
         }
         public IActionResult Index()
         {
@@ -102,22 +102,26 @@ namespace SHAM.UI.Controllers
         [HttpPost]
         public JsonResult SendNewMember(string name, string surname, string email, string note)
         {
-            if (name == null)
-                return Json(new { status = false, error = "null", text = "Isim Bos Olamaz." });
-            else if (surname == null)
-                return Json(new { status = false, error = "null", text = "Soyad Bos Olamaz." });
-            else if (email == null)
-                return Json(new { status = false, error = "null", text = "Email Bos Olamaz." });
+            try
+            {
+                if (name == null)
+                    return Json(new { status = false, error = "null", text = "Isim Bos Olamaz." });
+                else if (surname == null)
+                    return Json(new { status = false, error = "null", text = "Soyad Bos Olamaz." });
+                else if (email == null)
+                    return Json(new { status = false, error = "null", text = "Email Bos Olamaz." });
 
-            var msg = new MimeMessage();
+                var subject = "SHAM - Yeni Üye İsteği";
+                var Message = "<b>Ad</b> : " + name + "<br>" + "<b>Soyad</b> : " + surname + "<br>" + "<b>Mail Adresi </b>: " + email + "<br>" + "<b>Notu</b> : " + note;
+                var adress = "sevinctekin.hasan@gmail.com";
 
-            var subject = "SHAM - Yeni Üye İsteği";
-            var body = "<b>Ad</b> : " + name + "<br>" + "<b>Soyad</b> : " + surname + "<br>" + "<b>Mail Adresi </b>: " + email + "<br>" + "<b>Notu</b> : " + note;
-            var adress = "sevinctekin.hasan@gmail.com";
-
-            _emailSender.Send(adress, subject, body);
-
-            return Json(new { status = true });
+                _sendEmail.Send(subject, adress, Message);
+                return Json(new { status = true });
+            }
+            catch (Exception)
+            {
+                return Json(new { status = false });
+            }
         }
     }
 }

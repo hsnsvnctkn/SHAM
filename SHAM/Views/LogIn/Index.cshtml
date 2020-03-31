@@ -29,6 +29,8 @@ else
                 </label>
             </div>
             <button type="button" id="BtnLogin" class="btn btn-primary btn-lg btn-block">Giris Yap</button>
+            <center><span id="waiting" class="dashboard-spinner spinner-secondary spinner-xs" style="display:none; margin-top:5px;"></span></center>
+
         </form>
     </div>
     <div class="card-footer" style="padding:0">
@@ -52,12 +54,12 @@ else
     <script>
         $("#password").keyup(function (e) {
             if (e.keyCode == 13) {
-            login();
+                login();
             }
         });
         $("#email").keyup(function (e) {
             if (e.keyCode == 13) {
-            login();
+                login();
             }
         });
 
@@ -67,9 +69,13 @@ else
 
         function login() {
             $("#loginForm").ajaxSubmit({
+                beforeSubmit: function () {
+                    $("#waiting").toggle("slow");
+                },
                 url: '/LogIn/LoginUser',
                 type: 'post',
                 success: function (result) {
+                    $("#waiting").toggle("slow");
                     if (result.status)
                         window.location.href = '/Home/Index';
                     else

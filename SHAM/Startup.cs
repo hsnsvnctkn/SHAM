@@ -48,7 +48,7 @@ namespace SHAM.UI
 
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(240);
+                options.IdleTimeout = TimeSpan.FromMinutes(500);
             });
 
             services.Configure<CookiePolicyOptions>(options =>
@@ -105,7 +105,7 @@ namespace SHAM.UI
             services.AddScoped<ITokenProvider, TokenProvider>();
             services.AddScoped<IIndexRepository, IndexRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
-            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<ISendEmail, SendEmail>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

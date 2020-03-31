@@ -4,8 +4,8 @@ using System.Text;
 
 namespace SHAM.Repository.Contracts
 {
-    public interface IEmailSender
+    public interface ISendEmail
     {
-        void Send(string toAddress, string subject, string body, bool sendAsync = true);
+        void Send(string Subject, string Email, string Message);
     }
 }
