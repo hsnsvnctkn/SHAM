@@ -33,20 +33,27 @@ namespace SHAM.UI.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult LoginUser(UserDto user)
         {
-            if (user.EMAIL != null || user.PASSWORD != null)
+            try
             {
-                var pass = _tokenProvider.EncryptString(user.PASSWORD);
-                var userToken = _tokenProvider.LoginUser(user.EMAIL.Trim(), pass);
-
-                if (userToken != null)
+                if (user.EMAIL != null || user.PASSWORD != null)
                 {
-                    HttpContext.Session.SetString("JWToken", userToken);
-                    return Json(new { status = true });
+                    var pass = _tokenProvider.EncryptString(user.PASSWORD);
+                    var userToken = _tokenProvider.LoginUser(user.EMAIL.Trim(), pass);
+
+                    if (userToken != null)
+                    {
+                        HttpContext.Session.SetString("JWToken", userToken);
+                        return Json(new { status = true });
+                    }
+                    else
+                        return Json(new { status = false });
                 }
-                else
-                    return Json(new { status = false });
+                return Json(new { status = false });
             }
-            return Json(new { status = false });
+            catch (Exception)
+            {
+                return Json(new { status = false });
+            }
         }
         public IActionResult NotFound404()
         {
@@ -61,35 +68,6 @@ namespace SHAM.UI.Controllers
         {
             return View();
         }
-        //public IActionResult SendPasswordResetLink(string email)
-        //{
-        //    try
-        //    {
-        //        var dtoUser = _employeeRepository.Get(email);
-        //        IdentityUser user = new IdentityUser();
-        //        if (dtoUser != null)
-        //        {
-        //            user.Email = dtoUser.EMAIL;
-        //            user.UserName = dtoUser.EMAIL;
-
-        //            var token = _userManager.GeneratePasswordResetTokenAsync(user).Result;
-
-        //            var resetLink = Url.Action("ResetPassword", "Account", new { token = token }, protocol: HttpContext.Request.Scheme);
-        //            ViewBag.Message = "Parola sıfırlama bağlantısı e posta adresinize gönderildi!";
-        //            return Redirect("~/LogIn/Index");
-        //        }
-        //        else
-        //        {
-        //            ViewBag.Message = "Girdiğiniz Mail Adresi Yanlış !!";
-        //            return View("Error");
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
         public IActionResult ResetPassword(string token)
         {
             return View();

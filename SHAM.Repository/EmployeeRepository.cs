@@ -9,10 +9,11 @@ namespace SHAM.Repository
 {
     public class EmployeeRepository : GenericRepository<Employee>, IEmployeeRepository
     {
-        public EmployeeRepository(IUnitOfWork uow)
+        private readonly IIndexRepository _indexRepository;
+        public EmployeeRepository(IUnitOfWork uow, IIndexRepository indexRepository)
             : base(uow)
         {
-
+            _indexRepository = indexRepository;
         }
         public void Update(EmployeeDto employee)
         {
@@ -171,6 +172,37 @@ namespace SHAM.Repository
             }).ToList();
 
             return emp;
+        }
+        public EmployeeReportsDto GetEmployeesId()
+        {
+            var employeesId = _context.Employees.Select(e => new EmployeeDto
+            {
+                ID = e.ID,
+                NAME = e.EMPLOYEE_NAME,
+                SURNAME = e.EMPLOYEE_SURNAME
+            }).ToList();
+            return new EmployeeReportsDto { Employees = employeesId };
+        }
+        public EmployeeReportsDto GetReports(int id)
+        {
+            var employeesId = _context.Employees.Select(e => new EmployeeDto
+            {
+                ID = e.ID,
+                NAME = e.EMPLOYEE_NAME,
+                SURNAME = e.EMPLOYEE_SURNAME
+            }).ToList();
+
+            var projects = _indexRepository.GetUserProject(id);
+
+            var activities = _indexRepository.GetMyActivity(id);
+
+            var whour = _indexRepository.GetSumActivityWhour(activities);
+
+            var projectWhour = _indexRepository.GetSumProjectWhour(projects);
+
+            var selectedEmp = _context.Employees.Where(e => e.ID == id).Select(e => new EmployeeDto { NAME = e.EMPLOYEE_NAME, SURNAME = e.EMPLOYEE_SURNAME }).FirstOrDefault();
+
+            return new EmployeeReportsDto { Projects = projects, ProjectWhours = projectWhour, Whours = whour, Employees = employeesId, SelectedEmployee = selectedEmp };
         }
     }
 }

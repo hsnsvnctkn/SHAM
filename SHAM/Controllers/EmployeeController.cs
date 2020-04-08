@@ -16,7 +16,7 @@ namespace SHAM.UI.Controllers
         readonly IEmployeeRepository _employeeRepository;
         readonly ITokenProvider _tokenProvider;
 
-        public EmployeeController(IEmployeeRepository employeeRepository,ITokenProvider tokenProvider)
+        public EmployeeController(IEmployeeRepository employeeRepository, ITokenProvider tokenProvider)
         {
             _employeeRepository = employeeRepository;
             _tokenProvider = tokenProvider;
@@ -100,6 +100,26 @@ namespace SHAM.UI.Controllers
             {
 
                 return NotFound("Hata");
+            }
+        }
+        public IActionResult Reports()
+        {
+            var employeesId = _employeeRepository.GetEmployeesId();
+
+            return View(employeesId);
+        }
+        [HttpPost]
+        public IActionResult Reports(int id)
+        {
+            try
+            {
+                var reports = _employeeRepository.GetReports(id);
+                return View(reports);
+            }
+            catch (Exception e)
+            {
+
+                return Json(new { status = false, error = e });
             }
         }
     }

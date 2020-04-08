@@ -17,34 +17,15 @@ namespace SHAM.Repository
 
         public IndexDto GetAdminIndex(int id, bool isAdmin)
         {
-
-            var projectID = _context.ProjectEmployees.Where(pe => pe.EmployeeID == id).Select(p => p.ProjectID).ToList();
-
             var notifi = _context.Notifications.Where(n => (n.END_TIME >= DateTime.Now || n.END_TIME == null) && n.START_TIME <= DateTime.Now).Select(n => new NotificationDto { TEXT_INFO = n.TEXT_INFO }).ToList();
 
-            var getIndex = new IndexDto
-            {
-                levelCount = _context.Levels.Count(),
+            var myActivity = GetMyActivity(id);
 
-                MyProject = _context.Projects.Where(p => projectID.Contains(p.ID)).Select(p => new ProjectDto
-                {
-                    NAME = p.PROJECT_NAME,
-                    STATUS = p.PROJECT_STATUS,
-                    LEVEL = p.LEVEL
-                }).ToList(),
+            var myProject = GetUserProject(id);
 
-                MyActivity = _context.Activities.Where(a => a.ACTIVITY_EMPLOYEE == id).Select(a => new ActivityDto
-                {
-                    ACTIVITY_DETAIL = a.ACTIVITY_DETAIL,
-                    STATUS = a.ACTIVITY_STATUS,
-                    PROJECT = a.PROJECT,
-                    PRIORITY = a.PRIORITY
-                }).ToList(),
-            };
-            if (getIndex.MyActivity != null)
-                getIndex.myActivityCount = getIndex.MyActivity.Count();
-            if (getIndex.MyProject != null)
-                getIndex.myProjectCount = getIndex.MyProject.Count();
+            var getIndex = new IndexDto { myProjectCount = myProject.Count(), MyProject = myProject };
+
+            getIndex.myActivityCount = myActivity.Count();
 
             getIndex.Notification = notifi;
 
@@ -54,25 +35,67 @@ namespace SHAM.Repository
                 getIndex.employeeCount = _context.Employees.Count();
                 getIndex.activityCount = _context.Activities.Count();
                 getIndex.customerCount = _context.Customers.Count();
-
-                getIndex.Project = _context.Projects.Select(p => new ProjectDto
-                {
-                    NAME = p.PROJECT_NAME,
-                    STATUS = p.PROJECT_STATUS,
-                    LEVEL = p.LEVEL
-                }).ToList();
-
-                getIndex.Activity = _context.Activities.Select(a => new ActivityDto
-                {
-                    PROJECT = a.PROJECT,
-                    PRIORITY = a.PRIORITY,
-                    STATUS = a.ACTIVITY_STATUS,
-                    ACTIVITY_DETAIL = a.ACTIVITY_DETAIL
-
-                }).ToList();
             }
 
+            getIndex.wHours = GetSumActivityWhour(myActivity);
+            getIndex.projectWhour = GetSumProjectWhour(myProject);
+
             return getIndex;
+        }
+
+        public List<double> GetSumProjectWhour(List<ProjectDto> projects)
+        {
+            List<double> projectWhour = new List<double>();
+
+            foreach (var item in projects)
+            {
+                var sumProjectWhour = item.ACTIVITIES.Where(a => a.ACTIVITY_DATE.Month == DateTime.Now.Month).Select(a => a.WHOUR).Sum();
+
+                projectWhour.Add(sumProjectWhour);
+            }
+            return projectWhour;
+        }
+
+        public List<ProjectDto> GetUserProject(int id)
+        {
+            var projectID = GetUserProjectID(id);
+
+            return _context.Projects.Where(p => projectID.Contains(p.ID)).Select(p => new ProjectDto
+            {
+                NAME = p.PROJECT_NAME,
+                STATUS = p.PROJECT_STATUS,
+                LEVEL = p.LEVEL,
+                ACTIVITIES = p.ACTIVITIES.Where(a => a.ACTIVITY_DATE.Month == DateTime.Now.Month && a.ACTIVITY_EMPLOYEE == id).ToList(),
+                CUSTOMER = p.CUSTOMER
+            }).ToList();
+        }
+
+        private List<int> GetUserProjectID(int id)
+        {
+            return _context.ProjectEmployees.Where(pe => pe.EmployeeID == id).Select(p => p.ProjectID).ToList();
+        }
+
+        public List<ActivityDto> GetMyActivity(int id)
+        {
+            return _context.Activities.Where(a => a.ACTIVITY_EMPLOYEE == id && a.ACTIVITY_DATE.Month == DateTime.Now.Month).Select(a => new ActivityDto
+            {
+                ACTIVITY_DATE = a.ACTIVITY_DATE,
+                ID = a.ID,
+                WHOUR = a.WHOUR
+            }).ToList();
+        }
+
+        public List<double> GetSumActivityWhour(List<ActivityDto> activities)
+        {
+            List<double> dailyWHour = new List<double>();
+
+            for (int i = 1; i <= DateTime.Now.Day; i++)
+            {
+                var sumWHour = activities.Where(a => a.ACTIVITY_DATE.Month == DateTime.Now.Month && a.ACTIVITY_DATE.Day == i).Select(a => a.WHOUR).Sum();
+
+                dailyWHour.Add(sumWHour);
+            }
+            return dailyWHour;
         }
     }
 }

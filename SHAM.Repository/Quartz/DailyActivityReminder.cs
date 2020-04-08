@@ -36,7 +36,7 @@ namespace SHAM.Repository.Quartz
                     "<p>Aktivitenizi girmek için lütfen tıklayınız.. </p>" +
                     "<p><a href=\"http://sham.sagita.com.tr\"> <input type=\"button\" value=\"Aktivite Giriş\" /></a> </p>";
                 _sendEmail.Send("SHAM - Aktivite Girişi Hatırlatma", item.MAIL, body);
-
+                //_logger.LogInformation(item.MAIL);
             }
             return Task.CompletedTask;
         }

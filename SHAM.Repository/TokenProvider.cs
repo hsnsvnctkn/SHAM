@@ -37,7 +37,7 @@ namespace SHAM.Repository
                     audience: "http://localhost:45092/",
                     claims: GetUserClaims(user),
                     notBefore: new DateTimeOffset(DateTime.Now).DateTime,
-                    expires: new DateTimeOffset(DateTime.Now.AddDays(1)).DateTime,
+                    expires: new DateTimeOffset(DateTime.Now.AddMinutes(500)).DateTime,
                     signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 );
                 var token = new JwtSecurityTokenHandler().WriteToken(JWToken);

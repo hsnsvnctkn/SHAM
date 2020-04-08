@@ -15,6 +15,7 @@ namespace SHAM.UI
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    //webBuilder.UseSetting("https_port", "443");
                 });
     }
 }

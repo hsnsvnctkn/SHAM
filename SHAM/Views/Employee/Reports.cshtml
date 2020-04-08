@@ -1,0 +1,302 @@
+﻿<style>
+    .table th {
+        font-weight: bold;
+    }
+
+    .table td, .table th {
+        vertical-align: middle;
+        padding: 5px !important;
+        text-align: center;
+    }
+
+    #progress {
+        border: 1px solid black;
+        position: relative;
+        padding: 3px;
+        margin-right: 30px;
+    }
+
+    #percent {
+        position: absolute;
+        left: 50%;
+        font-family: "Myriad Pro";
+        font-weight: bold;
+    }
+
+    #bar {
+        display: none;
+        height: 20px;
+        background-color: green;
+        width: 0%;
+        opacity: 0.1;
+    }
+</style>
+
+@model SHAM.Repository.Dto.EmployeeReportsDto
+@using System.Globalization;
+@{string currentMonth = CultureInfo.GetCultureInfo("tr-TR").DateTimeFormat.MonthNames[DateTime.Now.Month];
+    int waitingWhour, totalWaitingWhour = 0;
+    double totalWhour = 0, diffWhour = 0, totalProjectWhour = 0;
+}
+@{
+    ViewData["Title"] = "Çalışan Raporları";
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-header">
+            <h2 class="pageheader-title">Çalısanların Raporları</h2>
+        </div>
+    </div>
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card">
+            @if (Model.SelectedEmployee == null)
+            {
+                <h5 class="card-header"><i class="fas fa-file-medical-alt" style="margin-right: 10px;"></i>Çalışan Seçiniz..</h5>
+            }
+            else
+            {
+                <h5 class="card-header text-danger"><i class="fas fa-file-medical-alt" style="margin-right: 10px;"></i>@Model.SelectedEmployee.NAME @Model.SelectedEmployee.SURNAME - Adlı Çalışanın Raporları..</h5>
+            }
+            <div class="row">
+                <form asp-action="Reports" class="form-inline">
+                    <div class="form-group m-1">
+                        <select class="custom-select" style="margin-left:30px;" id="employeeId" name="id">
+                            @foreach (var item in Model.Employees)
+                            {
+                                <option value="@item.ID">@item.NAME @item.SURNAME</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group mx-sm-3 m-1">
+                        <button type="submit" class="btn btn-outline-secondary" data-toggle="modal" data-target="#create" style="margin-left:20px;" id="btnGetReports">Raporları Getir</button>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <div class="card-body p-0">
+                    @if (Model.Projects != null)
+                    {
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="page-header">
+                                    <h2 class="pageheader-title ml-3">Müşteri & Proje Bazlı Rapor</h2><hr>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="justify-content: center;">
+                            <div class="col-xl-6 col-lg-2 col-md-12 col-sm-12 col-12">
+                                <div class="card text-white bg-secondary mb-3">
+                                    <div class="row">
+                                        <div class="col-xl-8">
+                                            <h5 class="card-header"><i class="fas fa-file-medical-alt" style="margin-right: 10px;"></i> @currentMonth @DateTime.Now.Year - Müşteri & Proje Bazlı Efor Özeti</h5>
+                                        </div>
+                                        <div class="col-xl-4" style="align-self: center;padding-right: 25px;">
+                                            <button type="button" tableexport-id="f444028-xlsx" class="btn btn-light" style="float: right;"><i class="mr-1 fas fa-file-excel text-success"></i>Dışa Aktar</button>
+                                        </div>
+                                    </div>
+                                    <div class="text-center table-responsive">
+                                        <div class="card-body p-0">
+                                            <div class="table-hover">
+                                                <table class="table table-striped first" id="tb2">
+                                                    <thead class="bg-light">
+                                                        <tr class="border-0">
+                                                            <th class="border-0">Müşteri</th>
+                                                            <th class="border-0">Proje</th>
+                                                            <th class="border-0">Çalışma Saati</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{ int i2 = 0;}
+                                                        @foreach (var item in Model.Projects)
+                                                        {
+                                                            <tr>
+                                                                <td class="tableexport-string">@item.CUSTOMER.CUSTOMER_NAME</td>
+                                                                <td class="tableexport-string">@item.NAME</td>
+                                                                <td class="tableexport-string">@Model.ProjectWhours[i2]</td>
+                                                            </tr>
+                                                            totalProjectWhour += Model.ProjectWhours[i2];
+                                                            i2++;
+                                                        }
+                                                    </tbody>
+                                                    <tfoot class="bg-dark text-white">
+                                                        <tr>
+                                                            <td></td>
+                                                            <td class="text-right font-weight-bold">Toplam :</td>
+                                                            <td class="font-weight-bold tableexport-string">@totalProjectWhour</td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="page-header">
+                                    <h2 class="pageheader-title ml-3">Çalışma Saati Raporu</h2><hr>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="justify-content: center;">
+                            <div class="col-xl-8 col-lg-2 col-md-12 col-sm-12 col-12">
+                                <div class="card text-white bg-secondary mb-3">
+                                    <div class="row">
+                                        <div class="col-xl-6">
+                                            <h5 class="card-header bg-secondary"><i class="fas fa-file-medical-alt" style="margin-right: 10px;"></i> @currentMonth @DateTime.Now.Year - Günlük Aktiviteler </h5>
+                                        </div>
+                                        <div class="col-xl-4" style="align-self: center;">
+                                            <div id="progress" class="bg-secondary rounded">
+                                                <span id="percent" class="text-white"></span>
+                                                <div id="bar" class="bg-success rounded"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-2" style="align-self: center;padding-right: 25px;">
+                                            <button type="button" tableexport-id="a70aea2-xlsx" class="btn btn-light" style="float: right;"><i class="mr-1 fas fa-file-excel text-success"></i>Dışa Aktar</button>
+                                        </div>
+                                    </div>
+                                    <div class="text-center table-responsive">
+                                        <div class="card-body p-0">
+                                            <div class="table-hover">
+                                                <table class="table table-striped first" id="tb">
+                                                    <thead class="bg-light">
+                                                        <tr class="border-0">
+                                                            <th class="border-0">Tarih</th>
+                                                            <th class="border-0">Gün</th>
+                                                            <th class="border-0">Çalışma Saati</th>
+                                                            <th class="border-0">Beklenen</th>
+                                                            <th class="border-0">Fazla/Eksik</th>
+                                                            <th class="border-0"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @for (int i = 0; i < DateTime.Now.Day; i++)
+                                                        {
+                                                            DateTime date = new DateTime((DateTime.Now.Year), (DateTime.Now.Month), i + 1);
+                                                            string currentDayTR = CultureInfo.GetCultureInfo("tr-TR").DateTimeFormat.DayNames[(int)date.DayOfWeek];
+
+                                                            if ((date.DayOfWeek == DayOfWeek.Saturday) || (date.DayOfWeek == DayOfWeek.Sunday))
+                                                                waitingWhour = 0;
+                                                            else
+                                                                waitingWhour = 8;
+
+                                                            totalWaitingWhour += waitingWhour;
+                                                            totalWhour += Model.Whours[i];
+                                                            diffWhour += Model.Whours[i] - waitingWhour;
+
+                                                            string whourStatus = "bg-info-light text-dark", whourStatusIcon = "fas fas fa-check-circle fa-sm text-info";
+
+                                                            if (waitingWhour == 0)
+                                                            {
+                                                                whourStatus = "bg-light text-dark";
+                                                                whourStatusIcon = "fas fa-minus-circle fa-sm text-secondary";
+                                                            }
+                                                            else if ((Model.Whours[i] - waitingWhour) < 0)
+                                                            {
+                                                                whourStatus = "bg-danger-light text-dark";
+                                                                whourStatusIcon = "fas fa-arrow-circle-down fa-sm text-danger";
+                                                            }
+                                                            else if ((Model.Whours[i] - waitingWhour) > 0)
+                                                            {
+                                                                whourStatus = "bg-success-light text-dark";
+                                                                whourStatusIcon = "fas fa-arrow-circle-up fa-sm text-success";
+                                                            }
+
+                                                            <tr class="@whourStatus">
+                                                                <td class="tableexport-string">@(i + 1).@(date.Month).@(date.Year)</td>
+                                                                <td class="tableexport-string">@currentDayTR</td>
+                                                                <td class="tableexport-string">@Model.Whours[i]</td>
+                                                                <td class="tableexport-string">@waitingWhour</td>
+                                                                <td class="tableexport-string">@(Model.Whours[i] - waitingWhour)</td>
+                                                                <td><i class="@whourStatusIcon"></i></td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                    <tfoot class="bg-dark text-white">
+                                                        <tr>
+                                                            <td></td>
+                                                            <td class="text-right font-weight-bold">Toplam :</td>
+                                                            <td class="font-weight-bold tableexport-string">@totalWhour</td>
+                                                            <td class="font-weight-bold tableexport-string">@totalWaitingWhour</td>
+                                                            <td class="font-weight-bold tableexport-string">@diffWhour</td>
+                                                            @if (diffWhour < 0)
+                                                            {
+                                                                <td><i class="fas fa-arrow-circle-down fa-sm text-danger"></i></td>
+                                                            }
+                                                            else if (diffWhour > 0)
+                                                            {
+                                                                <td><i class="fas fa-arrow-circle-up fa-sm text-success"></i></td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td><i class="fas fas fa-check-circle fa-sm text-info"></i></td>
+                                                            }
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@{double percent = ((totalWhour / totalWaitingWhour) * 100);
+    if (percent > 100)
+        percent = 100;
+    else if (percent < 0)
+        percent = 1;
+    else
+        percent = (int)percent;
+}
+@section scripts{
+    <script>
+        $(window).on('load', function () {
+            $("#bar").css("width",("@percent%"))
+            $("#bar").animate({
+                 width: "toggle",
+                opacity:"0.9"
+            },1500);
+            $("#percent").text('@percent%');
+            $("#percent").css("z-index", "1");
+        });
+
+        var exportDate = new Date();
+        var tableeexport = $('#tb').tableExport({
+            headers: true,
+            footers: true,
+            formats: ["xlsx"],
+            filename: "Aylık Aktivite Raporum " + exportDate.getDate() + "." + (exportDate.getMonth() + 1) + "." + exportDate.getFullYear(),
+            bootstrap: true,
+            exportButtons: false,
+            position: "top",
+            ignoreRows: null,
+            ignoreCols: [5],
+            trimWhitespace: true,
+            RTL: true,
+            sheetname: "Raporum " + exportDate.getDate() + "." + (exportDate.getMonth() + 1) + "." + exportDate.getFullYear()
+        });
+        var tableeexport = $('#tb2').tableExport({
+            headers: true,
+            footers: true,
+            formats: ["xlsx"],
+            filename: "Proje & Müşteri Raporum " + exportDate.getDate() + "." + (exportDate.getMonth() + 1) + "." + exportDate.getFullYear(),
+            bootstrap: true,
+            exportButtons: false,
+            position: "top",
+            ignoreRows: null,
+            ignoreCols: null,
+            trimWhitespace: true,
+            RTL: true,
+            sheetname: "Raporum " + exportDate.getDate() + "." + (exportDate.getMonth() + 1) + "." + exportDate.getFullYear()
+        });
+    </script>
+}

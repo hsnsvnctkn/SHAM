@@ -27,8 +27,8 @@ namespace SHAM.Repository
                 ACTIVITY_DATE = activity.ACTIVITY_DATE,
                 START_TIME = activity.START_TIME,
                 END_TIME = activity.END_TIME,
-                ACTIVITY_STATUS = activity.STATUS,
-                ACTIVITY_PRIORITY = activity.ACTIVITY_PRIORITY,
+                ACTIVITY_STATUS = true,
+                ACTIVITY_PRIORITY = 3,
                 INVOICE = activity.INVOICE,
                 WHOUR = activity.WHOUR,
                 LOCATION = activity.LOCATION
@@ -208,8 +208,6 @@ namespace SHAM.Repository
             thisActivity.ACTIVITY_DATE = activity.ACTIVITY_DATE;
             thisActivity.START_TIME = activity.START_TIME;
             thisActivity.END_TIME = activity.END_TIME;
-            thisActivity.ACTIVITY_STATUS = activity.STATUS;
-            thisActivity.ACTIVITY_PRIORITY = activity.ACTIVITY_PRIORITY;
             thisActivity.INVOICE = activity.INVOICE;
             thisActivity.WHOUR = activity.WHOUR;
             thisActivity.LOCATION = activity.LOCATION;

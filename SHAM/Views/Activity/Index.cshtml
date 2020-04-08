@@ -127,7 +127,7 @@
                                                 <option value="all" class="all">Hepsi</option>
                                                 @foreach (var item in Model.customerDto)
                                                 {
-                                                <option value="@item.NAME" class="@item.ID">@item.NAME</option>
+                                                    <option value="@item.NAME" class="@item.ID">@item.NAME</option>
                                                 }
                                             </select>
                                         </div>
@@ -141,7 +141,7 @@
                                                 <option value="Hepsi">Hepsi</option>
                                                 @foreach (var item in Model.ProjectDto)
                                                 {
-                                                <option value="@item.NAME" class="@item.CUSTOMER.ID">@item.NAME</option>
+                                                    <option value="@item.NAME" class="@item.CUSTOMER.ID">@item.NAME</option>
                                                 }
                                             </select>
                                         </div>
@@ -155,7 +155,7 @@
                                                 <option value="Hepsi">Hepsi</option>
                                                 @foreach (var item in Model.EmployeeDto)
                                                 {
-                                                <option value="@item.NAME">@item.NAME</option>
+                                                    <option value="@item.NAME">@item.NAME</option>
                                                 }
                                             </select>
                                         </div>
@@ -170,7 +170,7 @@
                                                 <option value="Hepsi">Hepsi</option>
                                                 @foreach (var item in Model.EmployeeDto)
                                                 {
-                                                <option value="@item.NAME">@item.NAME</option>
+                                                    <option value="@item.NAME">@item.NAME</option>
                                                 }
                                             </select>
                                         </div>
@@ -196,7 +196,7 @@
                                                 <option value="">Hepsi</option>
                                                 @foreach (var item in Model.PriorityDto)
                                                 {
-                                                <option value="@item.NAME">@item.NAME</option>
+                                                    <option value="@item.NAME">@item.NAME</option>
                                                 }
                                             </select>
                                         </div>
@@ -295,54 +295,54 @@
                             <tbody>
                                 @foreach (var item in Model.ActivityDto)
                                 {
-                                <tr>
-                                    <td><button type="button" data-id="@item.ID" data-toggle="modal" data-target="#edit" class="btn btn-outline-primary fBtnEdit"><i class="far fa-edit"></i></button></td>
-                                    <td id="@item.ID">@item.ID </td>
-                                    <td id="@item.ID-customer" data-id="@item.PROJECT.CUSTOMER.ID">@item.PROJECT.CUSTOMER.CUSTOMER_NAME </td>
-                                    <td id="@item.ID-project" class="tableexport-string" data-id="@item.PROJECT.ID">@item.PROJECT.PROJECT_NAME</td>
-                                    <td id="@item.EMPLOYEE.ID" class="tableexport-string"> @item.EMPLOYEE.EMPLOYEE_NAME @item.EMPLOYEE.EMPLOYEE_SURNAME</td>
-                                    <td id="@item.ID-creator" class="tableexport-string" data-id="@item.CREATED_EMPLOYEE.ID">@item.CREATED_EMPLOYEE.EMPLOYEE_NAME @item.CREATED_EMPLOYEE.EMPLOYEE_SURNAME</td>
-                                    @if (item.STATUS == true)
+                                    <tr>
+                                        <td><button type="button" data-id="@item.ID" data-toggle="modal" data-target="#edit" class="btn btn-outline-primary fBtnEdit"><i class="far fa-edit"></i></button></td>
+                                        <td id="@item.ID">@item.ID </td>
+                                        <td id="@item.ID-customer" data-id="@item.PROJECT.CUSTOMER.ID">@item.PROJECT.CUSTOMER.CUSTOMER_NAME </td>
+                                        <td id="@item.ID-project" class="tableexport-string" data-id="@item.PROJECT.ID">@item.PROJECT.PROJECT_NAME</td>
+                                        <td id="@item.EMPLOYEE.ID" class="tableexport-string"> @item.EMPLOYEE.EMPLOYEE_NAME @item.EMPLOYEE.EMPLOYEE_SURNAME</td>
+                                        <td id="@item.ID-creator" class="tableexport-string" data-id="@item.CREATED_EMPLOYEE.ID">@item.CREATED_EMPLOYEE.EMPLOYEE_NAME @item.CREATED_EMPLOYEE.EMPLOYEE_SURNAME</td>
+                                        @if (item.STATUS == true)
                                         {
-                                    <td id="@item.ID-status" class="tableexport-string">Aktif</td>
+                                            <td id="@item.ID-status" class="tableexport-string">Aktif</td>
                                         }
-                                    @if (item.STATUS == false)
+                                        @if (item.STATUS == false)
                                         {
-                                    <td id="@item.ID-status" class="tableexport-string">Pasif</td>
+                                            <td id="@item.ID-status" class="tableexport-string">Pasif</td>
                                         }
-                                    <td id="@item.ID-priority" class="tableexport-string" data-id="@item.PRIORITY.ID">@item.PRIORITY.PRIORITY_NAME</td>
-                                    @if (item.INVOICE == true)
+                                        <td id="@item.ID-priority" class="tableexport-string" data-id="@item.PRIORITY.ID">@item.PRIORITY.PRIORITY_NAME</td>
+                                        @if (item.INVOICE == true)
                                         {
-                                    <td id="@item.ID-invoice" class="tableexport-string">Evet</td>
+                                            <td id="@item.ID-invoice" class="tableexport-string">Evet</td>
                                         }
-                                    @if (item.INVOICE == false)
+                                        @if (item.INVOICE == false)
                                         {
-                                    <td id="@item.ID-invoice" class="tableexport-string">Hayır</td>
+                                            <td id="@item.ID-invoice" class="tableexport-string">Hayır</td>
                                         }
-                                    <td id="@item.ID-location" class="tableexport-string">@item.LOCATION</td>
-                                    @if (item.ACTIVITY_DETAIL.Length > 40)
+                                        <td id="@item.ID-location" class="tableexport-string">@item.LOCATION</td>
+                                        @if (item.ACTIVITY_DETAIL.Length > 40)
                                         {
-                                    <td id="@item.ID-detail" class="tableexport-string">
-                                        <div id="module" class="container">
-                                            <p style="margin:0px!important" class="collapse read-more" id="collapseExample-@item.ID" aria-expanded="false">@item.ACTIVITY_DETAIL</p>
-                                            <a role="button" class="collapsed" data-toggle="collapse" href="#collapseExample-@item.ID" style="font-size:small" aria-expanded="false" aria-controls="collapseExample-@item.ID"></a>
-                                        </div>
-                                    </td>
+                                            <td id="@item.ID-detail" class="tableexport-string">
+                                                <div id="module" class="container">
+                                                    <p style="margin:0px!important" class="collapse read-more" id="collapseExample-@item.ID" aria-expanded="false">@item.ACTIVITY_DETAIL</p>
+                                                    <a role="button" class="collapsed" data-toggle="collapse" href="#collapseExample-@item.ID" style="font-size:small" aria-expanded="false" aria-controls="collapseExample-@item.ID"></a>
+                                                </div>
+                                            </td>
                                         }
                                         else
                                         {
-                                    <td id="@item.ID-detail" class="tableexport-string">@item.ACTIVITY_DETAIL</td>
+                                            <td id="@item.ID-detail" class="tableexport-string">@item.ACTIVITY_DETAIL</td>
                                         }
-                                    <td id="@item.ID-estStart" class="tableexport-string">@item.ACTIVITY_DATE.ToString("dd/MM/yyyy")</td>
-                                    <td id="@item.ID-start" class="tableexport-string">@item.START_TIME.ToString("hh':'mm':'ss")</td>
-                                    <td id="@item.ID-end" class="tableexport-string">@item.END_TIME?.ToString("hh':'mm':'ss")</td>
-                                    <td id="@item.ID-whour" class="tableexport-string">@item.WHOUR</td>
-                                    <td class="tableexport-string">@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
-                                    <td class="tableexport-string">@item.CREATED_TIME.ToString("hh':'mm':'ss")</td>
-                                    <td>
-                                        <button type="button" class="btn btn-outline-danger viewModelDel" data-toggle="modal" data-target="#delete" data-id="@item.ID"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
+                                        <td id="@item.ID-estStart" class="tableexport-string">@item.ACTIVITY_DATE.ToString("dd/MM/yyyy")</td>
+                                        <td id="@item.ID-start" class="tableexport-string">@item.START_TIME.ToString("hh':'mm':'ss")</td>
+                                        <td id="@item.ID-end" class="tableexport-string">@item.END_TIME?.ToString("hh':'mm':'ss")</td>
+                                        <td id="@item.ID-whour" class="tableexport-string">@item.WHOUR</td>
+                                        <td class="tableexport-string">@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
+                                        <td class="tableexport-string">@item.CREATED_TIME.ToString("hh':'mm':'ss")</td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline-danger viewModelDel" data-toggle="modal" data-target="#delete" data-id="@item.ID"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
@@ -365,7 +365,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form asp-action="Delete" method="post" role="form">
+            <form id="formDelete" role="form">
                 <div class="modal-body">
                     <div class="card-body">
                         <div class="form-group">
@@ -376,13 +376,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-                    <button type="submit" class="btn btn-danger" asp-action="Delete">Sil</button>
+                    <button type="button" class="btn btn-danger" id="btnDelete">Sil</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
 <!--Create-->
 <div class="modal fade bd-example-modal-lg" id="create" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -407,7 +406,7 @@
                                         <option class="all">Müşteri Seçiniz..</option>
                                         @foreach (var item in Model.customerDto)
                                         {
-                                        <option class="@item.ID">@item.NAME</option>
+                                            <option class="@item.ID">@item.NAME</option>
                                         }
                                     </select>
                                 </div>
@@ -418,12 +417,12 @@
                                     <select class="custom-select" name="PROJECT_NUMBER" id="selectProject" disabled>
                                         @foreach (var item in Model.ProjectDto)
                                         {
-                                        <option value="@item.ID" class="@item.CUSTOMER.ID">@item.NAME</option>
+                                            <option value="@item.ID" class="@item.CUSTOMER.ID">@item.NAME</option>
                                         }
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            @*<div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Durumu</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
                                     <select class="custom-select" name="STATUS" typeof="bool">
@@ -438,11 +437,11 @@
                                     <select class="custom-select" name="ACTIVITY_PRIORITY">
                                         @foreach (var item in Model.PriorityDto)
                                         {
-                                        <option value="@item.ID">@item.NAME</option>
+                                            <option value="@item.ID">@item.NAME</option>
                                         }
                                     </select>
                                 </div>
-                            </div>
+                            </div>*@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Fatura</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
@@ -456,19 +455,13 @@
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Lokasyon</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
                                     <select class="custom-select" name="LOCATION">
-                                        <option selected value="Onsite">Onsite</option>
-                                        <option value="Remote">Remote</option>
+                                        <option value="Onsite">Onsite</option>
+                                        <option selected value="Remote">Remote</option>
                                         <option value="Other">Other</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Detay</label>
-                                <div class="col-12 col-sm-6 col-lg-6">
-                                    <textarea name="ACTIVITY_DETAIL" class="form-control" autocomplete="off" data-parsley-maxlength="100" placeholder="Activite Detayı" id="exampleFormControlTextarea1" rows="3" style="margin-top: 0px; margin-bottom: 0px; height: 119px;"></textarea>
-                                </div>
-                            </div>
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Aktivite Tarihi</label>
                                 <div class="input-group date col-12 col-sm-6 col-lg-6 datePicker" id="mydatetimepicker5" data-target-input="nearest">
@@ -498,6 +491,12 @@
                                     <div id="div_c_whour">
                                         <input id="C_WHOUR" name="WHOUR" autocomplete="off" type="text" style="height:inherit;" maxlength="6" class="form-control">
                                     </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Detay</label>
+                                <div class="col-12 col-sm-6 col-lg-6">
+                                    <textarea name="ACTIVITY_DETAIL" class="form-control" autocomplete="off" data-parsley-maxlength="100" placeholder="Activite Detayı" id="exampleFormControlTextarea1" rows="3" style="margin-top: 0px; margin-bottom: 0px; height: 119px;"></textarea>
                                 </div>
                             </div>
                             <div class="form-group row text-right">
@@ -537,7 +536,7 @@
                                         <option class="all">Müşteri Seçiniz..</option>
                                         @foreach (var item in Model.customerDto)
                                         {
-                                        <option value="@item.ID" class="@item.ID">@item.NAME</option>
+                                            <option value="@item.ID" class="@item.ID">@item.NAME</option>
                                         }
                                     </select>
                                 </div>
@@ -548,12 +547,12 @@
                                     <select class="custom-select" id="PROJECT_NUMBER" name="PROJECT_NUMBER">
                                         @foreach (var item in Model.ProjectDto)
                                         {
-                                        <option value="@item.ID" class="@item.CUSTOMER.ID">@item.NAME</option>
+                                            <option value="@item.ID" class="@item.CUSTOMER.ID">@item.NAME</option>
                                         }
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            @*<div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Durumu</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
                                     <select class="custom-select" id="STATUS" typeof="bool" name="STATUS">
@@ -568,11 +567,11 @@
                                     <select class="custom-select" id="ACTIVITY_PRIORITY" name="ACTIVITY_PRIORITY">
                                         @foreach (var item in Model.PriorityDto)
                                         {
-                                        <option value="@item.ID">@item.NAME</option>
+                                            <option value="@item.ID">@item.NAME</option>
                                         }
                                     </select>
                                 </div>
-                            </div>
+                            </div>*@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Fatura</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
@@ -586,19 +585,13 @@
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Lokasyon</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
                                     <select class="custom-select" id="LOCATION" name="LOCATION">
-                                        <option selected value="Onsite">Onsite</option>
-                                        <option value="Remote">Remote</option>
+                                        <option value="Onsite">Onsite</option>
+                                        <option selected value="Remote">Remote</option>
                                         <option value="Other">Other</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Detay</label>
-                                <div class="col-12 col-sm-6 col-lg-6">
-                                    <textarea class="form-control" autocomplete="off" data-parsley-maxlength="100" placeholder="Activite Detayı" name="ACTIVITY_DETAIL" id="DETAIL" rows="3" style="margin-top: 0px; margin-bottom: 0px; height: 119px;"></textarea>
-                                </div>
-                            </div>
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Aktivite Tarihi</label>
                                 <div class="input-group date col-12 col-sm-6 col-lg-6 datePicker" id="mydatetimepicker1" data-target-input="nearest">
@@ -628,6 +621,12 @@
                                     <div id="div_whour">
                                         <input id="WHOUR" name="WHOUR" type="text" style="height:inherit;" autocomplete="off" maxlength="6" class="form-control">
                                     </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Detay</label>
+                                <div class="col-12 col-sm-6 col-lg-6">
+                                    <textarea class="form-control" autocomplete="off" data-parsley-maxlength="100" placeholder="Activite Detayı" name="ACTIVITY_DETAIL" id="DETAIL" rows="3" style="margin-top: 0px; margin-bottom: 0px; height: 119px;"></textarea>
                                 </div>
                             </div>
                             <div class="form-group row text-right">
@@ -1022,25 +1021,39 @@
             })
         });
 
+        $("#btnDelete").click(function () {
+            $("#formDelete").ajaxSubmit({
+                url: '/Activity/Delete',
+                type: 'post',
+                success: function (result) {
+                    if (result.status)
+                        window.location.reload();
+                    else
+                        showAlert();
+                }
+            })
+        });
+
+
         $(".fBtnEdit").click(function () {
             var id = $(this).data("id");
             var project = $("#" + id + "-project", "#tb").data("id");
             var invoice = $("#" + id + "-invoice", "#tb").html();
-            var priority = $("#" + id + "-priority", "#tb").data("id");
+            //var priority = $("#" + id + "-priority", "#tb").data("id");
             var detail = $("#" + id + "-detail", "#tb").text();
             var actDate = $("#" + id + "-estStart", "#tb").html();
             var start = $("#" + id + "-start", "#tb").html();
             var end = $("#" + id + "-end", "#tb").html();
-            var status = $("#" + id + "-status", "#tb").html();
+            //var status = $("#" + id + "-status", "#tb").html();
             var whour = $("#" + id + "-whour", "#tb").html();
             var location = $("#" + id + "-location", "#tb").html();
             var customer = $("#" + id + "-customer", "#tb").data("id");
 
 
-            if (status == "Aktif")
-                status = true;
-            else if (status == "Pasif")
-                status = false;
+            //if (status == "Aktif")
+            //    status = true;
+            //else if (status == "Pasif")
+            //    status = false;
 
             if (invoice == "Evet")
                 invoice = true;
@@ -1050,9 +1063,9 @@
             document.getElementById("activtyID").value = id;
             document.getElementById("PROJECT_NUMBER").value = project;
             document.getElementById("INVOICE").value = invoice;
-            document.getElementById("ACTIVITY_PRIORITY").value = priority;
+            //document.getElementById("ACTIVITY_PRIORITY").value = priority;
             document.getElementById("DETAIL").value = $.trim(detail);
-            document.getElementById("STATUS").value = status;
+            //document.getElementById("STATUS").value = status;
             document.getElementById("ACTIVITY_DATE").value = actDate;
             document.getElementById("START_TIME").value = start;
             document.getElementById("END_TIME").value = end;

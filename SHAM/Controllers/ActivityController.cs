@@ -35,8 +35,10 @@ namespace SHAM.UI.Controllers
                 return View(model);
             }
             else
-                return RedirectToAction(nameof(Index));
-
+            {
+                var model = _activityRepository.GetMonthList();
+                return View(model);
+            }
         }
 
         [Authorize(Roles.ADMIN, Roles.NORMAL)]
@@ -107,36 +109,32 @@ namespace SHAM.UI.Controllers
 
         [HttpPost]
         [Authorize(Roles.ADMIN)]
-        [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        public JsonResult Delete(int id)
         {
             try
             {
                 _activityRepository.Delete(id);
 
-                return RedirectToAction(nameof(Index));
+                return Json(new { status = true });
             }
             catch (Exception)
             {
-
-                return NotFound("Hata");
+                return Json(new { status = false });
             }
         }
         [HttpPost]
         [Authorize(Roles.ADMIN, Roles.NORMAL)]
-        [ValidateAntiForgeryToken]
-        public IActionResult MyDelete(int id)
+        public JsonResult MyDelete(int id)
         {
             try
             {
                 _activityRepository.Delete(id);
 
-                return RedirectToAction("MyActivity");
+                return Json(new { status = true });
             }
             catch (Exception)
             {
-
-                return NotFound("Hata");
+                return Json(new { status = false });
             }
         }
 

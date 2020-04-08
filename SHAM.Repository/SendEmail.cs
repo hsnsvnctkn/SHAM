@@ -12,7 +12,7 @@ namespace SHAM.Repository
         public void Send(string Subject, string Email, string Body)
         {
             // Credentials
-            var credentials = new NetworkCredential("yhesap00@gmail.com", "81120166211188");
+            var credentials = new NetworkCredential("yhesap00@gmail.com", "811201hs");
 
             // Mail message
             var mail = new MailMessage()
@@ -30,10 +30,10 @@ namespace SHAM.Repository
             {
                 Port = 587,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
+                UseDefaultCredentials = true,
                 Host = "smtp.gmail.com",
                 EnableSsl = true,
-                Credentials = credentials
+                Credentials = credentials,
             };
 
             client.Send(mail);

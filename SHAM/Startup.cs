@@ -125,7 +125,7 @@ namespace SHAM.UI
 
             app.UseRouting();
             app.UseAuthorization();
-
+            app.UseHsts();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 

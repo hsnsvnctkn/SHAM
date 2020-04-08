@@ -16,5 +16,7 @@ namespace SHAM.Repository.Contracts
         void UpdateMyPass(int id, string pass);
         bool IsAnyEmployee(string mail);
         List<EmployeeDto> EntryDailyActivity();
+        EmployeeReportsDto GetEmployeesId();
+        EmployeeReportsDto GetReports(int id);
     }
 }
