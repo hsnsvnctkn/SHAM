@@ -32,6 +32,7 @@ namespace SHAM.Repository.Dto
         public bool INVOICE { get; set; }
         public double WHOUR { get; set; }
         public string LOCATION { get; set; }
+        public string REFERENCE_NO { get; set; }
 
 
 

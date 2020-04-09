@@ -50,6 +50,8 @@ namespace SHAM.Domain.Entities
 
         [Required]
         public bool INVOICE { get; set; }
+        [MaxLength(30)]
+        public string REFERENCE_NO { get; set; }
 
 
         public virtual Project PROJECT { get; set; }

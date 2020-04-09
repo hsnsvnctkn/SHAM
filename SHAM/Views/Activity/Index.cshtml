@@ -104,13 +104,13 @@
                                     <th class="border-0" style="font-weight: bold;">Önceliği</th>
                                     <th class="border-0" style="font-weight: bold;">Fatura</th>
                                     <th class="border-0" style="font-weight: bold;">Lokasyon</th>
+                                    <th class="border-0" style="font-weight: bold;">Referans</th>
                                     <th class="border-0" style="font-weight: bold;">Detay</th>
                                     <th class="border-0" style="font-weight: bold;">Aktivite Tarihi</th>
                                     <th class="border-0" style="font-weight: bold;">Başlama Saati</th>
                                     <th class="border-0" style="font-weight: bold;">Bitiş Saati</th>
                                     <th class="border-0" style="font-weight: bold;">Çalışma Saati</th>
                                     <th class="border-0" style="font-weight: bold;">Oluşturma Tarihi</th>
-                                    <th class="border-0" style="font-weight: bold;">Oluşturma Saati</th>
                                     <th class="border-0"></th>
                                 </tr>
                             </thead>
@@ -227,6 +227,7 @@
                                         </div>
                                     </th>
                                     <th class="border-0" style="padding: 0px;">
+                                    <th class="border-0" style="padding: 0px;">
                                         <div class="f-icon" style="padding: 0px;" id="btnDetailSearch">
                                             <i class="fas fa-filter"></i>
                                         </div>
@@ -287,7 +288,6 @@
                                             </center>
                                         </div>
                                     </th>
-                                    <th class="border-0" style="padding: 0px;"></th>
                                     <th class="border-0" style="padding: 0px;">Sil</th>
                                 </tr>
                             </thead>
@@ -320,6 +320,7 @@
                                             <td id="@item.ID-invoice" class="tableexport-string">Hayır</td>
                                         }
                                         <td id="@item.ID-location" class="tableexport-string">@item.LOCATION</td>
+                                        <td id="@item.ID-reference" class="tableexport-string">@item.REFERENCE_NO</td>
                                         @if (item.ACTIVITY_DETAIL.Length > 40)
                                         {
                                             <td id="@item.ID-detail" class="tableexport-string">
@@ -338,7 +339,6 @@
                                         <td id="@item.ID-end" class="tableexport-string">@item.END_TIME?.ToString("hh':'mm':'ss")</td>
                                         <td id="@item.ID-whour" class="tableexport-string">@item.WHOUR</td>
                                         <td class="tableexport-string">@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
-                                        <td class="tableexport-string">@item.CREATED_TIME.ToString("hh':'mm':'ss")</td>
                                         <td>
                                             <button type="button" class="btn btn-outline-danger viewModelDel" data-toggle="modal" data-target="#delete" data-id="@item.ID"><i class="fas fa-trash"></i></button>
                                         </td>
@@ -423,25 +423,25 @@
                                 </div>
                             </div>
                             @*<div class="form-group row">
-                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Durumu</label>
-                                <div class="col-12 col-sm-6 col-lg-6">
-                                    <select class="custom-select" name="STATUS" typeof="bool">
-                                        <option selected value="true">Aktif</option>
-                                        <option value="false">Pasif</option>
-                                    </select>
+                                    <label class="col-12 col-sm-4 col-form-label text-sm-right">Durumu</label>
+                                    <div class="col-12 col-sm-6 col-lg-6">
+                                        <select class="custom-select" name="STATUS" typeof="bool">
+                                            <option selected value="true">Aktif</option>
+                                            <option value="false">Pasif</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Önceliği</label>
-                                <div class="col-12 col-sm-6 col-lg-6">
-                                    <select class="custom-select" name="ACTIVITY_PRIORITY">
-                                        @foreach (var item in Model.PriorityDto)
-                                        {
-                                            <option value="@item.ID">@item.NAME</option>
-                                        }
-                                    </select>
-                                </div>
-                            </div>*@
+                                <div class="form-group row">
+                                    <label class="col-12 col-sm-4 col-form-label text-sm-right">Önceliği</label>
+                                    <div class="col-12 col-sm-6 col-lg-6">
+                                        <select class="custom-select" name="ACTIVITY_PRIORITY">
+                                            @foreach (var item in Model.PriorityDto)
+                                            {
+                                                <option value="@item.ID">@item.NAME</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>*@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Fatura</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
@@ -461,7 +461,12 @@
                                     </select>
                                 </div>
                             </div>
-
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Referans No</label>
+                                <div class="col-12 col-sm-6 col-lg-6">
+                                    <input name="REFERENCE_NO" autocomplete="off" placeholder="İsteğe Bağlı" style="height:inherit;" maxlength="20" class="form-control">
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Aktivite Tarihi</label>
                                 <div class="input-group date col-12 col-sm-6 col-lg-6 datePicker" id="mydatetimepicker5" data-target-input="nearest">
@@ -553,25 +558,25 @@
                                 </div>
                             </div>
                             @*<div class="form-group row">
-                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Durumu</label>
-                                <div class="col-12 col-sm-6 col-lg-6">
-                                    <select class="custom-select" id="STATUS" typeof="bool" name="STATUS">
-                                        <option value="true">Aktif</option>
-                                        <option value="false">Pasif</option>
-                                    </select>
+                                    <label class="col-12 col-sm-4 col-form-label text-sm-right">Durumu</label>
+                                    <div class="col-12 col-sm-6 col-lg-6">
+                                        <select class="custom-select" id="STATUS" typeof="bool" name="STATUS">
+                                            <option value="true">Aktif</option>
+                                            <option value="false">Pasif</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Önceliği</label>
-                                <div class="col-12 col-sm-6 col-lg-6">
-                                    <select class="custom-select" id="ACTIVITY_PRIORITY" name="ACTIVITY_PRIORITY">
-                                        @foreach (var item in Model.PriorityDto)
-                                        {
-                                            <option value="@item.ID">@item.NAME</option>
-                                        }
-                                    </select>
-                                </div>
-                            </div>*@
+                                <div class="form-group row">
+                                    <label class="col-12 col-sm-4 col-form-label text-sm-right">Önceliği</label>
+                                    <div class="col-12 col-sm-6 col-lg-6">
+                                        <select class="custom-select" id="ACTIVITY_PRIORITY" name="ACTIVITY_PRIORITY">
+                                            @foreach (var item in Model.PriorityDto)
+                                            {
+                                                <option value="@item.ID">@item.NAME</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>*@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Fatura</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
@@ -591,7 +596,12 @@
                                     </select>
                                 </div>
                             </div>
-
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Referans No</label>
+                                <div class="col-12 col-sm-6 col-lg-6">
+                                    <input id="REFERENCE_NO" name="REFERENCE_NO" placeholder="İsteğe Bağlı" autocomplete="off" style="height:inherit;" maxlength="20" class="form-control">
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Aktivite Tarihi</label>
                                 <div class="input-group date col-12 col-sm-6 col-lg-6 datePicker" id="mydatetimepicker1" data-target-input="nearest">
@@ -834,7 +844,7 @@
             });
             var table = $('#tb').DataTable({
                 "columnDefs": [
-                    { "orderable": false, "targets": [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 16, 17] }
+                    { "orderable": false, "targets": [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 17] }
                 ],
                 "order": [[1, "desc"]],
                 language: {
@@ -936,7 +946,7 @@
             $("#searchDetail").on("keyup", function () {
                 var search = $(this).val();
 
-                table.columns(10).search(search).draw();
+                table.columns(11).search(search).draw();
             });
             $("#btnFilterActivityDate").on("click", function () {
                 var from = $("#fromActivityDate").val();
@@ -964,7 +974,7 @@
                     allDate.push(d + "." + m + "." + yy.getFullYear());
                 }
 
-                table.columns(11).search(allDate.join("|"), true, false, true).draw();
+                table.columns(12).search(allDate.join("|"), true, false, true).draw();
             });
 
             $("#btnFilterCreateDate").on("click", function () {
@@ -993,7 +1003,7 @@
                     allDate.push(d + "." + m + "." + yy.getFullYear());
                 }
 
-                table.columns(15).search(allDate.join("|"), true, false, true).draw();
+                table.columns(16).search(allDate.join("|"), true, false, true).draw();
             });
 
         };
@@ -1048,7 +1058,7 @@
             var whour = $("#" + id + "-whour", "#tb").html();
             var location = $("#" + id + "-location", "#tb").html();
             var customer = $("#" + id + "-customer", "#tb").data("id");
-
+            var reference = $("#" + id + "-reference", "#tb").html();
 
             //if (status == "Aktif")
             //    status = true;
@@ -1072,6 +1082,7 @@
             document.getElementById("WHOUR").value = whour;
             document.getElementById("LOCATION").value = location;
             document.getElementById("e_selectCustomer").value = customer;
+            document.getElementById("REFERENCE_NO").value = reference;
         });
 
         $("#BtnEdit").click(function () {

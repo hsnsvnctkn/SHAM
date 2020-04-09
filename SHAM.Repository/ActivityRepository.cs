@@ -31,7 +31,8 @@ namespace SHAM.Repository
                 ACTIVITY_PRIORITY = 3,
                 INVOICE = activity.INVOICE,
                 WHOUR = activity.WHOUR,
-                LOCATION = activity.LOCATION
+                LOCATION = activity.LOCATION,
+                REFERENCE_NO = activity.REFERENCE_NO
             });
             _context.SaveChanges();
         }
@@ -66,7 +67,8 @@ namespace SHAM.Repository
                 PRIORITY = a.PRIORITY,
                 EMPLOYEE = a.EMPLOYEE,
                 WHOUR = a.WHOUR,
-                LOCATION = a.LOCATION
+                LOCATION = a.LOCATION,
+                REFERENCE_NO = a.REFERENCE_NO
             }).ToList();
 
             var project = _context.Projects.Select(p => new ProjectDto { ID = p.ID, NAME = p.PROJECT_NAME, CUSTOMER = p.CUSTOMER }).ToList();
@@ -104,7 +106,8 @@ namespace SHAM.Repository
                 PRIORITY = a.PRIORITY,
                 EMPLOYEE = a.EMPLOYEE,
                 WHOUR = a.WHOUR,
-                LOCATION = a.LOCATION
+                LOCATION = a.LOCATION,
+                REFERENCE_NO = a.REFERENCE_NO
             }).ToList();
 
             var project = _context.Projects.Select(p => new ProjectDto { ID = p.ID, NAME = p.PROJECT_NAME, CUSTOMER = p.CUSTOMER }).ToList();
@@ -143,7 +146,8 @@ namespace SHAM.Repository
                 CREATED_EMPLOYEE = a.CREATED_EMPLOYEE,
                 PRIORITY = a.PRIORITY,
                 WHOUR = a.WHOUR,
-                LOCATION = a.LOCATION
+                LOCATION = a.LOCATION,
+                REFERENCE_NO = a.REFERENCE_NO
             }).ToList();
             var projectID = _context.ProjectEmployees.Where(e => e.EmployeeID == id).Select(p => p.ProjectID);
             var customerID = _context.ProjectEmployees.Where(e => e.EmployeeID == id).Select(p => p.PROJECT.CUSTOMER_NUMBER);
@@ -182,7 +186,8 @@ namespace SHAM.Repository
                 CREATED_EMPLOYEE = a.CREATED_EMPLOYEE,
                 PRIORITY = a.PRIORITY,
                 WHOUR = a.WHOUR,
-                LOCATION = a.LOCATION
+                LOCATION = a.LOCATION,
+                REFERENCE_NO = a.REFERENCE_NO
             }).ToList();
 
             var projectID = _context.ProjectEmployees.Where(e => e.EmployeeID == id).Select(p => p.ProjectID);
@@ -211,6 +216,7 @@ namespace SHAM.Repository
             thisActivity.INVOICE = activity.INVOICE;
             thisActivity.WHOUR = activity.WHOUR;
             thisActivity.LOCATION = activity.LOCATION;
+            thisActivity.REFERENCE_NO = activity.REFERENCE_NO;
 
 
             _context.Activities.Update(thisActivity);

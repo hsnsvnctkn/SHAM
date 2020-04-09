@@ -106,6 +106,7 @@
                                     <th class="border-0" style="font-weight: bold;">Önceliği</th>
                                     <th class="border-0" style="font-weight: bold;">Fatura</th>
                                     <th class="border-0" style="font-weight: bold;">Lokasyon</th>
+                                    <th class="border-0" style="font-weight: bold;">Referans</th>
                                     <th class="border-0" style="font-weight: bold;">Detay</th>
                                     <th class="border-0" style="font-weight: bold;">Aktivite Tarihi</th>
                                     <th class="border-0" style="font-weight: bold;">Başlama Saati</th>
@@ -197,6 +198,7 @@
                                             </select>
                                         </div>
                                     </th>
+                                    <th class="border-0" style="padding: 0px;"></th>
                                     <th class="border-0" style="padding: 0px;">
                                         <div class="f-icon" style="padding: 0px;" id="btnDetailSearch">
                                             <i class="fas fa-filter"></i>
@@ -262,6 +264,7 @@
                                             <td id="@item.ID-invoice" class="tableexport-string">Hayır</td>
                                         }
                                         <td id="@item.ID-location" class="tableexport-string">@item.LOCATION</td>
+                                        <td id="@item.ID-reference" class="tableexport-string">@item.REFERENCE_NO</td>
                                         @if (item.ACTIVITY_DETAIL.Length > 75)
                                         {
                                             <td id="@item.ID-detail" class="tableexport-string">
@@ -364,31 +367,31 @@
                                 </div>
                             </div>
                             @*<div class="form-group row">
-                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Durumu</label>
-                                <div class="col-12 col-sm-6 col-lg-6">
-                                    <select class="custom-select" name="STATUS" typeof="bool">
-                                        <option selected value="true">Aktif</option>
-                                        <option value="false">Pasif</option>
-                                    </select>
+                                    <label class="col-12 col-sm-4 col-form-label text-sm-right">Durumu</label>
+                                    <div class="col-12 col-sm-6 col-lg-6">
+                                        <select class="custom-select" name="STATUS" typeof="bool">
+                                            <option selected value="true">Aktif</option>
+                                            <option value="false">Pasif</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Önceliği</label>
-                                <div class="col-12 col-sm-6 col-lg-6">
-                                    <select class="custom-select" name="ACTIVITY_PRIORITY">
-                                        @foreach (var item in Model.PriorityDto)
-                                        {
-                                            <option value="@item.ID">@item.NAME</option>
-                                        }
-                                    </select>
-                                </div>
-                            </div>*@
+                                <div class="form-group row">
+                                    <label class="col-12 col-sm-4 col-form-label text-sm-right">Önceliği</label>
+                                    <div class="col-12 col-sm-6 col-lg-6">
+                                        <select class="custom-select" name="ACTIVITY_PRIORITY">
+                                            @foreach (var item in Model.PriorityDto)
+                                            {
+                                                <option value="@item.ID">@item.NAME</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>*@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Fatura</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
                                     <select class="custom-select" name="INVOICE" typeof="bool">
-                                        <option selected value="true">Evet</option>
-                                        <option value="false">Hayır</option>
+                                        <option value="true">Evet</option>
+                                        <option selected value="false">Hayır</option>
                                     </select>
                                 </div>
                             </div>
@@ -402,7 +405,12 @@
                                     </select>
                                 </div>
                             </div>
-
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Referans No</label>
+                                <div class="col-12 col-sm-6 col-lg-6">
+                                    <input name="REFERENCE_NO" autocomplete="off" placeholder="İsteğe Bağlı" style="height:inherit;" maxlength="20" class="form-control">
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Aktivite Tarihi</label>
                                 <div class="input-group date col-12 col-sm-6 col-lg-6 datePicker" id="mydatetimepicker5" data-target-input="nearest">
@@ -495,31 +503,31 @@
                                 </div>
                             </div>
                             @*<div class="form-group row">
-                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Durumu</label>
-                                <div class="col-12 col-sm-6 col-lg-6">
-                                    <select class="custom-select" id="STATUS" typeof="bool" name="STATUS">
-                                        <option value="true">Aktif</option>
-                                        <option value="false">Pasif</option>
-                                    </select>
+                                    <label class="col-12 col-sm-4 col-form-label text-sm-right">Durumu</label>
+                                    <div class="col-12 col-sm-6 col-lg-6">
+                                        <select class="custom-select" id="STATUS" typeof="bool" name="STATUS">
+                                            <option value="true">Aktif</option>
+                                            <option value="false">Pasif</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Önceliği</label>
-                                <div class="col-12 col-sm-6 col-lg-6">
-                                    <select class="custom-select" id="ACTIVITY_PRIORITY" name="ACTIVITY_PRIORITY">
-                                        @foreach (var item in Model.PriorityDto)
-                                        {
-                                            <option value="@item.ID">@item.NAME</option>
-                                        }
-                                    </select>
-                                </div>
-                            </div>*@
+                                <div class="form-group row">
+                                    <label class="col-12 col-sm-4 col-form-label text-sm-right">Önceliği</label>
+                                    <div class="col-12 col-sm-6 col-lg-6">
+                                        <select class="custom-select" id="ACTIVITY_PRIORITY" name="ACTIVITY_PRIORITY">
+                                            @foreach (var item in Model.PriorityDto)
+                                            {
+                                                <option value="@item.ID">@item.NAME</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>*@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Fatura</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
                                     <select class="custom-select" id="INVOICE" typeof="bool" name="INVOICE">
                                         <option value="true">Evet</option>
-                                        <option value="false">Hayır</option>
+                                        <option selected value="false">Hayır</option>
                                     </select>
                                 </div>
                             </div>
@@ -531,6 +539,12 @@
                                         <option selected value="Remote">Remote</option>
                                         <option value="Other">Other</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Referans No</label>
+                                <div class="col-12 col-sm-6 col-lg-6">
+                                    <input id="REFERENCE_NO" name="REFERENCE_NO" placeholder="İsteğe Bağlı" autocomplete="off" style="height:inherit;" maxlength="20" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -751,14 +765,14 @@
                 exportButtons: false,
                 position: "top",
                 ignoreRows: null,
-                ignoreCols: [0, 1, 13],
+                ignoreCols: [0, 1, 14],
                 trimWhitespace: true,
                 RTL: false,
                 sheetname: "Aktivitelerim " + exportDate.getDate() + "." + (exportDate.getMonth() + 1) + "." + exportDate.getFullYear()
             });
             var table = $('#tb').DataTable({
                 "columnDefs": [
-                    { "orderable": false, "targets": [0, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12] }
+                    { "orderable": false, "targets": [0, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13] }
                 ],
                 "order": [[1, "desc"]],
                 language: {
@@ -842,7 +856,7 @@
             $("#searchDetail").on("keyup", function () {
                 var search = $(this).val();
 
-                table.columns(8).search(search).draw();
+                table.columns(9).search(search).draw();
             });
             $("#btnFilterActivityDate").on("click", function () {
                 var from = $("#fromActivityDate").val();
@@ -870,7 +884,7 @@
                     allDate.push(d + "." + m + "." + yy.getFullYear());
                 }
 
-                table.columns(9).search(allDate.join("|"), true, false, true).draw();
+                table.columns(10).search(allDate.join("|"), true, false, true).draw();
                 tableeexport.reset();
             });
 
@@ -926,6 +940,7 @@
             //var status = $("#" + id + "-status", "#tb").html();
             var location = $("#" + id + "-location", "#tb").html();
             var customer = $("#" + id + "-customer", "#tb").data("id");
+            var reference = $("#" + id + "-reference", "#tb").html();
 
             //if (status == "Aktif")
             //    status = true;
@@ -949,6 +964,7 @@
             document.getElementById("WHOUR").value = whour;
             document.getElementById("LOCATION").value = location;
             document.getElementById("e_selectCustomer").value = customer;
+            document.getElementById("REFERENCE_NO").value = reference;
         });
 
         $("#BtnEdit").click(function () {
