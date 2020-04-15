@@ -46,10 +46,19 @@ namespace SHAM.UI.Controllers
         {
             try
             {
-                var x = activity.START_TIME == null;
+                if (activity.PROJECT_NUMBER == null)
+                    return Json(new { status = false, error = "Proje seçimi yapınız.." });
+                else if (activity.ACTIVITY_DATE == DateTime.MinValue)
+                    return Json(new { status = false, error = "Aktivite tarihi boş bırakılamaz.." });
+                else if (activity.START_TIME == null)
+                    return Json(new { status = false, error = "Başlangıç saati boş bırakılamaz.." });
+                else if (activity.WHOUR == 0)
+                    return Json(new { status = false, error = "Çalışma saati boş bırakılamaz.." });
+                else if (activity.ACTIVITY_DETAIL == null)
+                    return Json(new { status = false, error = "Detay boş bırakılamaz.." });
+                else if (activity.END_TIME <= activity.START_TIME)
+                    return Json(new { status = false, error = "Aktivite başlangıç saati bitişinden küçük olamaz.." });
 
-                if (x == true || activity.WHOUR == 0 || activity.ACTIVITY_DATE == DateTime.MinValue)
-                    return Json(new { status = false, error = "any" });
 
                 var claimsIndentity = HttpContext.User.Identity as ClaimsIdentity;
                 var userClaims = claimsIndentity.Claims;
@@ -70,17 +79,16 @@ namespace SHAM.UI.Controllers
                 }
                 activity.CREATOR = Convert.ToInt16(id);
                 activity.ACTIVITY_EMPLOYEE = Convert.ToInt16(id);
+                activity.WHOUR = Math.Round(activity.WHOUR, 2);
 
-                if (activity.END_TIME <= activity.START_TIME)
-                    return Json(new { status = false, error = "EndTimeSmall" });
 
                 _activityRepository.Create(activity);
                 return Json(new { status = true });
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
-                return Json(new { status = false, error = "any" });
+                return Json(new { status = false, error = e });
             }
         }
         [Authorize(Roles.ADMIN, Roles.NORMAL)]
@@ -89,21 +97,28 @@ namespace SHAM.UI.Controllers
         {
             try
             {
-                if (activity.START_TIME == TimeSpan.Zero || activity.WHOUR == 0 || activity.ACTIVITY_DATE == DateTime.MinValue)
-                    return Json(new { status = false, error = "any" });
-
-                if (activity.END_TIME <= activity.START_TIME)
-                    return Json(new { status = false, error = "EndTimeSmall" });
+                if (activity.PROJECT_NUMBER == null)
+                    return Json(new { status = false, error = "Proje seçimi yapınız.." });
+                else if (activity.ACTIVITY_DATE == DateTime.MinValue)
+                    return Json(new { status = false, error = "Aktivite tarihi boş bırakılamaz.." });
+                else if (activity.START_TIME == null)
+                    return Json(new { status = false, error = "Başlangıç saati boş bırakılamaz.." });
+                else if (activity.WHOUR == 0)
+                    return Json(new { status = false, error = "Çalışma saati boş bırakılamaz.." });
+                else if (activity.ACTIVITY_DETAIL == null)
+                    return Json(new { status = false, error = "Detay boş bırakılamaz.." });
+                else if (activity.END_TIME <= activity.START_TIME)
+                    return Json(new { status = false, error = "Aktivite başlangıç saati bitişinden küçük olamaz.." });
 
                 activity.WHOUR = Math.Round(activity.WHOUR, 2);
 
                 _activityRepository.Update(activity);
                 return Json(new { status = true });
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
-                return Json(new { status = false, error = "any" });
+                return Json(new { status = false, error = e });
             }
         }
 

@@ -335,7 +335,7 @@
                                             <td id="@item.ID-detail" class="tableexport-string">@item.ACTIVITY_DETAIL</td>
                                         }
                                         <td id="@item.ID-estStart" class="tableexport-string">@item.ACTIVITY_DATE.ToString("dd/MM/yyyy")</td>
-                                        <td id="@item.ID-start" class="tableexport-string">@item.START_TIME.ToString("hh':'mm':'ss")</td>
+                                        <td id="@item.ID-start" class="tableexport-string">@item.START_TIME?.ToString("hh':'mm':'ss")</td>
                                         <td id="@item.ID-end" class="tableexport-string">@item.END_TIME?.ToString("hh':'mm':'ss")</td>
                                         <td id="@item.ID-whour" class="tableexport-string">@item.WHOUR</td>
                                         <td class="tableexport-string">@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
@@ -549,7 +549,7 @@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Projesi</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
-                                    <select class="custom-select" id="PROJECT_NUMBER" name="PROJECT_NUMBER">
+                                    <select class="custom-select" id="PROJECT_NUMBER" name="PROJECT_NUMBER" disabled>
                                         @foreach (var item in Model.ProjectDto)
                                         {
                                             <option value="@item.ID" class="@item.CUSTOMER.ID">@item.NAME</option>
@@ -812,6 +812,12 @@
             var e_AllProject = $('#PROJECT_NUMBER').html();
             $("#e_selectCustomer").change(function () {
                 var selectedCustomer = $("#e_selectCustomer option:selected").prop("class");
+
+                if (selectedCustomer != "all")
+                    $("#PROJECT_NUMBER").attr("disabled", false);
+                else
+                    $("#PROJECT_NUMBER").attr("disabled", true);
+
                 $("#PROJECT_NUMBER").html(e_AllProject);
                 if (selectedCustomer == "all") return;
                 $('#PROJECT_NUMBER :not([class^="' + selectedCustomer + '"])').remove();
@@ -1023,10 +1029,7 @@
                     if (result.status)
                         showCreateAlert();
                     else
-                        if (result.error == "EndTimeSmall")
-                            showAlert2("Aktivite başlangıcı bitişten küçük olamaz");
-                        else if (result.error == "any")
-                            showAlert();
+                        showAlert2(result.error);
                 }
             })
         });
@@ -1094,10 +1097,7 @@
                         showCreateAlert();
                     }
                     else
-                        if (result.error == "EndTimeSmall")
-                            showAlert2("Aktivite başlangıcı bitişten küçük olamaz");
-                        else if (result.error == "any")
-                            showAlert();
+                        showAlert2(result.error);
                 }
             })
         });

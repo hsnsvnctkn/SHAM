@@ -18,5 +18,11 @@ namespace SHAM.Repository.Contracts
         List<EmployeeDto> EntryDailyActivity();
         EmployeeReportsDto GetEmployeesId();
         EmployeeReportsDto GetReports(int id);
+        void SendMailAllEmployees(List<int> employeesId, string subject,bool isInput);
+        List<EmployeeDto> GetAllEmployeeNewMember();
+        SendEmailDto GetSendEmailDto();
+        void SendSpecialMailEmployee(List<int> id,string subject, string header, string content);
+        void SendMailProjectEmployee(int projectId, string subject, string header, string content);
+        void SendMailCustomer(List<int> customerId, string subject, string header, string content);
     }
 }

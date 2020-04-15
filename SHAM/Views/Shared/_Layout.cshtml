@@ -57,6 +57,10 @@
         <strong>Hata ! </strong><br /> Yanlış giden bir şeyler var. Kontrol ederek tekrar deneyiniz..
     </div>
 
+    <div class="alert alert-success alertmessage" id="success-alert">
+        <strong>Başarılı !  </strong><br /><p id="successMsg"></p>
+    </div>
+
     <div class="alert alert-success alertmessage" id="create-success-alert">
         <strong>Başarılı !  </strong><br /> Başarıyla eklendi.<br /><span class="dashboard-spinner spinner-secondary spinner-xs"></span>
     </div>
@@ -131,6 +135,16 @@
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" asp-controller="Notification" asp-action="Index">Duyurular</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-9" aria-controls="submenu-9"><i class="fas fa-cogs"></i>İşlemler</a>
+                                    <div id="submenu-9" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" asp-controller="Transaction" asp-action="SendMail"><i class="fas fa-envelope" style="margin-bottom: 3px;"></i>Toplu Mail Yönetimi</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -341,6 +355,13 @@
             $("#danger-alert").slideUp(500);
         });
     };
+    function showAlertSuccess(msg) {
+        document.getElementById("successMsg").innerHTML = msg;
+        $("#success-alert").fadeTo(3000, 500).slideUp(500, function () {
+            $("#success-alert").slideUp(500);
+        });
+    };
+
     function showAlert2(msg) {
         document.getElementById("errorMsg").innerHTML = msg;
         $("#danger-alert2").fadeTo(3000, 500).slideUp(500, function () {

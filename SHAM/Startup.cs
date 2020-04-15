@@ -41,7 +41,7 @@ namespace SHAM.UI
             services.AddScoped<DailyActivityReminder>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(DailyActivityReminder),
-                cronExpression: "0 0 18 ? * MON-FRI")); // run at 18:00 every MONDAY-FRIDAY  "0 0 18 ? * MON-FRI"
+                cronExpression: "0 0 18 ? * MON-FRI")); // run at 18:00 every MONDAY-FRIDAY  "0 0 18 ? * MON-FRI"  "0/5 * * * * ?"
 
             services.AddHostedService<QuartzHostedService>();
 

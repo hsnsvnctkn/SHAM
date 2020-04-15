@@ -20,12 +20,12 @@ namespace SHAM.Repository
             _context.Activities.Add(new Activity
             {
                 ID = activity.ID,
-                PROJECT_NUMBER = activity.PROJECT_NUMBER,
+                PROJECT_NUMBER = (int)activity.PROJECT_NUMBER,
                 ACTIVITY_DETAIL = activity.ACTIVITY_DETAIL,
                 ACTIVITY_CREATOR = activity.CREATOR,
                 ACTIVITY_EMPLOYEE = activity.ACTIVITY_EMPLOYEE,
                 ACTIVITY_DATE = activity.ACTIVITY_DATE,
-                START_TIME = activity.START_TIME,
+                START_TIME = (TimeSpan)activity.START_TIME,
                 END_TIME = activity.END_TIME,
                 ACTIVITY_STATUS = true,
                 ACTIVITY_PRIORITY = 3,
@@ -208,10 +208,10 @@ namespace SHAM.Repository
         {
             var thisActivity = _context.Activities.FirstOrDefault(a => a.ID == activity.ID);
 
-            thisActivity.PROJECT_NUMBER = activity.PROJECT_NUMBER;
+            thisActivity.PROJECT_NUMBER = (int)activity.PROJECT_NUMBER;
             thisActivity.ACTIVITY_DETAIL = activity.ACTIVITY_DETAIL;
             thisActivity.ACTIVITY_DATE = activity.ACTIVITY_DATE;
-            thisActivity.START_TIME = activity.START_TIME;
+            thisActivity.START_TIME = (TimeSpan)activity.START_TIME;
             thisActivity.END_TIME = activity.END_TIME;
             thisActivity.INVOICE = activity.INVOICE;
             thisActivity.WHOUR = activity.WHOUR;

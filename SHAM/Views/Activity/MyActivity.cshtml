@@ -241,7 +241,7 @@
                             <tbody>
                                 @foreach (var item in Model.ActivityDto)
                                 {
-                                    <tr>
+                                    <tr id="@item.ID">
                                         <td><button type="button" data-id="@item.ID" data-toggle="modal" data-target="#edit" class="btn btn-outline-primary fBtnEdit"><i class="far fa-edit"></i></button></td>
                                         <td id="@item.ID">@item.ID </td>
                                         <td id="@item.ID-customer" data-id="@item.PROJECT.CUSTOMER.ID">@item.PROJECT.CUSTOMER.CUSTOMER_NAME </td>
@@ -279,7 +279,7 @@
                                             <td id="@item.ID-detail" class="tableexport-string">@item.ACTIVITY_DETAIL</td>
                                         }
                                         <td id="@item.ID-estStart" class="tableexport-string">@item.ACTIVITY_DATE.ToString("dd/MM/yyyy")</td>
-                                        <td id="@item.ID-start" class="tableexport-string">@item.START_TIME.ToString("hh':'mm':'ss")</td>
+                                        <td id="@item.ID-start" class="tableexport-string">@item.START_TIME?.ToString("hh':'mm':'ss")</td>
                                         <td id="@item.ID-end" class="tableexport-string">@item.END_TIME?.ToString("hh':'mm':'ss")</td>
                                         <td id="@item.ID-whour" class="tableexport-string">@item.WHOUR</td>
                                         <td>
@@ -318,7 +318,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-                    <button type="button" class="btn btn-danger" id="btnDelete">Sil</button>
+                    <button type="button" class="btn btn-danger" value="" id="btnDelete">Sil</button>
                 </div>
             </form>
         </div>
@@ -390,8 +390,8 @@
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Fatura</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
                                     <select class="custom-select" name="INVOICE" typeof="bool">
-                                        <option value="true">Evet</option>
-                                        <option selected value="false">Hayır</option>
+                                        <option selected value="true">Evet</option>
+                                        <option value="false">Hayır</option>
                                     </select>
                                 </div>
                             </div>
@@ -494,7 +494,7 @@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Projesi</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
-                                    <select class="custom-select" id="PROJECT_NUMBER" name="PROJECT_NUMBER">
+                                    <select class="custom-select" id="PROJECT_NUMBER" name="PROJECT_NUMBER" disabled>
                                         @foreach (var item in Model.ProjectDto)
                                         {
                                             <option value="@item.ID" class="@item.CUSTOMER.ID">@item.NAME</option>
@@ -527,7 +527,7 @@
                                 <div class="col-12 col-sm-6 col-lg-6">
                                     <select class="custom-select" id="INVOICE" typeof="bool" name="INVOICE">
                                         <option value="true">Evet</option>
-                                        <option selected value="false">Hayır</option>
+                                        <option value="false">Hayır</option>
                                     </select>
                                 </div>
                             </div>
@@ -737,8 +737,14 @@
             });
 
             var e_AllProject = $('#PROJECT_NUMBER').html();
-            $("#e_selectCustomer").on("change keyup", function () {
+            $("#e_selectCustomer").change(function () {
                 var selectedCustomer = $("#e_selectCustomer option:selected").prop("class");
+
+                if (selectedCustomer != "all")
+                    $("#PROJECT_NUMBER").attr("disabled", false);
+                else
+                    $("#PROJECT_NUMBER").attr("disabled", true);
+
                 $("#PROJECT_NUMBER").html(e_AllProject);
                 if (selectedCustomer == "all") return;
                 $('#PROJECT_NUMBER :not([class^="' + selectedCustomer + '"])').remove();
@@ -772,7 +778,7 @@
             });
             var table = $('#tb').DataTable({
                 "columnDefs": [
-                    { "orderable": false, "targets": [0, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13] }
+                    { "orderable": false, "targets": [0, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14] }
                 ],
                 "order": [[1, "desc"]],
                 language: {
@@ -892,7 +898,7 @@
 
         $(".viewModelDel").click(function () {
             var id = $(this).data("id");
-
+            $("#btnDelete").val(id);
             document.getElementById("IdDel").value = id;
         });
 
@@ -906,21 +912,21 @@
                         showCreateAlert();
                     }
                     else
-                        if (result.error == "EndTimeSmall")
-                            showAlert2("Aktivite başlangıcı bitişten küçük olamaz");
-                        else if (result.error == "any")
-                            showAlert();
+                        showAlert2(result.error);
                 }
             })
         });
 
         $("#btnDelete").click(function () {
+            var id = $(this).val();
             $("#formDelete").ajaxSubmit({
                 url: '/Activity/MyDelete',
                 type: 'post',
                 success: function (result) {
-                    if (result.status)
-                        window.location.reload();
+                    if (result.status) {
+                        $("#" + id).remove();
+                        $("#delete").modal("toggle");
+                    }
                     else
                         showAlert();
                 }
@@ -976,10 +982,7 @@
                         showCreateAlert();
                     }
                     else
-                        if (result.error == "EndTimeSmall")
-                            showAlert2("Aktivite başlangıcı bitişten küçük olamaz");
-                        else if (result.error == "any")
-                            showAlert();
+                        showAlert2(result.error);
                 }
             })
         });

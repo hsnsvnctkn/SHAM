@@ -90,10 +90,13 @@ namespace SHAM.UI.Controllers
                     return Json(new { status = false, error = "null", text = "Email Bos Olamaz." });
 
                 var subject = "SHAM - Yeni Üye İsteği";
-                var Message = "<b>Ad</b> : " + name + "<br>" + "<b>Soyad</b> : " + surname + "<br>" + "<b>Mail Adresi </b>: " + email + "<br>" + "<b>Notu</b> : " + note;
-                var adress = "sevinctekin.hasan@gmail.com";
+                var Message = EmailContents.NewMember(name, surname, email, note);
+                var admins = _employeeRepository.GetAllEmployeeNewMember().Where(e => e.ROLE == Roles.ADMIN).Select(e => e.MAIL);
 
-                _sendEmail.Send(subject, adress, Message);
+                foreach (var item in admins)
+                {
+                    _sendEmail.Send(subject, admins.ToString(), Message);
+                }
                 return Json(new { status = true });
             }
             catch (Exception)

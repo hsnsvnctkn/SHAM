@@ -306,7 +306,7 @@
                                             <td class="tableexport-string">@currentDayTR</td>
                                             <td class="tableexport-string">@Model.wHours[i]</td>
                                             <td class="tableexport-string">@waitingWhour</td>
-                                            <td class="tableexport-string">@(Model.wHours[i] - waitingWhour)</td>
+                                            <td class="tableexport-string">@(Math.Round((Model.wHours[i] - waitingWhour), 2))</td>
                                             <td><i class="@whourStatusIcon"></i></td>
                                         </tr>
                                     }
@@ -317,7 +317,7 @@
                                         <td class="text-right font-weight-bold">Toplam :</td>
                                         <td class="font-weight-bold tableexport-string">@totalWhour</td>
                                         <td class="font-weight-bold tableexport-string">@totalWaitingWhour</td>
-                                        <td class="font-weight-bold tableexport-string">@diffWhour</td>
+                                        <td class="font-weight-bold tableexport-string">@Math.Round(diffWhour, 2)</td>
                                         @if (diffWhour < 0)
                                         {
                                             <td><i class="fas fa-arrow-circle-down fa-sm text-danger"></i></td>

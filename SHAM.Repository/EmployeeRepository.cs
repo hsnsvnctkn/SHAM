@@ -10,10 +10,12 @@ namespace SHAM.Repository
     public class EmployeeRepository : GenericRepository<Employee>, IEmployeeRepository
     {
         private readonly IIndexRepository _indexRepository;
-        public EmployeeRepository(IUnitOfWork uow, IIndexRepository indexRepository)
+        private readonly ISendEmail _sendEmail;
+        public EmployeeRepository(IUnitOfWork uow, IIndexRepository indexRepository, ISendEmail sendEmail)
             : base(uow)
         {
             _indexRepository = indexRepository;
+            _sendEmail = sendEmail;
         }
         public void Update(EmployeeDto employee)
         {
@@ -173,6 +175,15 @@ namespace SHAM.Repository
 
             return emp;
         }
+        public List<EmployeeDto> GetAllEmployeeNewMember()
+        {
+            return _context.Employees.Select(e => new EmployeeDto
+            {
+                ID = e.ID,
+                ROLE = e.ROLE,
+                MAIL = e.EMPLOYEE_MAIL
+            }).ToList();
+        }
         public EmployeeReportsDto GetEmployeesId()
         {
             var employeesId = _context.Employees.Select(e => new EmployeeDto
@@ -200,9 +211,85 @@ namespace SHAM.Repository
 
             var projectWhour = _indexRepository.GetSumProjectWhour(projects);
 
-            var selectedEmp = _context.Employees.Where(e => e.ID == id).Select(e => new EmployeeDto { NAME = e.EMPLOYEE_NAME, SURNAME = e.EMPLOYEE_SURNAME }).FirstOrDefault();
+            var selectedEmp = _context.Employees.Where(e => e.ID == id).Select(e => new EmployeeDto { ID = e.ID, NAME = e.EMPLOYEE_NAME, SURNAME = e.EMPLOYEE_SURNAME }).FirstOrDefault();
 
             return new EmployeeReportsDto { Projects = projects, ProjectWhours = projectWhour, Whours = whour, Employees = employeesId, SelectedEmployee = selectedEmp };
+        }
+        public void SendMailAllEmployees(List<int> employeesId, string subject, bool isInput)
+        {
+            var employees = new List<EmployeeDto>();
+            if (isInput == true)
+                employees = _context.Employees.Where(e => employeesId.Contains(e.ID)).Select(e => new EmployeeDto
+                {
+                    ID = e.ID,
+                    NAME = e.EMPLOYEE_NAME,
+                    SURNAME = e.EMPLOYEE_SURNAME,
+                    MAIL = e.EMPLOYEE_MAIL
+                }).ToList();
+            else
+            {
+                employees = EntryDailyActivity();
+            }
+            foreach (var item in employees)
+            {
+                string msg;
+                if (isInput == true)
+                    msg = EmailContents.ReminderActivity(item.NAME, item.SURNAME);
+                else
+                    msg = EmailContents.ReminderDailyActivity(item.NAME, item.SURNAME);
+
+                _sendEmail.Send(subject, item.MAIL, msg);
+            }
+        }
+
+        public SendEmailDto GetSendEmailDto()
+        {
+            var projects = _context.Projects.Select(p => new ProjectDto
+            {
+                ID = p.ID,
+                NAME = p.PROJECT_NAME,
+                EMPLOYEES = p.PROJECTEMPLOYEE,
+                CUSTOMER_ID = p.CUSTOMER_NUMBER
+            }).ToList();
+            var employees = _context.Employees.Select(e => new EmployeeDto
+            {
+                ID = e.ID,
+                NAME = e.EMPLOYEE_NAME,
+                SURNAME = e.EMPLOYEE_SURNAME,
+                ROLE = e.ROLE
+            }).ToList();
+            var customers = _context.Customers.Select(c => new CustomerDto
+            {
+                ID = c.ID,
+                NAME = c.CUSTOMER_NAME,
+
+            }).ToList();
+            return new SendEmailDto { Customers = customers, Employees = employees, Projects = projects };
+        }
+        public void SendSpecialMailEmployee(List<int> id, string subject, string header, string content)
+        {
+            var employees = _context.Employees.Where(e => id.Contains(e.ID)).Select(e => new { e.EMPLOYEE_NAME, e.EMPLOYEE_SURNAME, e.EMPLOYEE_MAIL }).ToList();
+
+            foreach (var item in employees)
+            {
+                var mailStr = EmailContents.EditableContent(item.EMPLOYEE_NAME, item.EMPLOYEE_SURNAME, content, header);
+                _sendEmail.Send(subject, item.EMPLOYEE_MAIL, mailStr);
+            }
+        }
+        public void SendMailProjectEmployee(int projectId, string subject, string header, string content)
+        {
+            var employees = _context.ProjectEmployees.Where(pe => pe.ProjectID == projectId).Select(pe => pe.EmployeeID).ToList();
+            SendSpecialMailEmployee(employees, subject, header, content);
+        }
+        public void SendMailCustomer(List<int> customerId, string subject, string header, string content)
+        {
+            var customers = _context.Customers.Where(c => customerId.Contains(c.ID)).Select(c => new { c.CUSTOMER_MAIL, c.CUSTOMER_NAME });
+
+            foreach (var item in customers)
+            {
+                var mailStr = EmailContents.EditableContent(item.CUSTOMER_NAME, " ", content, header);
+                _sendEmail.Send(subject, item.CUSTOMER_MAIL, mailStr);
+            }
         }
     }
 }

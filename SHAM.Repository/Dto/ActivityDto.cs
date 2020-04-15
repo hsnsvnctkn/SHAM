@@ -8,7 +8,7 @@ namespace SHAM.Repository.Dto
     {
         public int ID { get; set; }//PK
 
-        public int PROJECT_NUMBER { get; set; }//FK --
+        public int? PROJECT_NUMBER { get; set; }//FK --
 
         public string ACTIVITY_DETAIL { get; set; }
 
@@ -17,7 +17,7 @@ namespace SHAM.Repository.Dto
 
         public DateTime ACTIVITY_DATE { get; set; }
 
-        public TimeSpan START_TIME { get; set; }
+        public TimeSpan? START_TIME { get; set; }
 
         public TimeSpan? END_TIME { get; set; }
 
