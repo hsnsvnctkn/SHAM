@@ -62,7 +62,7 @@ namespace SHAM.UI.Controllers
 
                 var claimsIndentity = HttpContext.User.Identity as ClaimsIdentity;
                 var userClaims = claimsIndentity.Claims;
-                string id = "";
+                string id = "", newName = "";
                 if (HttpContext.User.Identity.IsAuthenticated)
                 {
                     foreach (var claim in userClaims)
@@ -74,6 +74,12 @@ namespace SHAM.UI.Controllers
                             case "ID":
                                 id = cValue;
                                 break;
+                            case ClaimTypes.Name:
+                                newName = cValue;
+                                break;
+                            case ClaimTypes.Surname:
+                                newName += " " + cValue;
+                                break;
                         }
                     }
                 }
@@ -83,7 +89,8 @@ namespace SHAM.UI.Controllers
 
 
                 _activityRepository.Create(activity);
-                return Json(new { status = true });
+                var newId = _activityRepository.GetLastActivityId();
+                return Json(new { status = true, id = newId, name = newName });
             }
             catch (Exception e)
             {

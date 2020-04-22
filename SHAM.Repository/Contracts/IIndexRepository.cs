@@ -8,9 +8,9 @@ namespace SHAM.Repository.Contracts
     public interface IIndexRepository : IGenericRepository<IndexDto>
     {
         IndexDto GetAdminIndex(int id, bool isAdmin);
-        List<ProjectDto> GetUserProject(int id);
-        List<ActivityDto> GetMyActivity(int id);
-        List<double> GetSumActivityWhour(List<ActivityDto> activities);
+        List<ProjectDto> GetUserProjectActivity(int id, int month, int year);
+        List<ActivityDto> GetMyActivity(int id, int month, int year);
+        List<double> GetSumActivityWhour(List<ActivityDto> activities, int day);
         List<double> GetSumProjectWhour(List<ProjectDto> projects);
     }
 }

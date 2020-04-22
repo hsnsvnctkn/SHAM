@@ -194,7 +194,7 @@ namespace SHAM.Repository
             }).ToList();
             return new EmployeeReportsDto { Employees = employeesId };
         }
-        public EmployeeReportsDto GetReports(int id)
+        public EmployeeReportsDto GetReports(int id, int month, int year)
         {
             var employeesId = _context.Employees.Select(e => new EmployeeDto
             {
@@ -203,11 +203,11 @@ namespace SHAM.Repository
                 SURNAME = e.EMPLOYEE_SURNAME
             }).ToList();
 
-            var projects = _indexRepository.GetUserProject(id);
+            var projects = _indexRepository.GetUserProjectActivity(id, month, year);
 
-            var activities = _indexRepository.GetMyActivity(id);
+            var activities = _indexRepository.GetMyActivity(id, month, year);
 
-            var whour = _indexRepository.GetSumActivityWhour(activities);
+            var whour = _indexRepository.GetSumActivityWhour(activities, DateTime.DaysInMonth(year, month));
 
             var projectWhour = _indexRepository.GetSumProjectWhour(projects);
 

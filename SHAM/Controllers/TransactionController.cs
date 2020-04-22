@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Nager.Date;
 using SHAM.Repository.Contracts;
 
 namespace SHAM.UI.Controllers
@@ -28,11 +29,11 @@ namespace SHAM.UI.Controllers
         {
             try
             {
-                if (employeesId.Count == 0)
+                if (employeesId.Count == 0 && isInput == true)
                     return Json(new { status = false, error = "Mail göndermek için seçim yapmalısınız.." });
                 if (isInput == false)
-                    if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday)
-                        return Json(new { status = false, error = "Çalışanlar hafta sonu aktivite girişi yapmayabilir.." });
+                    if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday || DateSystem.IsPublicHoliday(DateTime.Now, CountryCode.TR) == true)
+                        return Json(new { status = false, error = "Çalışanlar tatillerde aktivite girişi yapmayabilir.." });
                 var subject = "Aktivite Hatırlatma";
                 _employeeRepository.SendMailAllEmployees(employeesId, subject, isInput);
                 return Json(new { status = true });
@@ -87,7 +88,7 @@ namespace SHAM.UI.Controllers
             }
         }
         [HttpPost]
-        public JsonResult SendMailCustomer(List<int> customerId , string subject, string header, string content)
+        public JsonResult SendMailCustomer(List<int> customerId, string subject, string header, string content)
         {
             try
             {

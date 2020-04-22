@@ -57,7 +57,9 @@
         text-align: center;
     }
 </style>
-
+@{
+    string currentDate = DateTime.Now.ToString("dd/MM/yyyy");
+}
 
 <div class="ecommerce-widget">
     <div class="row" style="justify-content: center;">
@@ -295,7 +297,7 @@
                             <tbody>
                                 @foreach (var item in Model.ActivityDto)
                                 {
-                                    <tr>
+                                    <tr id="@item.ID">
                                         <td><button type="button" data-id="@item.ID" data-toggle="modal" data-target="#edit" class="btn btn-outline-primary fBtnEdit"><i class="far fa-edit"></i></button></td>
                                         <td id="@item.ID">@item.ID </td>
                                         <td id="@item.ID-customer" data-id="@item.PROJECT.CUSTOMER.ID">@item.PROJECT.CUSTOMER.CUSTOMER_NAME </td>
@@ -445,7 +447,7 @@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Fatura</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
-                                    <select class="custom-select" name="INVOICE" typeof="bool">
+                                    <select class="custom-select" id="c_invoice" name="INVOICE" typeof="bool">
                                         <option selected value="true">Evet</option>
                                         <option value="false">Hayır</option>
                                     </select>
@@ -454,7 +456,7 @@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Lokasyon</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
-                                    <select class="custom-select" name="LOCATION">
+                                    <select class="custom-select" id="c_location" name="LOCATION">
                                         <option value="Onsite">Onsite</option>
                                         <option selected value="Remote">Remote</option>
                                         <option value="Other">Other</option>
@@ -464,13 +466,13 @@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Referans No</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
-                                    <input name="REFERENCE_NO" autocomplete="off" placeholder="İsteğe Bağlı" style="height:inherit;" maxlength="20" class="form-control">
+                                    <input name="REFERENCE_NO" id="c_reference" autocomplete="off" placeholder="İsteğe Bağlı" style="height:inherit;" maxlength="20" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Aktivite Tarihi</label>
                                 <div class="input-group date col-12 col-sm-6 col-lg-6 datePicker" id="mydatetimepicker5" data-target-input="nearest">
-                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker5" name="ACTIVITY_DATE">
+                                    <input type="text" value="" id="c_activity_date" class="form-control datetimepicker-input" data-target="#mydatetimepicker5" name="ACTIVITY_DATE">
                                     <div class="input-group-append" data-target="#mydatetimepicker5" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                                     </div>
@@ -501,7 +503,7 @@
                             <div class="form-group row">
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Detay</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
-                                    <textarea name="ACTIVITY_DETAIL" class="form-control" autocomplete="off" data-parsley-maxlength="100" placeholder="Activite Detayı" id="exampleFormControlTextarea1" rows="3" style="margin-top: 0px; margin-bottom: 0px; height: 119px;"></textarea>
+                                    <textarea name="ACTIVITY_DETAIL" class="form-control" autocomplete="off" data-parsley-maxlength="100" placeholder="Activite Detayı" id="c_detail" rows="3" style="margin-top: 0px; margin-bottom: 0px; height: 119px;"></textarea>
                                 </div>
                             </div>
                             <div class="form-group row text-right">
@@ -793,7 +795,6 @@
 
 
         $(document).ready(function () {
-            filterExport();
 
             var allProject = $('#selectProject').html();
             $("#selectCustomer").change(function () {
@@ -832,202 +833,310 @@
             });
         });
 
-        function filterExport() {
-            var exportDate = new Date();
-            var tableeexport = $('#tb').tableExport({
-                headers: true,
-                footers: false,
-                formats: ["xlsx"],
-                filename: "Aktiviteler " + exportDate.getDate() + "." + (exportDate.getMonth() + 1) + "." + exportDate.getFullYear(),
-                bootstrap: true,
-                exportButtons: false,
-                position: "top",
-                ignoreRows: null,
-                ignoreCols: [0, 1, 17],
-                trimWhitespace: true,
-                RTL: false,
-                sheetname: "Aktiviteler " + exportDate.getDate() + "." + (exportDate.getMonth() + 1) + "." + exportDate.getFullYear()
-            });
-            var table = $('#tb').DataTable({
-                "columnDefs": [
-                    { "orderable": false, "targets": [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 17] }
-                ],
-                "order": [[1, "desc"]],
-                language: {
-                    info: "_TOTAL_ kayıttan _START_ - _END_ kayıt gösteriliyor.",
-                    infoEmpty: "Gösterilecek hiç kayıt yok.",
-                    loadingRecords: "Kayıtlar yükleniyor.",
-                    zeroRecords: "Tablo boş",
-                    search: "Arama:",
-                    infoFiltered: "(toplam _MAX_ kayıttan filtrelenenler)",
-                    lengthMenu: "Sayfada _MENU_ Kayıt Göster",
-                    paginate: {
-                        first: "İlk",
-                        previous: "Önceki",
-                        next: "Sonraki",
-                        last: "Son"
-                    },
+        var exportDate = new Date();
+        var tableexport = $('#tb').tableExport({
+            headers: true,
+            footers: false,
+            formats: ["xlsx"],
+            filename: "Aktiviteler " + exportDate.getDate() + "." + (exportDate.getMonth() + 1) + "." + exportDate.getFullYear(),
+            bootstrap: true,
+            exportButtons: false,
+            position: "top",
+            ignoreRows: null,
+            ignoreCols: [0, 1, 17],
+            trimWhitespace: true,
+            RTL: false,
+            sheetname: "Aktiviteler " + exportDate.getDate() + "." + (exportDate.getMonth() + 1) + "." + exportDate.getFullYear()
+        });
+        var table = $('#tb').DataTable({
+            "columnDefs": [
+                { "orderable": false, "targets": [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 17] }
+            ],
+            "order": [[1, "desc"]],
+            language: {
+                info: "_TOTAL_ kayıttan _START_ - _END_ kayıt gösteriliyor.",
+                infoEmpty: "Gösterilecek hiç kayıt yok.",
+                loadingRecords: "Kayıtlar yükleniyor.",
+                zeroRecords: "Tablo boş",
+                search: "Arama:",
+                infoFiltered: "(toplam _MAX_ kayıttan filtrelenenler)",
+                lengthMenu: "Sayfada _MENU_ Kayıt Göster",
+                paginate: {
+                    first: "İlk",
+                    previous: "Önceki",
+                    next: "Sonraki",
+                    last: "Son"
                 },
-                responsive: true,
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Hepsi"]],
-                "fnDrawCallback": function (oSettings) {
-                    tableeexport.reset();
-                }
-            });
+            },
+            responsive: true,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Hepsi"]],
+            "fnDrawCallback": function (oSettings) {
+                tableexport.reset();
+            }
+        });
 
-            $("#filterCustomer").on("change", function () {
-                var filter = $(this).children("option:selected").val();
+        $("#filterCustomer").on("change", function () {
+            var filter = $(this).children("option:selected").val();
 
-                if (filter == "all") {
-                    filter = "";
-                    $("#filterCustomer").val("all")
-                }
+            if (filter == "all") {
+                filter = "";
+                $("#filterCustomer").val("all")
+            }
 
-                table.columns(2).search(filter).draw();
-            });
+            table.columns(2).search(filter).draw();
+        });
 
-            $("#filterProject").on("change", function () {
-                var filter = $(this).children("option:selected").val();
+        $("#filterProject").on("change", function () {
+            var filter = $(this).children("option:selected").val();
 
-                if (filter == "Hepsi")
-                    filter = "";
+            if (filter == "Hepsi")
+                filter = "";
 
-                table.columns(3).search(filter).draw();
-            });
+            table.columns(3).search(filter).draw();
+        });
 
-            $("#filterEmployee").on("change", function () {
-                var filter = $(this).children("option:selected").val();
+        $("#filterEmployee").on("change", function () {
+            var filter = $(this).children("option:selected").val();
 
-                if (filter == "Hepsi")
-                    filter = "";
+            if (filter == "Hepsi")
+                filter = "";
 
-                table.columns(4).search(filter).draw();
-            });
+            table.columns(4).search(filter).draw();
+        });
 
-            $("#filterCreatedEmployee").on("change", function () {
-                var filter = $(this).children("option:selected").val();
+        $("#filterCreatedEmployee").on("change", function () {
+            var filter = $(this).children("option:selected").val();
 
-                if (filter == "Hepsi")
-                    filter = "";
+            if (filter == "Hepsi")
+                filter = "";
 
-                table.columns(5).search(filter).draw();
-            });
+            table.columns(5).search(filter).draw();
+        });
 
-            $("#filterStatus").on("change", function () {
-                var filter = $(this).children("option:selected").val();
+        $("#filterStatus").on("change", function () {
+            var filter = $(this).children("option:selected").val();
 
-                if (filter == "Hepsi")
-                    filter = "";
+            if (filter == "Hepsi")
+                filter = "";
 
-                table.columns(6).search(filter).draw();
-            });
+            table.columns(6).search(filter).draw();
+        });
 
-            $("#filterPriority").on("change", function () {
-                var filter = $(this).children("option:selected").val();
+        $("#filterPriority").on("change", function () {
+            var filter = $(this).children("option:selected").val();
 
-                if (filter == "Hepsi")
-                    filter = "";
+            if (filter == "Hepsi")
+                filter = "";
 
-                table.columns(7).search(filter).draw();
-            });
+            table.columns(7).search(filter).draw();
+        });
 
-            $("#filterInvoice").on("change", function () {
-                var filter = $(this).children("option:selected").val();
+        $("#filterInvoice").on("change", function () {
+            var filter = $(this).children("option:selected").val();
 
-                if (filter == "Hepsi")
-                    filter = "";
+            if (filter == "Hepsi")
+                filter = "";
 
-                table.columns(8).search(filter).draw();
-            });
+            table.columns(8).search(filter).draw();
+        });
 
-            $("#filterLocation").on("change", function () {
-                var filter = $(this).children("option:selected").val();
+        $("#filterLocation").on("change", function () {
+            var filter = $(this).children("option:selected").val();
 
-                if (filter == "Hepsi")
-                    filter = "";
+            if (filter == "Hepsi")
+                filter = "";
 
-                table.columns(9).search(filter).draw();
-            });
+            table.columns(9).search(filter).draw();
+        });
 
-            $("#searchDetail").on("keyup", function () {
-                var search = $(this).val();
+        $("#searchDetail").on("keyup", function () {
+            var search = $(this).val();
 
-                table.columns(11).search(search).draw();
-            });
-            $("#btnFilterActivityDate").on("click", function () {
-                var from = $("#fromActivityDate").val();
-                var to = $("#toActivityDate").val();
+            table.columns(11).search(search).draw();
+        });
+        $("#btnFilterActivityDate").on("click", function () {
+            var from = $("#fromActivityDate").val();
+            var to = $("#toActivityDate").val();
 
-                var f = from.split('.');
-                var t = to.split('.');
+            var f = from.split('.');
+            var t = to.split('.');
 
-                var day = 1000 * 60 * 60 * 24;
-                var fromDate = new Date(f[2], f[1], f[0]);
-                var toDate = new Date(t[2], t[1], t[0]);
-                var allDate = [];
-                var diff = (toDate.getTime() - fromDate.getTime()) / day;
-                for (var i = 0; i <= diff; i++) {
-                    var xx = fromDate.getTime() + day * i;
-                    var yy = new Date(xx);
-                    var d = yy.getDate();
-                    var m = yy.getMonth();
+            var day = 1000 * 60 * 60 * 24;
+            var fromDate = new Date(f[2], f[1], f[0]);
+            var toDate = new Date(t[2], t[1], t[0]);
+            var allDate = [];
+            var diff = (toDate.getTime() - fromDate.getTime()) / day;
+            for (var i = 0; i <= diff; i++) {
+                var xx = fromDate.getTime() + day * i;
+                var yy = new Date(xx);
+                var d = yy.getDate();
+                var m = yy.getMonth();
 
-                    if (d < 10)
-                        d = "0" + d;
-                    if (m < 10)
-                        m = "0" + m;
+                if (d < 10)
+                    d = "0" + d;
+                if (m < 10)
+                    m = "0" + m;
 
-                    allDate.push(d + "." + m + "." + yy.getFullYear());
-                }
+                allDate.push(d + "." + m + "." + yy.getFullYear());
+            }
 
-                table.columns(12).search(allDate.join("|"), true, false, true).draw();
-            });
+            table.columns(12).search(allDate.join("|"), true, false, true).draw();
+        });
 
-            $("#btnFilterCreateDate").on("click", function () {
-                var from = $("#fromCreateDate").val();
-                var to = $("#toCreateDate").val();
+        $("#btnFilterCreateDate").on("click", function () {
+            var from = $("#fromCreateDate").val();
+            var to = $("#toCreateDate").val();
 
-                var f = from.split('.');
-                var t = to.split('.');
+            var f = from.split('.');
+            var t = to.split('.');
 
-                var day = 1000 * 60 * 60 * 24;
-                var fromDate = new Date(f[2], f[1], f[0]);
-                var toDate = new Date(t[2], t[1], t[0]);
-                var allDate = [];
-                var diff = (toDate.getTime() - fromDate.getTime()) / day;
-                for (var i = 0; i <= diff; i++) {
-                    var xx = fromDate.getTime() + day * i;
-                    var yy = new Date(xx);
-                    var d = yy.getDate();
-                    var m = yy.getMonth();
+            var day = 1000 * 60 * 60 * 24;
+            var fromDate = new Date(f[2], f[1], f[0]);
+            var toDate = new Date(t[2], t[1], t[0]);
+            var allDate = [];
+            var diff = (toDate.getTime() - fromDate.getTime()) / day;
+            for (var i = 0; i <= diff; i++) {
+                var xx = fromDate.getTime() + day * i;
+                var yy = new Date(xx);
+                var d = yy.getDate();
+                var m = yy.getMonth();
 
-                    if (d < 10)
-                        d = "0" + d;
-                    if (m < 10)
-                        m = "0" + m;
+                if (d < 10)
+                    d = "0" + d;
+                if (m < 10)
+                    m = "0" + m;
 
-                    allDate.push(d + "." + m + "." + yy.getFullYear());
-                }
+                allDate.push(d + "." + m + "." + yy.getFullYear());
+            }
 
-                table.columns(16).search(allDate.join("|"), true, false, true).draw();
-            });
+            table.columns(16).search(allDate.join("|"), true, false, true).draw();
+        });
 
-        };
+        function AddRow(id, emp) {
+            var customer = $("#selectCustomer option:selected").text();
+            var customerId = $("#selectCustomer option:selected").attr("class");
+            var customerHTML = "<td id=\"" + id + "-customer\" data-id=\"" + customerId + "\">" + customer + "</td>";
 
+            var project = $("#selectProject option:selected").text();
+            var projectId = $("#selectProject option:selected").val();
+            var projectHTML = "<td id=\"" + id + "-project\" class=\"tableexport-string\" data-id=\"" + projectId + "\">" + project + "</td>";
 
-        $(".viewModelDel").click(function () {
+            var empHTML = "<td class=\"tableexport-string\">" + emp + "</td>";
+
+            var status = "<td id=\"" + id + "-status\" class=\"tableexport-string\">Aktif</td>";
+
+            var priority = "<td id=\"" + id + "-priority\" class=\"tableexport-string\" data-id=\"3\">NORMAL</td>";
+
+            var invoice = $("#c_invoice option:selected").text();
+            var invoiceHTML = "<td id=\"" + id + "-invoice\" class=\"tableexport-string\">" + invoice + "</td>";
+
+            var location = $("#c_location option:selected").text();
+            var locationHTML = "<td id=\"" + id + "-location\" class=\"tableexport-string\">" + location + "</td>";
+
+            var reference = $("#c_reference").val();
+            var referenceHTML = "<td id=\"" + id + "-reference\" class=\"tableexport-string\">" + reference + "</td>";
+
+            var date = $("#c_activity_date").val();
+            var dateHTML = "<td id=\"" + id + "-estStart\" class=\"tableexport-string\">" + date + "</td>";
+
+            var start = $("#C_START_TIME").val();
+            var startHTML = "<td id=\"" + id + "-start\" class=\"tableexport-string\">" + start + "</td>";
+
+            var end = $("#C_END_TIME").val();
+            var endHTML = "<td id=\"" + id + "-end\" class=\"tableexport-string\">" + end + "</td>";
+
+            var whour = $("#C_WHOUR").val();
+            var whourHTML = "<td id=\"" + id + "-whour\" class=\"tableexport-string\">" + whour + "</td>";
+
+            var detail = $("#c_detail").val();
+            var detailHTML = "";
+
+            if (detail.length > 40) {
+                detailHTML = "<td id=\"" + id + "-detail\" class=\"tableexport-string\"><div id=\"module\" class=\"container\">" +
+                    "<p style=\"margin:0px!important\" class=\"collapse read-more\" id=\"collapseExample-" + id + "\" aria-expanded=\"false\">" + detail
+                    + "</p><a role=\"button\" class=\"collapsed\" data-toggle=\"collapse\" href=\"#collapseExample-" + id + "\"" +
+                    " style=\"font-size:small\" aria-expanded=\"false\" aria-controls=\"collapseExample-" + id + "\"></a></div></td>";
+            }
+            else {
+                detailHTML = "<td id=\"" + id + "-detail\" class=\"tableexport-string\">" + detail + "</td>";
+            }
+
+            var createDate = "<td class=\"tableexport-string\">" + "@currentDate" + "</td>";
+
+            var delHTML = "<td><button type=\"button\" class=\"btn btn-outline-danger viewModelDel\" data-toggle=\"modal\" data-target=\"#delete\" data-id=\"" + id + "\"><i class=\"fas fa-trash\"></i></button></td>";
+            var editHTML = "<td><button type=\"button\" data-id=\"" + id + "\" data-toggle=\"modal\" data-target=\"#edit\" class=\"btn btn-outline-primary fBtnEdit\"><i class=\"far fa-edit\"></i></button></td>";
+
+            var newRow = '<tr id=\"' + id + '\">' + editHTML + '<td>' + id + '</td>' + customerHTML + projectHTML + empHTML + empHTML + status + priority +
+                invoiceHTML + locationHTML + referenceHTML + detailHTML + dateHTML + startHTML + endHTML + whourHTML + createDate + delHTML + '</tr>';
+            var rowNode = table.row.add($(newRow)[0]).draw().node();
+            $(rowNode)
+                .css('color', 'green')
+                .animate({ color: 'black' });
+            tableexport.reset();
+        }
+
+        function EditRow(id) {
+            var customer = $("#e_selectCustomer option:selected").text();
+            var customerId = $("#e_selectCustomer option:selected").val();
+            var project = $("#PROJECT_NUMBER option:selected").text();
+            var projectId = $("#PROJECT_NUMBER option:selected").val();
+            var status = "Aktif";
+            var priority = "NORMAL";
+            var invoice = $("#INVOICE option:selected").text();
+            var location = $("#LOCATION option:selected").text();
+            var reference = $("#REFERENCE_NO").val();
+            var date = $("#ACTIVITY_DATE").val();
+            var start = $("#START_TIME").val();
+            var end = $("#END_TIME").val();
+            var whour = $("#WHOUR").val();
+            var detail = $("#DETAIL").val();
+            var rowIndex = table.row('#' + id).index();
+
+            table.cell({ row: rowIndex, column: 2 }).data(customer).draw();
+
+            $("#" + id + "-customer", "#tb").attr("data-id", customerId);
+
+            table.cell({ row: rowIndex, column: 3 }).data(project).draw();
+            $("#" + id + "-project", "#tb").attr("data-id", projectId);
+
+            table.cell({ row: rowIndex, column: 8 }).data(invoice).draw();
+
+            table.cell({ row: rowIndex, column: 9 }).data(location).draw();
+
+            table.cell({ row: rowIndex, column: 10 }).data(reference).draw();
+
+            table.cell({ row: rowIndex, column: 11 }).data(detail).draw();
+
+            table.cell({ row: rowIndex, column: 12 }).data(date).draw();
+
+            table.cell({ row: rowIndex, column: 13 }).data(start).draw();
+
+            table.cell({ row: rowIndex, column: 14 }).data(end).draw();
+
+            table.cell({ row: rowIndex, column: 15 }).data(whour).draw();
+
+            tableexport.reset();
+        }
+
+        $("body").on("click", "#tb .viewModelDel", function () {
             var id = $(this).data("id");
+            $("#btnDelete").val(id);
             document.getElementById("IdDel").value = id;
         });
 
         $("#BtnCreate").click(function () {
             $("#C_WHOUR").attr("disabled", false);
+
             $("#createForm").ajaxSubmit({
                 url: '/Activity/Create',
                 type: 'post',
                 success: function (result) {
-                    if (result.status)
-                        showCreateAlert();
+                    if (result.status) {
+                        showCreateAlert2();
+                        AddRow(result.id, result.name);
+                        $("#create").modal("toggle");
+                        document.getElementById("createForm").reset();
+                    }
                     else
                         showAlert2(result.error);
                 }
@@ -1035,12 +1144,16 @@
         });
 
         $("#btnDelete").click(function () {
+            var id = $(this).val();
             $("#formDelete").ajaxSubmit({
                 url: '/Activity/Delete',
                 type: 'post',
                 success: function (result) {
-                    if (result.status)
-                        window.location.reload();
+                    if (result.status) {
+                        table.row("#" + id).remove().draw();
+                        $("#delete").modal("toggle");
+                        tableexport.reset();
+                    }
                     else
                         showAlert();
                 }
@@ -1048,8 +1161,9 @@
         });
 
 
-        $(".fBtnEdit").click(function () {
+        $("body").on("click", "#tb .fBtnEdit", function () {
             var id = $(this).data("id");
+            $("#BtnEdit").val(id);
             var project = $("#" + id + "-project", "#tb").data("id");
             var invoice = $("#" + id + "-invoice", "#tb").html();
             //var priority = $("#" + id + "-priority", "#tb").data("id");
@@ -1089,12 +1203,21 @@
         });
 
         $("#BtnEdit").click(function () {
+            var id = $(this).val();
             $("#WHOUR").attr("disabled", false);
+
+            var selectedCustomer = $("#e_selectCustomer option:selected").prop("class");
+            if (selectedCustomer != "all")
+                $("#PROJECT_NUMBER").attr("disabled", false);
+
             $("#editForm").ajaxSubmit({
                 url: '/Activity/Edit', type: 'post',
                 success: function (result) {
                     if (result.status) {
-                        showCreateAlert();
+                        $("#edit").modal("toggle");
+                        showCreateAlert2();
+                        EditRow(id);
+                        document.getElementById("editForm").reset();
                     }
                     else
                         showAlert2(result.error);

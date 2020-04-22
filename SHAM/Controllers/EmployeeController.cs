@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Nager.Date;
 using SHAM.Repository.Authorize;
 using SHAM.Repository.Contracts;
 using SHAM.Repository.Dto;
@@ -106,14 +107,20 @@ namespace SHAM.UI.Controllers
         {
             var employeesId = _employeeRepository.GetEmployeesId();
 
+            ViewData["month"] = DateTime.Now.Month;
+            ViewData["year"] = DateTime.Now.Year;
+
             return View(employeesId);
         }
         [HttpPost]
-        public IActionResult Reports(int id)
+        public IActionResult Reports(int id, int month, int year)
         {
             try
             {
-                var reports = _employeeRepository.GetReports(id);
+                var reports = _employeeRepository.GetReports(id, month, year);
+                ViewData["month"] = month;
+                ViewData["year"] = year;
+
                 return View(reports);
             }
             catch (Exception e)

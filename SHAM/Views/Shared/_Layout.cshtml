@@ -374,6 +374,12 @@
             window.location.reload();
         });
     };
+    function showCreateAlert2() {
+        $("#create-success-alert").fadeTo(2000, 500).slideUp(500, function () {
+            $("#create-success-alert").slideUp(500);
+        });
+    };
+
     function showEditAlert() {
         $("#edit-success-alert").fadeTo(2000, 500).slideUp(500, function () {
             $("#edit-success-alert").slideUp(500);

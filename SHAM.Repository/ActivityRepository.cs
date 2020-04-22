@@ -45,6 +45,11 @@ namespace SHAM.Repository
             _context.SaveChanges();
         }
 
+        public int GetLastActivityId()
+        {
+            return _context.Activities.Max(a => a.ID);
+        }
+
         public ActivityAllDto GetList()
         {
             var activity = _context.Activities.Select(a => new ActivityDto

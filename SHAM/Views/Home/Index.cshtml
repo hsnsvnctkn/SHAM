@@ -33,6 +33,7 @@
 </style>
 
 @using System.Globalization;
+@using Nager.Date;
 @model SHAM.Repository.Dto.IndexDto
 @{
     ViewData["Title"] = "Ana Sayfa";
@@ -64,7 +65,7 @@
         </div>
     </div>
 }
-@{ string currentMonth = CultureInfo.GetCultureInfo("tr-TR").DateTimeFormat.MonthNames[DateTime.Now.Month];
+@{ string currentMonth = CultureInfo.GetCultureInfo("tr-TR").DateTimeFormat.MonthNames[DateTime.Now.Month - 1];
     int waitingWhour, totalWaitingWhour = 0;
     double totalWhour = 0, diffWhour = 0, totalProjectWhour = 0;
 
@@ -274,7 +275,7 @@
                                         DateTime date = new DateTime((DateTime.Now.Year), (DateTime.Now.Month), i + 1);
                                         string currentDayTR = CultureInfo.GetCultureInfo("tr-TR").DateTimeFormat.DayNames[(int)date.DayOfWeek];
 
-                                        if ((date.DayOfWeek == DayOfWeek.Saturday) || (date.DayOfWeek == DayOfWeek.Sunday))
+                                        if ((date.DayOfWeek == DayOfWeek.Saturday) || (date.DayOfWeek == DayOfWeek.Sunday) || (DateSystem.IsPublicHoliday(date, CountryCode.TR) == true))
                                             waitingWhour = 0;
                                         else
                                             waitingWhour = 8;

@@ -16,5 +16,6 @@ namespace SHAM.Repository.Contracts
         void Delete(int id);
         ActivityAllDto GetMyActivity(int id);
         ActivityAllDto GetMyAllActivity(int id);
+        int GetLastActivityId();
     }
 }

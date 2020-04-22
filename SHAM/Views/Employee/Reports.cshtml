@@ -34,10 +34,12 @@
 
 @model SHAM.Repository.Dto.EmployeeReportsDto
 @using System.Globalization;
-@{string currentMonth = CultureInfo.GetCultureInfo("tr-TR").DateTimeFormat.MonthNames[DateTime.Now.Month];
-    int waitingWhour, totalWaitingWhour = 0;
-    int? selectedEmployeeId;
+@using Nager.Date;
+@{
+    int waitingWhour, totalWaitingWhour = 0, filterMonth = (int)ViewData["month"], filterYear = (int)ViewData["year"];
+    int? selectedEmployeeId, isNow;
     double totalWhour = 0, diffWhour = 0, totalProjectWhour = 0;
+    string currentMonth = CultureInfo.GetCultureInfo("tr-TR").DateTimeFormat.MonthNames[filterMonth - 1];
 
     @if (Model.SelectedEmployee != null)
     {
@@ -45,6 +47,11 @@
     }
     else
         selectedEmployeeId = null;
+
+    if (filterMonth == DateTime.Now.Month && filterYear == DateTime.Now.Year)
+        isNow = DateTime.Now.Day;
+    else
+        isNow = DateTime.DaysInMonth(filterYear, filterMonth);
 
 }
 @{
@@ -77,6 +84,28 @@
                             }
                         </select>
                     </div>
+                    <div class="form-group">
+                        &nbsp;&nbsp; Ay:
+                        <select class="custom-select ml-3" id="filterMonth" name="month">
+                            @for (int i = 1; i <= 12; i++)
+                            {
+                                if (i == filterMonth)
+                                {
+                                    <option value="@i" selected>@i</option>
+                                }
+                                else
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        &nbsp;&nbsp; Yıl:
+                        <select class="custom-select ml-3" id="filterYear" name="year">
+                            <option value="2020" selected>2020</option>
+                        </select>
+                    </div>
                     <div class="form-group mx-sm-3 m-1">
                         <button type="submit" class="btn btn-outline-secondary" data-toggle="modal" data-target="#create" style="margin-left:20px;" id="btnGetReports">Raporları Getir</button>
                     </div>
@@ -98,7 +127,7 @@
                                 <div class="card text-white bg-secondary mb-3">
                                     <div class="row">
                                         <div class="col-xl-8">
-                                            <h5 class="card-header"><i class="fas fa-file-medical-alt" style="margin-right: 10px;"></i> @currentMonth @DateTime.Now.Year - Müşteri & Proje Bazlı Efor Özeti</h5>
+                                            <h5 class="card-header"><i class="fas fa-file-medical-alt" style="margin-right: 10px;"></i> @currentMonth @filterYear - Müşteri & Proje Bazlı Efor Özeti</h5>
                                         </div>
                                         <div class="col-xl-4" style="align-self: center;padding-right: 25px;">
                                             <button type="button" tableexport-id="f444028-xlsx" class="btn btn-light" style="float: right;"><i class="mr-1 fas fa-file-excel text-success"></i>Dışa Aktar</button>
@@ -155,7 +184,7 @@
                                 <div class="card text-white bg-secondary mb-3">
                                     <div class="row">
                                         <div class="col-xl-6">
-                                            <h5 class="card-header bg-secondary"><i class="fas fa-file-medical-alt" style="margin-right: 10px;"></i> @currentMonth @DateTime.Now.Year - Günlük Aktiviteler </h5>
+                                            <h5 class="card-header bg-secondary"><i class="fas fa-file-medical-alt" style="margin-right: 10px;"></i> @currentMonth @filterYear - Günlük Aktiviteler </h5>
                                         </div>
                                         <div class="col-xl-4" style="align-self: center;">
                                             <div id="progress" class="bg-secondary rounded">
@@ -182,12 +211,12 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @for (int i = 0; i < DateTime.Now.Day; i++)
+                                                        @for (int i = 0; i < isNow; i++)
                                                         {
-                                                            DateTime date = new DateTime((DateTime.Now.Year), (DateTime.Now.Month), i + 1);
+                                                            DateTime date = new DateTime(filterYear, filterMonth, i + 1);
                                                             string currentDayTR = CultureInfo.GetCultureInfo("tr-TR").DateTimeFormat.DayNames[(int)date.DayOfWeek];
 
-                                                            if ((date.DayOfWeek == DayOfWeek.Saturday) || (date.DayOfWeek == DayOfWeek.Sunday))
+                                                            if ((date.DayOfWeek == DayOfWeek.Saturday) || (date.DayOfWeek == DayOfWeek.Sunday) || (DateSystem.IsPublicHoliday(date, CountryCode.TR) == true))
                                                                 waitingWhour = 0;
                                                             else
                                                                 waitingWhour = 8;
@@ -282,7 +311,6 @@
             }
 
         });
-
         var exportDate = new Date();
         var tableeexport = $('#tb').tableExport({
             headers: true,
