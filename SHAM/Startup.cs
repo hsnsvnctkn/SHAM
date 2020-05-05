@@ -32,16 +32,15 @@ namespace SHAM.UI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IJobFactory, JobFactory>();
+            // Add Quartz services
+            services.AddSingleton<IJobFactory, SingletonJobFactory>();
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
-            services.AddSingleton<QuartzJobRunner>();
-            services.AddHostedService<QuartzHostedService>();
 
             // Add our job
-            services.AddScoped<DailyActivityReminder>();
+            services.AddSingleton<DailyActivityReminder>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(DailyActivityReminder),
-                cronExpression: "0 0 18 ? * MON-FRI *")); // run at 18:00 every MONDAY-FRIDAY  "0 0 18 ? * MON-FRI"  "0/5 * * * * ?"
+                cronExpression: "0 35 19 ? * MON-FRI *")); 
 
             services.AddHostedService<QuartzHostedService>();
 
@@ -94,18 +93,18 @@ namespace SHAM.UI
             });
 
             services.AddScoped<ITitleRepository, TitleRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPriorityRepository, PriorityRepository>();
             services.AddScoped<ILevelRepository, LevelRepository>();
             services.AddScoped<IProjectTypeRepository, ProjectTypeRepository>();
-            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IActivityRepository, ActivityRepository>();
             services.AddScoped<ITokenProvider, TokenProvider>();
             services.AddScoped<IIndexRepository, IndexRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
-            services.AddScoped<ISendEmail, SendEmail>();
+            services.AddTransient<ISendEmail, SendEmail>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

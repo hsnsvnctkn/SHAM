@@ -7,23 +7,19 @@ using System.Text;
 
 namespace SHAM.Repository.Quartz
 {
-    public class JobFactory : IJobFactory
+    public class SingletonJobFactory : IJobFactory
     {
         private readonly IServiceProvider _serviceProvider;
-
-        public JobFactory(IServiceProvider serviceProvider)
+        public SingletonJobFactory(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }
 
         public IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
         {
-            return _serviceProvider.GetRequiredService<QuartzJobRunner>();
+            return _serviceProvider.GetRequiredService(bundle.JobDetail.JobType) as IJob;
         }
 
-        public void ReturnJob(IJob job)
-        {
-            // we let the DI container handler this
-        }
+        public void ReturnJob(IJob job) { }
     }
 }

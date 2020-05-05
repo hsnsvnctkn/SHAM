@@ -89,6 +89,7 @@
                         </div>
                     </form>
                     <div class="col text-right">
+                        <input type="button" class="btn btn-outline-secondary ml-2" id="resetAllFilter" value="Filtreleri Sıfırla" />
                         <button class="btn btn btn-outline-secondary" tableexport-id="a70aea2-xlsx"><i class="fas fa-file-excel"></i> Excel Olarak Indir</button>
                     </div>
                 </div>
@@ -115,7 +116,7 @@
                                     <th class="border-0"></th>
                                 </tr>
                             </thead>
-                            <thead class="bg-light" style="text-align: center;">
+                            <thead class="bg-light" style="text-align: center;" id="filterThead">
                                 <tr class="border-0 tableexport-ignore">
                                     <th class="border-0" style="padding: 0px;">Düzenle</th>
                                     <th class="border-0" style="padding: 0px;"></th>
@@ -165,7 +166,7 @@
                                         </div>
                                         <div id="divfilterPriority" class="filter-div card shadow">
                                             <select class="custom-select" id="filterPriority" style="width: auto;">
-                                                <option value="">Hepsi</option>
+                                                <option value="Hepsi">Hepsi</option>
                                                 @foreach (var item in Model.PriorityDto)
                                                 {
                                                     <option value="@item.NAME">@item.NAME</option>
@@ -602,10 +603,18 @@
 @section scripts{
     <script>
 
-        $("#btnResetActivityDateFilter").click(function () {
-            $("#fromActivityDate").val('');
-            $("#toActivityDate").val('');
-            $("#tb").DataTable().columns('').search('').draw();
+        $(document).click(function (e) {
+            var filterArea = $("#filterThead");
+            if (!filterArea.is(e.target) && filterArea.has(e.target).length === 0) {
+                $("#divfilterCustomer").hide("slow");
+                $("#divfilterProject").hide("slow");
+                $("#divfilterStatus").hide("slow");
+                $("#divfilterPriority").hide("slow");
+                $("#divfilterInvoice").hide("slow");
+                $("#divfilterLocation").hide("slow");
+                $("#divsearchDetail").hide("slow");
+                $("#divfilterRangeDate").hide("slow");
+            }
         });
 
         $("#btnCustomerFilter").click(function () {
@@ -890,6 +899,24 @@
 
             table.columns(10).search(allDate.join("|"), true, false, true).draw();
             tableexport.reset();
+        });
+        $("#btnResetActivityDateFilter").click(function () {
+            $("#fromActivityDate").val('');
+            $("#toActivityDate").val('');
+            table.columns(10).search('').draw();
+        });
+
+        $("#resetAllFilter").click(function () {
+            $("#fromActivityDate").val('');
+            $("#toActivityDate").val('');
+            $("#filterCustomer").val('all');
+            $("#filterProject").val('Hepsi');
+            $("#filterStatus").val('Hepsi');
+            $("#filterPriority").val('Hepsi');
+            $("#filterInvoice").val('Hepsi');
+            $("#filterLocation").val('Hepsi');
+            $("#searchDetail").val('');
+            table.columns('').search('').draw();
         });
 
         $("body").on("click", "#tb .viewModelDel", function () {

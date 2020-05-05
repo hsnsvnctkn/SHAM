@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Nager.Date;
 using Quartz;
 using SHAM.Repository.Contracts;
@@ -16,55 +17,54 @@ namespace SHAM.Repository.Quartz
     public class DailyActivityReminder : IJob
     {
         private readonly ILogger<DailyActivityReminder> _logger;
-        private readonly IEmployeeRepository _employeeRepository;
-        private readonly ISendEmail _sendEmail;
+        private readonly IServiceProvider _serviceProvider;
 
         public DailyActivityReminder(
             ILogger<DailyActivityReminder> logger,
-            IEmployeeRepository employeeRepository,
+            IServiceProvider serviceProvider,
             ISendEmail sendEmail)
         {
             _logger = logger;
-            _employeeRepository = employeeRepository;
-            _sendEmail = sendEmail;
+            _serviceProvider = serviceProvider;
         }
 
         public Task Execute(IJobExecutionContext context)
         {
-            if (!DateSystem.IsPublicHoliday(DateTime.Now, CountryCode.TR))
+            //using (var scope = _serviceProvider.CreateScope())
+            //{
+            //    var _employeeRepository = scope.ServiceProvider.GetService<EmployeeRepository>();
+            //    if (!DateSystem.IsPublicHoliday(DateTime.Now, CountryCode.TR))
+            //    {
+            //        var notEntryEmployees = _employeeRepository.EntryDailyActivity();
+
+            //        foreach (var item in notEntryEmployees)
+            //        {
+
+            using (var mail = new MailMessage())
             {
-                var notEntryEmployees = _employeeRepository.EntryDailyActivity();
+                mail.From = new MailAddress("noreply@gmail.com");
+                mail.Subject = "SHAM - Aktivite Girişi Hatırlatma";
+                mail.Body = EmailContents.ReminderDailyActivity("Hasan", "Sevinçtekin");
+                mail.IsBodyHtml = true;
+                mail.To.Add(new MailAddress("hasan.sevinctekin@sagita.com.tr"));
 
-                foreach (var item in notEntryEmployees)
+                using (var client = new SmtpClient())
                 {
-                    var credentials = new NetworkCredential("yhesap00@gmail.com", "811201hs");
-
-                    var body = EmailContents.ReminderDailyActivity(item.NAME, item.SURNAME);
-
-                    var mail = new MailMessage()
-                    {
-                        From = new MailAddress("noreply@gmail.com"),
-                        Subject = "SHAM - Aktivite Girişi Hatırlatma",
-                        Body = body
-                    };
-
-                    mail.IsBodyHtml = true;
-                    mail.To.Add(new MailAddress(item.MAIL));
-
-                    var client = new SmtpClient()
-                    {
-                        Port = 587,
-                        DeliveryMethod = SmtpDeliveryMethod.Network,
-                        UseDefaultCredentials = true,
-                        Host = "smtp.gmail.com",
-                        EnableSsl = true,
-                        Credentials = credentials
-                    };
-
+                    client.Port = 587;
+                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    client.UseDefaultCredentials = true;
+                    client.Host = "smtp.gmail.com";
+                    client.EnableSsl = true;
+                    client.Credentials = new NetworkCredential("yhesap00@gmail.com", "811201hs");
                     client.Send(mail);
-                    //_logger.LogInformation(item.MAIL);
                 }
+
             }
+            //_logger.LogInformation(item.MAIL);
+            //        }
+            //    }
+
+            //}
             return Task.CompletedTask;
         }
     }
