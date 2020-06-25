@@ -17,6 +17,7 @@
     <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/assets/vendor/tableexport/tableexport.css" rel="stylesheet" />
     <link href="~/assets/vendor/datatables/css/dataTables.bootstrap4.css" rel="stylesheet" />
+    <link href="~/assets/vendor/charts/Chart.js/Chart.css" rel="stylesheet" />
 
     <style>
         .alertmessage {
@@ -73,7 +74,7 @@
         <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
                 <div class="btndisplaymenu"><i class="fas fa-list-ul" style="margin-left:20px; color: white;"></i></div>
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index"><img src="~/images/logo.png" height="40" width="40" />SHAM</a> v0.4
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index"><img src="~/images/logo.png" height="40" width="40" />SHAM</a> v0.5
                 <button class="navbar-toggler fas fa-user" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -297,6 +298,9 @@
     <script src="~/assets/vendor/tableexport/tableexport.js"></script>
     <script src="~/assets/vendor/datatables/js/jquery.dataTables.min.js"></script>
     <script src="~/assets/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/assets/vendor/charts/Chart.js/Chart.js"></script>
+    <script src="~/assets/vendor/charts/Chart.js/Chart.min.js"></script>
+    <script src="~/assets/vendor/charts/Chart.js/chartjs-plugin-labels.js"></script>
 
 
     @RenderSection("Scripts", false)

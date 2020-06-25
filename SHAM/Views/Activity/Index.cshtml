@@ -60,7 +60,12 @@
 @{
     string currentDate = DateTime.Now.ToString("dd/MM/yyyy");
 }
-
+@functions{
+    string twoDigit(double n)
+    {
+        return (n > 9 ? "" + n : "0" + n);
+    }
+}
 <div class="ecommerce-widget">
     <div class="row" style="justify-content: center;">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -72,17 +77,38 @@
             <div class="card">
                 <h5 class="card-header">Aktivite Bilgileri</h5>
                 <button class="btn btn-outline-success" data-toggle="modal" data-target="#create">Yeni Aktivite Ekle</button>
-                <div class="row" style="margin:5px;">
-                    <form asp-action="Index">
-                        <div class="col-md-auto">
-                            <input type="hidden" name="All" value="true" />
-                            <input type="submit" class="btn btn-outline-secondary" value="Hepsini Göster" />
-                        </div>
-                    </form>
+                <div class="row mt-3" style="margin:5px;">
                     <form>
                         <div class="col-md-auto">
                             <input type="hidden" name="All" value="false" />
                             <input type="submit" class="btn btn-outline-secondary" value="Sadece Bu Ay'ı Göster" />
+                        </div>
+                    </form>
+                    <form asp-action="Index" class="form-inline">
+                        <div class="col-md-auto">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label>Aralık : </label>
+                                    <div class="input-group date datePicker" id="mydatetimepicker8" data-target-input="nearest">
+                                        <input type="text" value="@ViewData["fromDate"]" class="form-control datetimepicker-input" data-target="#mydatetimepicker8" name="from">
+                                        <div class="input-group-append" data-target="#mydatetimepicker8" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                        </div>
+                                    </div>
+                                    <label class="m-2"> - </label>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group date datePicker mr-3" id="mydatetimepicker9" data-target-input="nearest">
+                                        <input type="text" value="@ViewData["toDate"]" class="form-control datetimepicker-input" data-target="#mydatetimepicker9" name="to">
+                                        <div class="input-group-append" data-target="#mydatetimepicker9" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-outline-secondary" value="Aktiviteleri Getir" />
+                                </div>
+                            </div>
                         </div>
                     </form>
                     <div class="col text-right">
@@ -113,6 +139,7 @@
                                     <th class="border-0" style="font-weight: bold;">Başlama Saati</th>
                                     <th class="border-0" style="font-weight: bold;">Bitiş Saati</th>
                                     <th class="border-0" style="font-weight: bold;">Çalışma Saati</th>
+                                    <th class="border-0" style="font-weight: bold;">Saat : Dakika</th>
                                     <th class="border-0" style="font-weight: bold;">Oluşturma Tarihi</th>
                                     <th class="border-0"></th>
                                 </tr>
@@ -141,7 +168,7 @@
                                         </div>
                                         <div id="divfilterProject" class="filter-div card shadow">
                                             <select class="custom-select" id="filterProject" style="width: auto;">
-                                                <option value="Hepsi">Hepsi</option>
+                                                <option value="Hepsi" class="all">Hepsi</option>
                                                 @foreach (var item in Model.ProjectDto)
                                                 {
                                                     <option value="@item.NAME" class="@item.CUSTOMER.ID">@item.NAME</option>
@@ -155,7 +182,7 @@
                                         </div>
                                         <div id="divfilterEmployee" class="filter-div card shadow">
                                             <select class="custom-select" id="filterEmployee" style="width: auto;">
-                                                <option value="Hepsi">Hepsi</option>
+                                                <option value="Hepsi" class="all">Hepsi</option>
                                                 @foreach (var item in Model.EmployeeDto)
                                                 {
                                                     <option value="@item.NAME">@item.NAME</option>
@@ -265,7 +292,8 @@
                                     </th>
                                     <th class="border-0" style="padding: 0px;"></th>
                                     <th class="border-0" style="padding: 0px;"></th>
-                                    <th class="border-0" style="padding: 0px;"></th>
+                                    <th class="border-0" style="padding: 0px;">(Ondalık)</th>
+                                    <th class="border-0" style="padding: 0px;">(ss:dd)</th>
                                     <th class="border-0" style="padding: 0px; padding-right: 15px;">
                                         <div class="f-icon" style="padding: 0px;" id="btnFilterCreateRangeDate">
                                             <i class="fas fa-filter"></i>
@@ -341,6 +369,7 @@
                                         <td id="@item.ID-start" class="tableexport-string">@item.START_TIME?.ToString("hh':'mm':'ss")</td>
                                         <td id="@item.ID-end" class="tableexport-string">@item.END_TIME?.ToString("hh':'mm':'ss")</td>
                                         <td id="@item.ID-whour" class="tableexport-string">@item.WHOUR</td>
+                                        <td id="@item.ID-whour2" class="tableexport-string">@(twoDigit(Math.Floor(item.WHOUR)) + ":" + twoDigit(Math.Round((item.WHOUR * 60) % 60)))</td>
                                         <td class="tableexport-string">@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
                                         <td>
                                             <button type="button" class="btn btn-outline-danger viewModelDel" data-toggle="modal" data-target="#delete" data-id="@item.ID"><i class="fas fa-trash"></i></button>
@@ -497,7 +526,8 @@
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Çalışma Saati*</label>
                                 <div class="col-12 col-sm-4 col-lg-6">
                                     <div id="div_c_whour">
-                                        <input id="C_WHOUR" name="WHOUR" autocomplete="off" type="text" style="height:inherit;" maxlength="6" class="form-control">
+                                        <input id="C_WHOUR" type="time" style="height:inherit;" class="form-control" />
+                                        <input id="c_hideWhour" type="hidden" name="WHOUR" />
                                     </div>
                                 </div>
                             </div>
@@ -632,7 +662,8 @@
                                 <label class="col-12 col-sm-4 col-form-label text-sm-right">Çalışma Saati*</label>
                                 <div class="col-12 col-sm-6 col-lg-6">
                                     <div id="div_whour">
-                                        <input id="WHOUR" name="WHOUR" type="text" style="height:inherit;" autocomplete="off" maxlength="6" class="form-control">
+                                        <input id="WHOUR" type="time" style="height:inherit;" class="form-control">
+                                        <input id="hideWhour" type="hidden" name="WHOUR" />
                                     </div>
                                 </div>
                             </div>
@@ -720,25 +751,13 @@
 
             var start = $("#START_TIME").val();
             var end = $("#END_TIME").val();
+
             if (start != "" && end != "") {
+                var diff = getTwoTimeDiff(start, end);
+                var hour = Math.floor(diff);
+                var min = Math.round((diff * 60) % 60);
 
-                s = start.split(':');
-                e = end.split(':');
-
-                min = e[1] - s[1];
-                hour_carry = 0;
-                if (min < 0) {
-                    min += 60;
-                    hour_carry += 1;
-                }
-                if (min == 30)
-                    min = 5;
-
-                hour = e[0] - s[0] - hour_carry;
-
-                diff = hour + "," + min;
-
-                $("#WHOUR").val(diff);
+                $("#WHOUR").val(twoDigit(hour) + ":" + twoDigit(min));
             }
         });
 
@@ -764,26 +783,62 @@
             var start = $("#C_START_TIME").val();
             var end = $("#C_END_TIME").val();
 
+            $("#C_WHOUR").attr("disabled", true);
+
             if (start != "" && end != "") {
-                s = start.split(':');
-                e = end.split(':');
 
-                min = e[1] - s[1];
-                hour_carry = 0;
-                if (min < 0) {
-                    min += 60;
-                    hour_carry += 1;
-                }
-                if (min == 30)
-                    min = 5;
+                var diff = getTwoTimeDiff(start, end);
+                var hour = Math.floor(diff);
+                var min = Math.round((diff * 60) % 60);
 
-                hour = e[0] - s[0] - hour_carry;
+                $("#C_WHOUR").val(twoDigit(hour) + ":" + twoDigit(min));
 
-                diff = hour + "," + min;
-
-                $("#C_WHOUR").val(diff);
             }
         });
+
+        function twoDigit(n) {
+            return n > 9 ? "" + n : "0" + n;
+        }
+        function getTwoTimeDiff(start, end) {
+            var startTime = new Date();
+            var endTime = new Date();
+
+            s = start.split(':');
+            e = end.split(':');
+            startTime.setHours(s[0]);
+            startTime.setMinutes(s[1]);
+            startTime.setSeconds(0);
+
+            endTime.setHours(e[0]);
+            endTime.setMinutes(e[1]);
+            endTime.setSeconds(0);
+            var diff = endTime - startTime;
+            diff = ((diff / 1000) / 60) / 60;
+            diff = diff.toFixed(2);
+
+            return diff;
+        }
+        function decimalToTime(decimal) {
+            if ((decimal % 1) === 0)
+                return (twoDigit(decimal) + ":" + "00");
+            else {
+                a = decimal.split(",");
+                var newdecimal = a[0] + "." + a[1];
+                var hour = Math.floor(newdecimal);
+                var min = Math.round((newdecimal * 60) % 60);
+
+                return (twoDigit(hour) + ":" + twoDigit(min));
+            }
+        }
+        function timeToDecimal(time) {
+            a = time.split(":");
+            var min = (a[0] * 60) + (a[1] * 1);
+            var decimal = (min / 60).toFixed(2);
+            a = decimal.split(".");
+
+            return (a[0] + "," + a[1]);
+        }
+
 
         $("#C_WHOUR").keyup(function () {
 
@@ -814,7 +869,12 @@
 
                 $("#selectProject").html(allProject);
                 if (selectedCustomer == "all") return;
-                $('#selectProject :not([class^="' + selectedCustomer + '"])').remove();
+                $("#selectProject option").each(function () {
+                    if (!$(this).hasClass(selectedCustomer)) {
+                        $(this).remove();
+                    }
+                });
+                //$('#selectProject :not([class^="' + selectedCustomer + '"])').remove();
             });
 
             var e_AllProject = $('#PROJECT_NUMBER').html();
@@ -828,7 +888,11 @@
 
                 $("#PROJECT_NUMBER").html(e_AllProject);
                 if (selectedCustomer == "all") return;
-                $('#PROJECT_NUMBER :not([class^="' + selectedCustomer + '"])').remove();
+                $("#PROJECT_NUMBER option").each(function () {
+                    if (!$(this).hasClass(selectedCustomer)) {
+                        $(this).remove();
+                    }
+                });
             });
 
             var AllFilterProject = $('#filterProject').html();
@@ -836,7 +900,11 @@
                 var selectedFilterCustomer = $("#filterCustomer option:selected").prop("class");
                 $("#filterProject").html(AllFilterProject);
                 if (selectedFilterCustomer == "all") return;
-                $('#filterProject :not([class^="' + selectedFilterCustomer + '"])').remove();
+                $("#filterProject option").each(function () {
+                    if (!$(this).hasClass(selectedFilterCustomer)) {
+                        $(this).remove();
+                    }
+                });
             });
         });
 
@@ -850,16 +918,16 @@
             exportButtons: false,
             position: "top",
             ignoreRows: null,
-            ignoreCols: [0, 1, 17],
+            ignoreCols: [0, 1, 18],
             trimWhitespace: true,
             RTL: false,
             sheetname: "Aktiviteler " + exportDate.getDate() + "." + (exportDate.getMonth() + 1) + "." + exportDate.getFullYear()
         });
         var table = $('#tb').DataTable({
             "columnDefs": [
-                { "orderable": false, "targets": [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 17] }
+                { "orderable": false, "targets": [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15,16, 18] }
             ],
-            "order": [[1, "desc"]],
+            "order": [[12, "desc"], [1, "desc"]],
             language: {
                 info: "_TOTAL_ kayıttan _START_ - _END_ kayıt gösteriliyor.",
                 infoEmpty: "Gösterilecek hiç kayıt yok.",
@@ -1081,8 +1149,12 @@
             var end = $("#C_END_TIME").val();
             var endHTML = "<td id=\"" + id + "-end\" class=\"tableexport-string\">" + end + "</td>";
 
-            var whour = $("#C_WHOUR").val();
+            var whour = $("#c_hideWhour").val();
             var whourHTML = "<td id=\"" + id + "-whour\" class=\"tableexport-string\">" + whour + "</td>";
+
+            var hrMinWhour = decimalToTime(whour);
+            var hrMinWhourHTML = "<td id=\"" + id + "-whour2\" class=\"tableexport-string\">" + hrMinWhour + "</td>";
+
 
             var detail = $("#c_detail").val();
             var detailHTML = "";
@@ -1103,7 +1175,7 @@
             var editHTML = "<td><button type=\"button\" data-id=\"" + id + "\" data-toggle=\"modal\" data-target=\"#edit\" class=\"btn btn-outline-primary fBtnEdit\"><i class=\"far fa-edit\"></i></button></td>";
 
             var newRow = '<tr id=\"' + id + '\">' + editHTML + '<td>' + id + '</td>' + customerHTML + projectHTML + empHTML + empHTML + status + priority +
-                invoiceHTML + locationHTML + referenceHTML + detailHTML + dateHTML + startHTML + endHTML + whourHTML + createDate + delHTML + '</tr>';
+                invoiceHTML + locationHTML + referenceHTML + detailHTML + dateHTML + startHTML + endHTML + whourHTML + hrMinWhourHTML + createDate + delHTML + '</tr>';
             var rowNode = table.row.add($(newRow)[0]).draw().node();
             $(rowNode)
                 .css('color', 'green')
@@ -1124,7 +1196,8 @@
             var date = $("#ACTIVITY_DATE").val();
             var start = $("#START_TIME").val();
             var end = $("#END_TIME").val();
-            var whour = $("#WHOUR").val();
+            var whour = $("#hideWhour").val();
+            var hrMinWhour = decimalToTime(whour);
             var detail = $("#DETAIL").val();
             var rowIndex = table.row('#' + id).index();
 
@@ -1151,6 +1224,8 @@
 
             table.cell({ row: rowIndex, column: 15 }).data(whour).draw();
 
+            table.cell({ row: rowIndex, column: 16 }).data(hrMinWhour).draw();
+
             tableexport.reset();
         }
 
@@ -1161,7 +1236,12 @@
         });
 
         $("#BtnCreate").click(function () {
+            $("#BtnCreate").attr("disabled", true);
             $("#C_WHOUR").attr("disabled", false);
+            var whour = $("#C_WHOUR").val();
+            var decimal = timeToDecimal(whour);
+            $("#c_hideWhour").val(decimal);
+
 
             $("#createForm").ajaxSubmit({
                 url: '/Activity/Create',
@@ -1175,6 +1255,7 @@
                     }
                     else
                         showAlert2(result.error);
+                    $("#BtnCreate").attr("disabled", false);
                 }
             })
         });
@@ -1232,7 +1313,7 @@
             document.getElementById("ACTIVITY_DATE").value = actDate;
             document.getElementById("START_TIME").value = start;
             document.getElementById("END_TIME").value = end;
-            document.getElementById("WHOUR").value = whour;
+            document.getElementById("WHOUR").value = decimalToTime(whour);
             document.getElementById("LOCATION").value = location;
             document.getElementById("e_selectCustomer").value = customer;
             document.getElementById("REFERENCE_NO").value = reference;
@@ -1241,6 +1322,10 @@
         $("#BtnEdit").click(function () {
             var id = $(this).val();
             $("#WHOUR").attr("disabled", false);
+
+            var whour = $("#WHOUR").val();
+            var decimal = timeToDecimal(whour);
+            $("#hideWhour").val(decimal);
 
             var selectedCustomer = $("#e_selectCustomer option:selected").prop("class");
             if (selectedCustomer != "all")
@@ -1290,14 +1375,6 @@
             });
         };
 
-
-        setInputFilter(document.getElementById("WHOUR"), function (value) {
-            return /^-?\d*[,]?\d*$/.test(value);
-        });
-
-        setInputFilter(document.getElementById("C_WHOUR"), function (value) {
-            return /^-?\d*[,]?\d*$/.test(value);
-        });
 
     </script>
 }

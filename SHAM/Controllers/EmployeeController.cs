@@ -4,7 +4,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Nager.Date;
 using SHAM.Repository.Authorize;
 using SHAM.Repository.Contracts;
 using SHAM.Repository.Dto;
@@ -105,6 +104,7 @@ namespace SHAM.UI.Controllers
         }
         public IActionResult Reports()
         {
+            Repository.PublicHolidays.loadPublicHolidays();
             var employeesId = _employeeRepository.GetEmployeesId();
 
             ViewData["month"] = DateTime.Now.Month;

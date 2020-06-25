@@ -40,7 +40,7 @@ namespace SHAM.UI
             services.AddSingleton<DailyActivityReminder>();
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(DailyActivityReminder),
-                cronExpression: "0 35 19 ? * MON-FRI *")); 
+                cronExpression: "0 0 18 ? * MON-FRI *")); 
 
             services.AddHostedService<QuartzHostedService>();
 
@@ -104,7 +104,7 @@ namespace SHAM.UI
             services.AddScoped<ITokenProvider, TokenProvider>();
             services.AddScoped<IIndexRepository, IndexRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
-            services.AddTransient<ISendEmail, SendEmail>();
+            services.AddScoped<ISendEmail, SendEmail>();//AddTransient
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -67,7 +67,8 @@ namespace SHAM.Repository
                 MAIL = e.EMPLOYEE_MAIL,
                 STATUS = e.EMPLOYEE_STATUS,
                 TITLE = e.TITLE,
-                ROLE = e.ROLE
+                ROLE = e.ROLE,
+                ACTIVITIES = e.ACTIVITIES
             }).Where(e => e.ID == id).FirstOrDefault();
 
             return emp;

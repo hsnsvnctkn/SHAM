@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Nager.Date;
 using SHAM.Repository.Contracts;
 
 namespace SHAM.UI.Controllers
@@ -31,8 +30,9 @@ namespace SHAM.UI.Controllers
             {
                 if (employeesId.Count == 0 && isInput == true)
                     return Json(new { status = false, error = "Mail göndermek için seçim yapmalısınız.." });
+                var holidaySummary = Repository.PublicHolidays.IsPublicHoliday(DateTime.Now);
                 if (isInput == false)
-                    if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday || DateSystem.IsPublicHoliday(DateTime.Now, CountryCode.TR) == true)
+                    if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday || holidaySummary != null)
                         return Json(new { status = false, error = "Çalışanlar tatillerde aktivite girişi yapmayabilir.." });
                 var subject = "Aktivite Hatırlatma";
                 _employeeRepository.SendMailAllEmployees(employeesId, subject, isInput);

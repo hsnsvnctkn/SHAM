@@ -21,24 +21,22 @@ namespace SHAM.UI.Controllers
         [Authorize(Roles.ADMIN)]
         public IActionResult Index()
         {
+            DateTime date = DateTime.Now;
             var model = _activityRepository.GetMonthList();
+            ViewData["fromDate"] = "01." + date.Month + "." + date.Year;
+            ViewData["toDate"] = DateTime.DaysInMonth(date.Year, date.Month) + "." + date.Month + "." + date.Year;
             return View(model);
         }
 
         [Authorize(Roles.ADMIN)]
         [HttpPost]
-        public IActionResult Index(bool All)
+        public IActionResult Index(DateTime from, DateTime to)
         {
-            if (All == true)
-            {
-                var model = _activityRepository.GetList();
-                return View(model);
-            }
-            else
-            {
-                var model = _activityRepository.GetMonthList();
-                return View(model);
-            }
+            var model = _activityRepository.GetDateRangeList(from, to);
+
+            ViewData["fromDate"] = from.ToString("dd/MM/yyyy");
+            ViewData["toDate"] = to.ToString("dd/MM/yyyy");
+            return View(model);
         }
 
         [Authorize(Roles.ADMIN, Roles.NORMAL)]
@@ -161,8 +159,9 @@ namespace SHAM.UI.Controllers
         }
 
         [Authorize(Roles.ADMIN, Roles.NORMAL)]
-        public IActionResult MyActivity()
+        public IActionResult MyActivity(DateTime? from, DateTime? to)
         {
+            DateTime date = DateTime.Now;
             var claimsIndentity = HttpContext.User.Identity as ClaimsIdentity;
             var userClaims = claimsIndentity.Claims;
             string id = "";
@@ -180,40 +179,55 @@ namespace SHAM.UI.Controllers
                     }
                 }
             }
-            var model = _activityRepository.GetMyActivity(Convert.ToInt16(id));
-
-            return View(model);
-        }
-
-        [Authorize(Roles.ADMIN, Roles.NORMAL)]
-        [HttpPost]
-        public IActionResult MyActivity(bool All)
-        {
-            if (All == true)
+            if (from == null && to == null)
             {
-                var claimsIndentity = HttpContext.User.Identity as ClaimsIdentity;
-                var userClaims = claimsIndentity.Claims;
-                string id = "";
-                if (HttpContext.User.Identity.IsAuthenticated)
-                {
-                    foreach (var claim in userClaims)
-                    {
-                        var cType = claim.Type;
-                        var cValue = claim.Value;
-                        switch (cType)
-                        {
-                            case "ID":
-                                id = cValue;
-                                break;
-                        }
-                    }
-                }
-                var model = _activityRepository.GetMyAllActivity(Convert.ToInt16(id));
+                var model = _activityRepository.GetMyActivity(Convert.ToInt16(id));
+
+                ViewData["fromDate"] = "01." + date.Month + "." + date.Year;
+                ViewData["toDate"] = DateTime.DaysInMonth(date.Year, date.Month) + "." + date.Month + "." + date.Year;
 
                 return View(model);
             }
             else
-                return RedirectToAction(nameof(MyActivity));
+            {
+                if (to == null)
+                    to = from;
+                var model = _activityRepository.GetMyDateRangeActivity(Convert.ToInt16(id), from, to);
+
+                ViewData["fromDate"] = from?.ToString("dd/MM/yyyy");
+                ViewData["toDate"] = to?.ToString("dd/MM/yyyy");
+
+                return View(model);
+            }
         }
+
+        //[Authorize(Roles.ADMIN, Roles.NORMAL)]
+        //[HttpPost]
+        //public IActionResult MyActivity(DateTime from, DateTime to)
+        //{
+        //    var claimsIndentity = HttpContext.User.Identity as ClaimsIdentity;
+        //    var userClaims = claimsIndentity.Claims;
+        //    string id = "";
+        //    if (HttpContext.User.Identity.IsAuthenticated)
+        //    {
+        //        foreach (var claim in userClaims)
+        //        {
+        //            var cType = claim.Type;
+        //            var cValue = claim.Value;
+        //            switch (cType)
+        //            {
+        //                case "ID":
+        //                    id = cValue;
+        //                    break;
+        //            }
+        //        }
+        //    }
+        //    var model = _activityRepository.GetMyDateRangeActivity(Convert.ToInt16(id), from, to);
+
+        //    ViewData["fromDate"] = from.ToString("dd/MM/yyyy");
+        //    ViewData["toDate"] = to.ToString("dd/MM/yyyy");
+
+        //    return View(model);
+        //}
     }
 }

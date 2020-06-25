@@ -50,9 +50,9 @@ namespace SHAM.Repository
             return _context.Activities.Max(a => a.ID);
         }
 
-        public ActivityAllDto GetList()
+        public ActivityAllDto GetDateRangeList(DateTime from, DateTime to)
         {
-            var activity = _context.Activities.Select(a => new ActivityDto
+            var activity = _context.Activities.OrderByDescending(a => a.ACTIVITY_DATE).Where(a => a.ACTIVITY_DATE >= from && a.ACTIVITY_DATE <= to).Select(a => new ActivityDto
             {
                 ID = a.ID,
                 PROJECT_NUMBER = a.PROJECT_NUMBER,
@@ -167,11 +167,11 @@ namespace SHAM.Repository
 
             return new ActivityAllDto { ActivityDto = activity, ProjectDto = project, EmployeeDto = employee, PriorityDto = priority, customerDto = customer };
         }
-        public ActivityAllDto GetMyAllActivity(int id)
+        public ActivityAllDto GetMyDateRangeActivity(int id, DateTime? from, DateTime? to)
         {
             DateTime dt = DateTime.Now;
 
-            var activity = _context.Activities.OrderByDescending(a => a.ACTIVITY_DATE).Where(a => a.ACTIVITY_EMPLOYEE == id).Select(a => new ActivityDto
+            var activity = _context.Activities.OrderByDescending(a => a.ACTIVITY_DATE).Where(a => a.ACTIVITY_EMPLOYEE == id && a.ACTIVITY_DATE >= from && a.ACTIVITY_DATE <= to).Select(a => new ActivityDto
             {
                 ID = a.ID,
                 PROJECT_NUMBER = a.PROJECT_NUMBER,
@@ -196,6 +196,7 @@ namespace SHAM.Repository
             }).ToList();
 
             var projectID = _context.ProjectEmployees.Where(e => e.EmployeeID == id).Select(p => p.ProjectID);
+
             var customerID = _context.ProjectEmployees.Where(e => e.EmployeeID == id).Select(p => p.PROJECT.CUSTOMER_NUMBER);
 
             var project = _context.Projects.Where(p => projectID.Contains(p.ID)).Select(p => new ProjectDto { ID = p.ID, NAME = p.PROJECT_NAME, CUSTOMER = p.CUSTOMER }).ToList();

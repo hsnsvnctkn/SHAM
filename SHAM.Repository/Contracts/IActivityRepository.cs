@@ -9,13 +9,13 @@ namespace SHAM.Repository.Contracts
 {
     public interface IActivityRepository : IGenericRepository<Activity>
     {
-        ActivityAllDto GetList();
+        ActivityAllDto GetDateRangeList(DateTime from, DateTime to);
         ActivityAllDto GetMonthList();
         void Create(ActivityDto activity);
         void Update(ActivityDto activity);
         void Delete(int id);
         ActivityAllDto GetMyActivity(int id);
-        ActivityAllDto GetMyAllActivity(int id);
+        ActivityAllDto GetMyDateRangeActivity(int id, DateTime? from, DateTime? to);
         int GetLastActivityId();
     }
 }

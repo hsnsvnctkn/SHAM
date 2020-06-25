@@ -34,12 +34,11 @@
 
 @model SHAM.Repository.Dto.EmployeeReportsDto
 @using System.Globalization;
-@using Nager.Date;
 @{
     int waitingWhour, totalWaitingWhour = 0, filterMonth = (int)ViewData["month"], filterYear = (int)ViewData["year"];
     int? selectedEmployeeId, isNow;
     double totalWhour = 0, diffWhour = 0, totalProjectWhour = 0;
-    string currentMonth = CultureInfo.GetCultureInfo("tr-TR").DateTimeFormat.MonthNames[filterMonth - 1];
+    string holidaySummary = null, currentMonth = CultureInfo.GetCultureInfo("tr-TR").DateTimeFormat.MonthNames[filterMonth - 1];
 
     @if (Model.SelectedEmployee != null)
     {
@@ -54,6 +53,34 @@
         isNow = DateTime.DaysInMonth(filterYear, filterMonth);
 
 }
+@functions{
+    string twoDigit(int n)
+    {
+        return (n > 9 ? "" + n : "0" + n);
+    }
+    TimeSpan DecimalToTimeSpan(double dec)
+    {
+        var hour = (int)Math.Truncate(dec);
+        var min = (int)Math.Round(((dec) * 60) % 60);
+
+        return new TimeSpan(hour, min, 0);
+    }
+    string DecimalToTime(double dec)
+    {
+        var hour = (int)Math.Truncate(dec);
+        var min = (int)Math.Round(((dec) * 60) % 60);
+
+        return (twoDigit(hour) + ":" + twoDigit(min));
+    }
+    string getDiff(double wh, int waitingWh)
+    {
+        var time = DecimalToTimeSpan(wh);
+        var waiting = new TimeSpan(waitingWh, 0, 0);
+        var timeDiff = time - waiting;
+        return string.Format("{0:00}:{1:00}", Math.Truncate(timeDiff.TotalHours), timeDiff.Minutes);
+    }
+}
+
 @{
     ViewData["Title"] = "Çalışan Raporları";
 }
@@ -141,7 +168,7 @@
                                                         <tr class="border-0">
                                                             <th class="border-0">Müşteri</th>
                                                             <th class="border-0">Proje</th>
-                                                            <th class="border-0">Çalışma Saati</th>
+                                                            <th class="border-0">Çalışma Saati<i style="font-weight: normal;"> (Saat:Dakika)</i></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -151,7 +178,7 @@
                                                             <tr>
                                                                 <td class="tableexport-string">@item.CUSTOMER.CUSTOMER_NAME</td>
                                                                 <td class="tableexport-string">@item.NAME</td>
-                                                                <td class="tableexport-string">@Model.ProjectWhours[i2]</td>
+                                                                <td class="tableexport-string">@DecimalToTime(Model.ProjectWhours[i2])</td>
                                                             </tr>
                                                             totalProjectWhour += Model.ProjectWhours[i2];
                                                             i2++;
@@ -161,7 +188,7 @@
                                                         <tr>
                                                             <td></td>
                                                             <td class="text-right font-weight-bold">Toplam :</td>
-                                                            <td class="font-weight-bold tableexport-string">@totalProjectWhour</td>
+                                                            <td class="font-weight-bold tableexport-string">@DecimalToTime(totalProjectWhour)</td>
                                                         </tr>
                                                     </tfoot>
                                                 </table>
@@ -204,9 +231,9 @@
                                                         <tr class="border-0">
                                                             <th class="border-0">Tarih</th>
                                                             <th class="border-0">Gün</th>
-                                                            <th class="border-0">Çalışma Saati</th>
-                                                            <th class="border-0">Beklenen</th>
-                                                            <th class="border-0">Fazla/Eksik</th>
+                                                            <th class="border-0">Çalışma Saati<i style="font-weight: normal;"> (Saat:Dakika)</i></th>
+                                                            <th class="border-0">Beklenen<i style="font-weight: normal;"> (Saat)</i></th>
+                                                            <th class="border-0">Fazla/Eksik<i style="font-weight: normal;"> (Saat:Dakika)</i></th>
                                                             <th class="border-0"></th>
                                                         </tr>
                                                     </thead>
@@ -215,9 +242,13 @@
                                                         {
                                                             DateTime date = new DateTime(filterYear, filterMonth, i + 1);
                                                             string currentDayTR = CultureInfo.GetCultureInfo("tr-TR").DateTimeFormat.DayNames[(int)date.DayOfWeek];
-
-                                                            if ((date.DayOfWeek == DayOfWeek.Saturday) || (date.DayOfWeek == DayOfWeek.Sunday) || (DateSystem.IsPublicHoliday(date, CountryCode.TR) == true))
+                                                            holidaySummary = SHAM.Repository.PublicHolidays.IsPublicHoliday(date);
+                                                            if ((date.DayOfWeek == DayOfWeek.Saturday) || (date.DayOfWeek == DayOfWeek.Sunday) || holidaySummary != null)
+                                                            {
                                                                 waitingWhour = 0;
+                                                                if (holidaySummary != null)
+                                                                    holidaySummary = "(" + holidaySummary + ")";
+                                                            }
                                                             else
                                                                 waitingWhour = 8;
 
@@ -244,11 +275,11 @@
                                                             }
 
                                                             <tr class="@whourStatus">
-                                                                <td class="tableexport-string">@(i + 1).@(date.Month).@(date.Year)</td>
+                                                                <td class="tableexport-string">@(i + 1).@(date.Month).@(date.Year) @holidaySummary</td>
                                                                 <td class="tableexport-string">@currentDayTR</td>
-                                                                <td class="tableexport-string">@Model.Whours[i]</td>
+                                                                <td class="tableexport-string">@DecimalToTime(Model.Whours[i])</td>
                                                                 <td class="tableexport-string">@waitingWhour</td>
-                                                                <td class="tableexport-string">@(Math.Round((Model.Whours[i] - waitingWhour), 2))</td>
+                                                                <td class="tableexport-string">@getDiff(Model.Whours[i], waitingWhour)</td>
                                                                 <td><i class="@whourStatusIcon"></i></td>
                                                             </tr>
                                                         }
@@ -257,9 +288,9 @@
                                                         <tr>
                                                             <td></td>
                                                             <td class="text-right font-weight-bold">Toplam :</td>
-                                                            <td class="font-weight-bold tableexport-string">@totalWhour</td>
-                                                            <td class="font-weight-bold tableexport-string">@totalWaitingWhour</td>
-                                                            <td class="font-weight-bold tableexport-string">@Math.Round(diffWhour, 2)</td>
+                                                            <td class="font-weight-bold tableexport-string">@DecimalToTime(totalWhour)</td>
+                                                            <td class="font-weight-bold tableexport-string">@DecimalToTime(totalWaitingWhour)</td>
+                                                            <td class="font-weight-bold tableexport-string">@getDiff(totalWhour, totalWaitingWhour)</td>
                                                             @if (diffWhour < 0)
                                                             {
                                                                 <td><i class="fas fa-arrow-circle-down fa-sm text-danger"></i></td>

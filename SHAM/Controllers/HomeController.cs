@@ -42,6 +42,7 @@ namespace SHAM.Controllers
                     }
                 }
             }
+            Repository.PublicHolidays.loadPublicHolidays();
 
             var model = _indexRepository.GetAdminIndex(Convert.ToInt16(id), isAdmin);
 
