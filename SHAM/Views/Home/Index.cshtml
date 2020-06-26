@@ -43,6 +43,7 @@
     canvas {
         height: 600px !important;
     }
+
 </style>
 
 @using System.Globalization;
@@ -245,29 +246,29 @@
     }
 
 
-    <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-4">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light rounded shadow border border-secondary">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light rounded shadow border border-secondary mb-4">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#NavBarCustomerProject" aria-controls="NavBarCustomerProject" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <span class="navbar-brand" style="color: #71748d;    position: absolute;">Müşteri & Proje Bazlı Efor Özeti</span>
-                <div class="collapse navbar-collapse" id="NavBarCustomerProject" style="justify-content: center;">
-                    <ul class="nav rounded border-bottom border-primary" style="color: #71748d">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#CustomerProjectTable" data-toggle="collapse" aria-expanded="false" aria-controls="CustomerProjectTable">Tablo</a>
-                        </li>
-                        <li>
-                            <span class="nav-link" href="#">-</span>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#CustomerProjectGraphic" data-toggle="collapse" aria-expanded="false" aria-controls="CustomerProjectGraphic">Grafik</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+                <span class="nav navbar-brand" style="color: #71748d;">Müşteri & Proje Efor Özeti </span>
+            </div>
+            <div class="collapse navbar-collapse" id="NavBarCustomerProject" style="justify-content: center;">
+                <ul class="nav navbar-nav rounded border-bottom border-primary" style="color: #71748d;margin-right: 30%;">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#CustomerProjectTable" data-toggle="collapse" aria-expanded="false" aria-controls="CustomerProjectTable">Tablo</a>
+                    </li>
+                    <li>
+                        <span class="nav-link">-</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#CustomerProjectGraphic" data-toggle="collapse" aria-expanded="false" aria-controls="CustomerProjectGraphic">Grafik</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
+    </nav>
     <!-- Müşteri PRoje bazlı rapor tablosu-->
     <div class="row collapse" id="CustomerProjectTable" style="justify-content: center;">
         <div class="col-xl-6 col-lg-2 col-md-12 col-sm-12 col-12">
@@ -332,29 +333,29 @@
 
 
 
-    <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-4">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light rounded shadow border border-secondary">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light rounded shadow border border-secondary mb-4">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#NavBarWhour" aria-controls="NavBarWhour" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <span class="navbar-brand" style="color: #71748d;    position: absolute;">Aylık Çalışma Saati Raporu</span>
-                <div class="collapse navbar-collapse" style="justify-content: center;">
-                    <ul class="nav rounded border-bottom border-primary" style="color: #71748d">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#EmployeeWhourTable" data-toggle="collapse" aria-expanded="false" aria-controls="EmployeeWhourTable">Tablo</a>
-                        </li>
-                        <li>
-                            <span class="nav-link" href="#">-</span>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#EmployeeWhourGraphic" data-toggle="collapse" aria-expanded="false" aria-controls="EmployeeWhourGraphic">Grafik</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+                <span class="nav navbar-brand" style="color: #71748d;">Aylık Çalışma Saati Raporu</span>
+            </div>
+            <div class="collapse navbar-collapse" id="NavBarWhour" style="justify-content: center;">
+                <ul class="nav navbar-nav rounded border-bottom border-primary" style="color: #71748d;margin-right: 30%;">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#EmployeeWhourTable" data-toggle="collapse" aria-expanded="false" aria-controls="EmployeeWhourTable">Tablo</a>
+                    </li>
+                    <li>
+                        <span class="nav-link">-</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#EmployeeWhourGraphic" data-toggle="collapse" aria-expanded="false" aria-controls="EmployeeWhourGraphic">Grafik</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
+    </nav>
     <!-- Çalışma saati tablosu -->
     <div class="row collapse" id="EmployeeWhourTable" style="justify-content: center;">
         <div class="col-xl-8 col-lg-2 col-md-12 col-sm-12 col-12">
@@ -486,18 +487,14 @@
 </div>
 @section scripts{
     <script>
-        function twoDigit(n) {
-            return n > 9 ? "" + n : "0" + n;
-        }
-
         function decimalToTime(decimal) {
             if ((decimal % 1) === 0)
-                return (twoDigit(decimal) + ":" + "00");
+                return ((decimal) + " s");
             else {
                 var hour = Math.floor(decimal);
                 var min = Math.round((decimal * 60) % 60);
 
-                return (twoDigit(hour) + " Saat, " + twoDigit(min)+" Dakika");
+                return ((hour) + " s, " + (min)+" dk");
             }
         }
 
@@ -527,7 +524,11 @@
                 },
                 options: {
                     tooltips: {
-                        enabled: false
+                        callbacks: {
+                            label: function (tooltipItems, data) {
+                                return data.labels[tooltipItems.index];
+                            }
+                        }
                     },
                     response: true,
                     maintainAspectRatio: false,
