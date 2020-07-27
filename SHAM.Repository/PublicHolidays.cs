@@ -1,13 +1,21 @@
 ﻿using Newtonsoft.Json;
+using SHAM.Domain.Entities;
+using SHAM.Repository.Contracts;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 
 namespace SHAM.Repository
 {
-    public static class PublicHolidays
+    public class PublicHolidays : GenericRepository<PublicHoliday>, IPublicHolidays
     {
-        public static Holidays Holidays;
-        private static T _download_serialized_json_data<T>(string url) where T : new()
+        public PublicHolidays(IUnitOfWork uow)
+            : base(uow)
+        {
+
+        }
+        private T _download_serialized_json_data<T>(string url) where T : new()
         {
             using (var w = new WebClient())
             {
@@ -23,26 +31,78 @@ namespace SHAM.Repository
             }
         }
 
-        public static void loadPublicHolidays()
+        private void RemoveAllItems()
         {
-            var url = "https://www.googleapis.com/calendar/v3/calendars/turkish__tr%40holiday.calendar.google.com/events?key=AIzaSyD1rK3TChqmNdL8C8m9qqGCqERuazM0Dmw";
-            Holidays = _download_serialized_json_data<Holidays>(url);
+            _context.PublicHolidays.RemoveRange(_context.PublicHolidays);
         }
-        public static string IsPublicHoliday(DateTime date)
+        private bool CheckNull()
         {
-            if (Holidays == null)
-                loadPublicHolidays();
+            var lastUpdate = _context.PublicHolidays.Where(ph => ph.lastUpdate.Month != DateTime.Now.Month).FirstOrDefault();
 
-            foreach (var item in Holidays.items)
+            if (lastUpdate == null)
+                return false;
+            else
+                return true;
+        }
+        public void loadPublicHolidays()
+        {
+            if (!CheckNull())
             {
-                var holidayDate = DateTime.Parse(item.start.date);
+                RemoveAllItems();
+
+                var url = "https://www.googleapis.com/calendar/v3/calendars/turkish__tr%40holiday.calendar.google.com/events?key=AIzaSyD1rK3TChqmNdL8C8m9qqGCqERuazM0Dmw";
+                var holidays = _download_serialized_json_data<Holidays>(url);
+
+                foreach (var item in holidays.items)
+                {
+                    _context.PublicHolidays.Add(new PublicHoliday
+                    {
+                        id = item.id,
+                        htmlLink = item.htmlLink,
+                        etag = item.etag,
+                        end = DateTime.Parse(item.end.date),
+                        start = DateTime.Parse(item.start.date),
+                        created = item.created,
+                        iCalUID = item.iCalUID,
+                        kind = item.kind,
+                        sequence = item.sequence,
+                        status = item.status,
+                        summary = item.summary,
+                        transparency = item.transparency,
+                        updated = item.updated,
+                        visibility = item.visibility
+                    });
+                }
+                _context.SaveChanges();
+            }
+        }
+        public string IsPublicHoliday(DateTime date)
+        {
+            foreach (var item in _context.PublicHolidays)
+            {
+                var holidayDate = item.start;
 
                 if (date.Date == holidayDate)
                     return item.summary;
             }
-
             return null;
         }
 
+        public List<string> GetMonthHolidays(int month, int year)
+        {
+            if (!CheckNull())
+                loadPublicHolidays();
+
+            List<string> holidays = new List<string>();
+            for (int i = 1; i <= DateTime.DaysInMonth(year, month); i++)
+            {
+                DateTime date = new DateTime(year, month, i);
+
+                var summary = IsPublicHoliday(date);
+
+                holidays.Add(summary);
+            }
+            return holidays;
+        }
     }
 }

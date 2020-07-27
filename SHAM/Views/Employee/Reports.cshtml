@@ -36,22 +36,19 @@
 @using System.Globalization;
 @{
     int waitingWhour, totalWaitingWhour = 0, filterMonth = (int)ViewData["month"], filterYear = (int)ViewData["year"];
-    int? selectedEmployeeId, isNow;
+    int? isNow;
     double totalWhour = 0, diffWhour = 0, totalProjectWhour = 0;
-    string holidaySummary = null, currentMonth = CultureInfo.GetCultureInfo("tr-TR").DateTimeFormat.MonthNames[filterMonth - 1];
-
-    @if (Model.SelectedEmployee != null)
-    {
-        selectedEmployeeId = Model.SelectedEmployee.ID;
-    }
-    else
-        selectedEmployeeId = null;
+    string invoice, holidaySummary = null, currentMonth = CultureInfo.GetCultureInfo("tr-TR").DateTimeFormat.MonthNames[filterMonth - 1];
 
     if (filterMonth == DateTime.Now.Month && filterYear == DateTime.Now.Year)
         isNow = DateTime.Now.Day;
     else
         isNow = DateTime.DaysInMonth(filterYear, filterMonth);
 
+    if (Model.Invoice == null)
+        invoice = "null";
+    else
+        invoice = Model.Invoice.ToString().ToLower();
 }
 @functions{
     string twoDigit(int n)
@@ -85,6 +82,7 @@
     ViewData["Title"] = "Çalışan Raporları";
 }
 
+
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="page-header">
@@ -99,21 +97,43 @@
             }
             else
             {
-                <h5 class="card-header text-danger"><i class="fas fa-file-medical-alt" style="margin-right: 10px;"></i>@Model.SelectedEmployee.NAME @Model.SelectedEmployee.SURNAME - Adlı Çalışanın Raporları..</h5>
+                <h5 class="card-header text-danger">
+                    <i class="fas fa-file-medical-alt"></i>
+                    @foreach (var item in Model.SelectedEmployee)
+                    {
+                        <i> @item.NAME @item.SURNAME - </i>
+                    }
+                    Adlı Çalışan Raporları..
+                </h5>
             }
-            <div class="row">
-                <form asp-action="Reports" class="form-inline">
-                    <div class="form-group m-1">
-                        <select class="custom-select" style="margin-left:30px;" id="employeeId" name="id">
+            <form asp-action="Reports">
+                <div class="row justify-content-md-center bg-white rounded shadow border border-secondary m-4 p-3">
+                    <div class="col-12 col-sm-2 col-lg-2">
+                        <span class="ml-2">Çalışan Ad Soyadı:</span>
+                        <select id="employeeId" class="selectpicker" data-width="100%" data-live-search="true" multiple data-actions-box="true" name="id">
                             @foreach (var item in Model.Employees)
                             {
-                                <option value="@item.ID">@item.NAME @item.SURNAME</option>
+                                if (Model.SelectedEmployee != null)
+                                {
+                                    if (Model.SelectedEmployee.Select(e => e.ID).Contains(item.ID))
+                                    {
+                                        <option value="@item.ID" selected>@item.NAME @item.SURNAME</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.ID">@item.NAME @item.SURNAME</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="@item.ID">@item.NAME @item.SURNAME</option>
+                                }
                             }
                         </select>
                     </div>
-                    <div class="form-group">
-                        &nbsp;&nbsp; Ay:
-                        <select class="custom-select ml-3" id="filterMonth" name="month">
+                    <div class="col-12 col-sm-1 col-lg-1">
+                        Ay:
+                        <select class="custom-select" id="filterMonth" name="month">
                             @for (int i = 1; i <= 12; i++)
                             {
                                 if (i == filterMonth)
@@ -127,20 +147,51 @@
                             }
                         </select>
                     </div>
-                    <div class="form-group">
-                        &nbsp;&nbsp; Yıl:
-                        <select class="custom-select ml-3" id="filterYear" name="year">
+                    <div class="col-12 col-sm-1 col-lg-1">
+                        Yıl:
+                        <select class="custom-select" id="filterYear" name="year">
                             <option value="2020" selected>2020</option>
                         </select>
                     </div>
-                    <div class="form-group mx-sm-3 m-1">
+                    <div class="col-12 col-sm-1 col-lg-1">
+                        Fatura:
+                        <select class="custom-select" id="invoice" name="invoice">
+                            <option value="null" selected>Hepsi</option>
+                            <option value="true">Evet</option>
+                            <option value="false">Hayır</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-3 col-lg-3">
+                        Proje:
+                        <select class="selectpicker" data-width="100%" data-live-search="true" multiple data-actions-box="true" id="projectId" name="projectId">
+                            @foreach (var item in Model.Projects)
+                            {
+                                if (Model.SelectedProjectId != null)
+                                {
+                                    if (Model.SelectedProjectId.Contains(item.ID))
+                                    {
+                                        <option value="@item.ID" selected>@item.NAME - @item.CUSTOMER.CUSTOMER_NAME</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.ID">@item.NAME - @item.CUSTOMER.CUSTOMER_NAME</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="@item.ID">@item.NAME - @item.CUSTOMER.CUSTOMER_NAME</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="mt-4 col-12 col-sm-1 col-lg-1">
                         <button type="submit" class="btn btn-outline-secondary" data-toggle="modal" data-target="#create" style="margin-left:20px;" id="btnGetReports">Raporları Getir</button>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
             <div>
                 <div class="card-body p-0">
-                    @if (Model.Projects != null)
+                    @if (Model.SelectedEmployee != null)
                     {
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -150,7 +201,7 @@
                             </div>
                         </div>
                         <div class="row" style="justify-content: center;">
-                            <div class="col-xl-6 col-lg-2 col-md-12 col-sm-12 col-12">
+                            <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="card text-white bg-secondary mb-3">
                                     <div class="row">
                                         <div class="col-xl-8">
@@ -166,6 +217,7 @@
                                                 <table class="table table-striped first" id="tb2">
                                                     <thead class="bg-light">
                                                         <tr class="border-0">
+                                                            <th class="border-0">Çalışan</th>
                                                             <th class="border-0">Müşteri</th>
                                                             <th class="border-0">Proje</th>
                                                             <th class="border-0">Çalışma Saati<i style="font-weight: normal;"> (Saat:Dakika)</i></th>
@@ -173,19 +225,24 @@
                                                     </thead>
                                                     <tbody>
                                                         @{ int i2 = 0;}
-                                                        @foreach (var item in Model.Projects)
+                                                        @foreach (var e in Model.SelectedEmployee)
                                                         {
-                                                            <tr>
-                                                                <td class="tableexport-string">@item.CUSTOMER.CUSTOMER_NAME</td>
-                                                                <td class="tableexport-string">@item.NAME</td>
-                                                                <td class="tableexport-string">@DecimalToTime(Model.ProjectWhours[i2])</td>
-                                                            </tr>
-                                                            totalProjectWhour += Model.ProjectWhours[i2];
-                                                            i2++;
+                                                            foreach (var p in e.SumProjectWhour)
+                                                            {
+                                                                <tr>
+                                                                    <td class="tableexport-string">@e.NAME @e.SURNAME</td>
+                                                                    <td class="tableexport-string">@p.Customer_Name</td>
+                                                                    <td class="tableexport-string">@p.NAME</td>
+                                                                    <td class="tableexport-string">@DecimalToTime(p.SumWhour)</td>
+                                                                </tr>
+                                                                totalProjectWhour += p.SumWhour;
+                                                                i2++;
+                                                            }
                                                         }
                                                     </tbody>
                                                     <tfoot class="bg-dark text-white">
                                                         <tr>
+                                                            <td></td>
                                                             <td></td>
                                                             <td class="text-right font-weight-bold">Toplam :</td>
                                                             <td class="font-weight-bold tableexport-string">@DecimalToTime(totalProjectWhour)</td>
@@ -210,16 +267,10 @@
                             <div class="col-xl-8 col-lg-2 col-md-12 col-sm-12 col-12">
                                 <div class="card text-white bg-secondary mb-3">
                                     <div class="row">
-                                        <div class="col-xl-6">
+                                        <div class="col-xl-8">
                                             <h5 class="card-header bg-secondary"><i class="fas fa-file-medical-alt" style="margin-right: 10px;"></i> @currentMonth @filterYear - Günlük Aktiviteler </h5>
                                         </div>
-                                        <div class="col-xl-4" style="align-self: center;">
-                                            <div id="progress" class="bg-secondary rounded">
-                                                <span id="percent" class="text-white"></span>
-                                                <div id="bar" class="bg-success rounded"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-2" style="align-self: center;padding-right: 25px;">
+                                        <div class="col-xl-4" style="align-self: center;padding-right: 25px;">
                                             <button type="button" tableexport-id="a70aea2-xlsx" class="btn btn-light" style="float: right;"><i class="mr-1 fas fa-file-excel text-success"></i>Dışa Aktar</button>
                                         </div>
                                     </div>
@@ -240,21 +291,27 @@
                                                     <tbody>
                                                         @for (int i = 0; i < isNow; i++)
                                                         {
+                                                            double dayTotalWhour = 0;
                                                             DateTime date = new DateTime(filterYear, filterMonth, i + 1);
                                                             string currentDayTR = CultureInfo.GetCultureInfo("tr-TR").DateTimeFormat.DayNames[(int)date.DayOfWeek];
-                                                            holidaySummary = SHAM.Repository.PublicHolidays.IsPublicHoliday(date);
+                                                            holidaySummary = Model.DaysSummary[i];
                                                             if ((date.DayOfWeek == DayOfWeek.Saturday) || (date.DayOfWeek == DayOfWeek.Sunday) || holidaySummary != null)
                                                             {
-                                                                waitingWhour = 0;
+                                                                waitingWhour = (0 * Model.SelectedEmployee.Count());
                                                                 if (holidaySummary != null)
                                                                     holidaySummary = "(" + holidaySummary + ")";
                                                             }
                                                             else
-                                                                waitingWhour = 8;
+                                                                waitingWhour = (8 * Model.SelectedEmployee.Count());
+
+                                                            foreach (var item in Model.SelectedEmployee)
+                                                            {
+                                                                dayTotalWhour += item.SumWhour[i];
+                                                            }
 
                                                             totalWaitingWhour += waitingWhour;
-                                                            totalWhour += Model.Whours[i];
-                                                            diffWhour += Model.Whours[i] - waitingWhour;
+                                                            totalWhour += dayTotalWhour;
+                                                            diffWhour += dayTotalWhour - waitingWhour;
 
                                                             string whourStatus = "bg-info-light text-dark", whourStatusIcon = "fas fas fa-check-circle fa-sm text-info";
 
@@ -263,12 +320,12 @@
                                                                 whourStatus = "bg-light text-dark";
                                                                 whourStatusIcon = "fas fa-minus-circle fa-sm text-secondary";
                                                             }
-                                                            else if ((Model.Whours[i] - waitingWhour) < 0)
+                                                            else if ((dayTotalWhour - waitingWhour) < 0)
                                                             {
                                                                 whourStatus = "bg-danger-light text-dark";
                                                                 whourStatusIcon = "fas fa-arrow-circle-down fa-sm text-danger";
                                                             }
-                                                            else if ((Model.Whours[i] - waitingWhour) > 0)
+                                                            else if ((dayTotalWhour - waitingWhour) > 0)
                                                             {
                                                                 whourStatus = "bg-success-light text-dark";
                                                                 whourStatusIcon = "fas fa-arrow-circle-up fa-sm text-success";
@@ -277,9 +334,9 @@
                                                             <tr class="@whourStatus">
                                                                 <td class="tableexport-string">@(i + 1).@(date.Month).@(date.Year) @holidaySummary</td>
                                                                 <td class="tableexport-string">@currentDayTR</td>
-                                                                <td class="tableexport-string">@DecimalToTime(Model.Whours[i])</td>
+                                                                <td class="tableexport-string">@DecimalToTime(dayTotalWhour)</td>
                                                                 <td class="tableexport-string">@waitingWhour</td>
-                                                                <td class="tableexport-string">@getDiff(Model.Whours[i], waitingWhour)</td>
+                                                                <td class="tableexport-string">@getDiff(dayTotalWhour, waitingWhour)</td>
                                                                 <td><i class="@whourStatusIcon"></i></td>
                                                             </tr>
                                                         }
@@ -318,28 +375,21 @@
         </div>
     </div>
 </div>
-@{double percent = ((totalWhour / totalWaitingWhour) * 100);
-    if (percent > 100)
-        percent = 100;
-    else if (percent < 0)
-        percent = 1;
-    else
-        percent = (int)percent;
-}
-@section scripts{
+@section scripts
+{
     <script>
-        $(window).on('load', function () {
-            $("#bar").css("width",("@percent%"))
-            $("#bar").animate({
-                 width: "toggle",
-                opacity:"0.9"
-            },1500);
-            $("#percent").text('@percent%');
-            $("#percent").css("z-index", "1");
 
-            if (@selectedEmployeeId != null) {
-                document.getElementById("employeeId").value = @selectedEmployeeId;
-            }
+        $('.selectpicker').selectpicker({
+            noneSelectedText: 'Seçim Yapılmadı',
+            selectAllText: 'Tümü',
+            deselectAllText: 'Hiçbiri',
+            size: 'auto',
+
+        });
+
+
+        $(window).on('load', function () {
+            $('#invoice').val('@invoice');
 
         });
         var exportDate = new Date();
@@ -371,7 +421,6 @@
             RTL: true,
             sheetname: "Raporum " + exportDate.getDate() + "." + (exportDate.getMonth() + 1) + "." + exportDate.getFullYear()
         });
-
 
     </script>
 }

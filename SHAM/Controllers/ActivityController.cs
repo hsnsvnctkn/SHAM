@@ -38,6 +38,26 @@ namespace SHAM.UI.Controllers
             ViewData["toDate"] = to.ToString("dd/MM/yyyy");
             return View(model);
         }
+        public JsonResult ExportExcel()
+        {
+            try
+            {
+                return Json(new { status = true });
+            }
+            catch (Exception)
+            {
+
+                return Json(new { status = false });
+            }
+        }
+        //DataTable data = new DataTable();
+        //data.Columns.Add("Danışman", typeof(string));
+        //data.Columns.Add("Tarih", typeof(DateTime));
+        //data.Columns.Add("Müşteri", typeof(string));
+        //data.Columns.Add("Proje", typeof(string));
+        //data.Columns.Add("Lokasyon", typeof(string));
+        //data.Columns.Add("Saat", typeof(double));
+        //data.Columns.Add("Açıklama", typeof(string));
 
         [Authorize(Roles.ADMIN, Roles.NORMAL)]
         public JsonResult Create(ActivityDto activity)
@@ -200,34 +220,5 @@ namespace SHAM.UI.Controllers
                 return View(model);
             }
         }
-
-        //[Authorize(Roles.ADMIN, Roles.NORMAL)]
-        //[HttpPost]
-        //public IActionResult MyActivity(DateTime from, DateTime to)
-        //{
-        //    var claimsIndentity = HttpContext.User.Identity as ClaimsIdentity;
-        //    var userClaims = claimsIndentity.Claims;
-        //    string id = "";
-        //    if (HttpContext.User.Identity.IsAuthenticated)
-        //    {
-        //        foreach (var claim in userClaims)
-        //        {
-        //            var cType = claim.Type;
-        //            var cValue = claim.Value;
-        //            switch (cType)
-        //            {
-        //                case "ID":
-        //                    id = cValue;
-        //                    break;
-        //            }
-        //        }
-        //    }
-        //    var model = _activityRepository.GetMyDateRangeActivity(Convert.ToInt16(id), from, to);
-
-        //    ViewData["fromDate"] = from.ToString("dd/MM/yyyy");
-        //    ViewData["toDate"] = to.ToString("dd/MM/yyyy");
-
-        //    return View(model);
-        //}
     }
 }

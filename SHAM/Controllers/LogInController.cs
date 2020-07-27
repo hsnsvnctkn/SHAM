@@ -95,7 +95,7 @@ namespace SHAM.UI.Controllers
 
                 foreach (var item in admins)
                 {
-                    _sendEmail.Send(subject, admins.ToString(), Message);
+                    _sendEmail.Send(subject, item, Message);
                 }
                 return Json(new { status = true });
             }

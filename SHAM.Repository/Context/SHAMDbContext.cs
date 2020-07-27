@@ -23,6 +23,7 @@ namespace SHAM.Repository.Context
         public DbSet<Title> Titles { get; set; }
         public DbSet<ProjectEmployee> ProjectEmployees { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<PublicHoliday> PublicHolidays { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("SHAM");

@@ -17,11 +17,11 @@ namespace SHAM.Repository.Contracts
         bool IsAnyEmployee(string mail);
         List<EmployeeDto> EntryDailyActivity();
         EmployeeReportsDto GetEmployeesId();
-        EmployeeReportsDto GetReports(int id,int month,int year);
-        void SendMailAllEmployees(List<int> employeesId, string subject,bool isInput);
+        EmployeeReportsDto GetReports(List<int> id, int month, int year, List<int> projectId, bool? invoice);
+        void SendMailAllEmployees(List<int> employeesId, string subject, bool isInput);
         List<EmployeeDto> GetAllEmployeeNewMember();
         SendEmailDto GetSendEmailDto();
-        void SendSpecialMailEmployee(List<int> id,string subject, string header, string content);
+        void SendSpecialMailEmployee(List<int> id, string subject, string header, string content);
         void SendMailProjectEmployee(int projectId, string subject, string header, string content);
         void SendMailCustomer(List<int> customerId, string subject, string header, string content);
     }

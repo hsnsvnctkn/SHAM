@@ -20,7 +20,8 @@ namespace SHAM.Repository.Dto
         public string ROLE { get; set; }
         public string PASSWORD { get; set; }
 
-
+        public virtual List<double> SumWhour {get; set;}
+        public virtual List<ProjectWhour> SumProjectWhour { get; set; }
 
 
         virtual public Title TITLE { get; set; }
@@ -28,7 +29,7 @@ namespace SHAM.Repository.Dto
         public virtual ICollection<Employee> CREATED_EMPLOYEES { get; set; }
         public virtual Employee CREATED_EMPLOYEE { get; set; }
 
-        public virtual ICollection<Activity> ACTIVITIES { get; set; } //????
+        public virtual ICollection<Activity> ACTIVITIES { get; set; } 
 
         public virtual ICollection<Activity> CREATED_ACTIVITY { get; set; }
 

@@ -193,28 +193,73 @@ namespace SHAM.Repository
                 NAME = e.EMPLOYEE_NAME,
                 SURNAME = e.EMPLOYEE_SURNAME
             }).ToList();
-            return new EmployeeReportsDto { Employees = employeesId };
+            var allProject = _context.Projects.Select(p => new ProjectDto
+            {
+                ID = p.ID,
+                NAME = p.PROJECT_NAME,
+                CUSTOMER = p.CUSTOMER
+            }).ToList();
+
+            return new EmployeeReportsDto { Employees = employeesId, Projects = allProject };
         }
-        public EmployeeReportsDto GetReports(int id, int month, int year)
+        public EmployeeReportsDto GetReports(List<int> id, int month, int year, List<int> projectId, bool? invoice)
         {
-            var employeesId = _context.Employees.Select(e => new EmployeeDto
+            var allProject = _context.Projects.Select(p => new ProjectDto
+            {
+                ID = p.ID,
+                NAME = p.PROJECT_NAME,
+                CUSTOMER = p.CUSTOMER
+            }).ToList();
+
+            var allEmployees = _context.Employees.Select(e => new EmployeeDto
             {
                 ID = e.ID,
                 NAME = e.EMPLOYEE_NAME,
                 SURNAME = e.EMPLOYEE_SURNAME
             }).ToList();
 
-            var projects = _indexRepository.GetUserProjectActivity(id, month, year);
+            var employees = _context.Employees.Where(e => id.Contains(e.ID)).Select(e => new EmployeeDto
+            {
+                ID = e.ID,
+                NAME = e.EMPLOYEE_NAME,
+                SURNAME = e.EMPLOYEE_SURNAME
+            }).ToList();
 
-            var activities = _indexRepository.GetMyActivity(id, month, year);
+            foreach (var item in employees)
+            {
+                List<ProjectDto> projects = new List<ProjectDto>();
+                if (projectId == null)
+                {
+                    projects = _indexRepository.GetUserProjectActivity(item.ID, month, year);
+                }
+                else
+                {
+                    projects = _indexRepository.GetUserProjectActivity(item.ID, month, year);
+                    projects = projects.Where(p => projectId.Contains(p.ID)).ToList();
+                }
 
-            var whour = _indexRepository.GetSumActivityWhour(activities, DateTime.DaysInMonth(year, month));
+                var activities = _indexRepository.GetMyActivity(item.ID, month, year);
 
-            var projectWhour = _indexRepository.GetSumProjectWhour(projects);
+                item.SumWhour = _indexRepository.GetSumActivityWhour(activities, DateTime.DaysInMonth(year, month), invoice);
 
-            var selectedEmp = _context.Employees.Where(e => e.ID == id).Select(e => new EmployeeDto { ID = e.ID, NAME = e.EMPLOYEE_NAME, SURNAME = e.EMPLOYEE_SURNAME }).FirstOrDefault();
+                List<ProjectWhour> projectWhour = new List<ProjectWhour>();
+                foreach (var p in projects)
+                {
+                    ProjectWhour project = new ProjectWhour();
 
-            return new EmployeeReportsDto { Projects = projects, ProjectWhours = projectWhour, Whours = whour, Employees = employeesId, SelectedEmployee = selectedEmp };
+                    project.ID = p.ID;
+                    project.NAME = p.NAME;
+                    project.Customer_Name = p.CUSTOMER.CUSTOMER_NAME;
+                    project.SumWhour = _indexRepository.GetSumProjectWhour(p, invoice);
+
+                    projectWhour.Add(project);
+
+                }
+                item.SumProjectWhour = projectWhour;
+            }
+
+
+            return new EmployeeReportsDto { Employees = allEmployees, SelectedEmployee = employees, Projects = allProject, SelectedProjectId = projectId, Invoice = invoice };
         }
         public void SendMailAllEmployees(List<int> employeesId, string subject, bool isInput)
         {

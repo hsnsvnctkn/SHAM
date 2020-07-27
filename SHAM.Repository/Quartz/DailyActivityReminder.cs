@@ -4,11 +4,8 @@ using Quartz;
 using SHAM.Repository.Contracts;
 using SHAM.Repository.Dto;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SHAM.Repository.Quartz
@@ -33,14 +30,11 @@ namespace SHAM.Repository.Quartz
             {
                 var _employeeRepository = scope.ServiceProvider.GetService<IEmployeeRepository>();
                 var _activityRepository = scope.ServiceProvider.GetService<IActivityRepository>();
+                var _PublicHolidays = scope.ServiceProvider.GetService<IPublicHolidays>();
                 var date = DateTime.Now;
-                var holidaySummary = PublicHolidays.IsPublicHoliday(date);
-                if (holidaySummary == null && (date.DayOfWeek == DayOfWeek.Saturday) || (date.DayOfWeek == DayOfWeek.Sunday))
+                var holidaySummary = _PublicHolidays.IsPublicHoliday(date);
+                if (holidaySummary != null || (date.DayOfWeek != DayOfWeek.Saturday) || (date.DayOfWeek != DayOfWeek.Sunday))
                 {
-                    //var emp = _activityRepository.GetMyActivity(1); //linq kütüphanesi silinecek.
-                    //var activity = emp.ActivityDto.Where(a => a.ID == 524).FirstOrDefault();
-                    //activity.WHOUR++;
-                    //_activityRepository.Update(activity);
                     var notEntryEmployees = _employeeRepository.EntryDailyActivity();
 
                     foreach (var item in notEntryEmployees)
@@ -50,23 +44,24 @@ namespace SHAM.Repository.Quartz
                         {
                             mail.From = new MailAddress("noreply@gmail.com");
                             mail.Subject = "SHAM - Aktivite Girişi Hatırlatma";
-                            mail.Body = EmailContents.ReminderDailyActivity("Hasan", "Sevinçtekin");
+                            mail.Body = EmailContents.ReminderDailyActivity(item.NAME, item.SURNAME);
                             mail.IsBodyHtml = true;
-                            mail.To.Add(new MailAddress("hasan.sevinctekin@sagita.com.tr"));
+                            mail.To.Add(new MailAddress(item.MAIL));
 
-                            using (var client = new SmtpClient())
+
+                            var client = new SmtpClient()
                             {
-                                client.Port = 587;
-                                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                                client.UseDefaultCredentials = true;
-                                client.Host = "smtp.gmail.com";
-                                client.EnableSsl = true;
-                                client.Credentials = new NetworkCredential("yhesap00@gmail.com", "811201hs");
-                                client.Send(mail);
-                            }
+                                Port = 587,
+                                DeliveryMethod = SmtpDeliveryMethod.Network,
+                                UseDefaultCredentials = true,
+                                Host = "smtp.gmail.com",
+                                EnableSsl = true,
+                                Credentials = new NetworkCredential("yhesap00@gmail.com", "811201hs"),
+                            };
+                            client.Send(mail);
 
                         }
-                        _logger.LogInformation(item.MAIL);
+                        //_logger.LogInformation(item.MAIL);
                     }
                 }
 
@@ -75,4 +70,3 @@ namespace SHAM.Repository.Quartz
         }
     }
 }
-//   _logger.LogInformation("Hello world!");

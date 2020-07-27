@@ -105,6 +105,7 @@ namespace SHAM.UI
             services.AddScoped<IIndexRepository, IndexRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<ISendEmail, SendEmail>();//AddTransient
+            services.AddScoped<IPublicHolidays, PublicHolidays>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

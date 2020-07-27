@@ -43,7 +43,6 @@
     canvas {
         height: 600px !important;
     }
-
 </style>
 
 @using System.Globalization;
@@ -187,7 +186,6 @@
                             <h2 class="mb-0">@Model.projectCount</h2>
                         </div>
                         <div class="float-right icon-circle-medium  icon-box-lg  bg-primary-light mt-1">
-
                             <i class="fa fas fa-file-alt fa-fw fa-sm text-primary"></i>
                         </div>
                     </div>
@@ -271,7 +269,7 @@
     </nav>
     <!-- Müşteri PRoje bazlı rapor tablosu-->
     <div class="row collapse" id="CustomerProjectTable" style="justify-content: center;">
-        <div class="col-xl-6 col-lg-2 col-md-12 col-sm-12 col-12">
+        <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card text-white bg-secondary mb-3 mt-3">
                 <div class="row">
                     <div class="col-xl-8">
@@ -324,7 +322,7 @@
     <!-- Müşteri Proje bazlı grafik -->
 
     <div class="row collapse" id="CustomerProjectGraphic" style="justify-content: center;">
-        <div class="col-xl-6 col-lg-2 col-md-12 col-sm-12 col-12">
+        <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card text-white mb-3 mt-3">
                 <canvas id="CustomerProjectChart"></canvas>
             </div>
@@ -393,7 +391,7 @@
                                     {
                                         DateTime date = new DateTime((DateTime.Now.Year), (DateTime.Now.Month), i + 1);
                                         string currentDayTR = CultureInfo.GetCultureInfo("tr-TR").DateTimeFormat.DayNames[(int)date.DayOfWeek];
-                                        holidaySummary = SHAM.Repository.PublicHolidays.IsPublicHoliday(date);
+                                        holidaySummary = Model.DaysSummary[i];
                                         if ((date.DayOfWeek == DayOfWeek.Saturday) || (date.DayOfWeek == DayOfWeek.Sunday) || holidaySummary != null)
                                             waitingWhour = 0;
                                         else
@@ -485,6 +483,11 @@
             percent = (int)percent;
     }
 </div>
+<script src="~/assets/vendor/charts/Chart.js/Chart.js"></script>
+<script src="~/assets/vendor/charts/Chart.js/Chart.min.js"></script>
+<script src="~/assets/vendor/charts/Chart.js/chartjs-plugin-labels.js"></script>
+
+
 @section scripts{
     <script>
         function decimalToTime(decimal) {

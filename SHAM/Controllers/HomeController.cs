@@ -14,10 +14,12 @@ namespace SHAM.Controllers
     public class HomeController : Controller
     {
         private readonly IIndexRepository _indexRepository;
+        private readonly IPublicHolidays _publicHolidays;
 
-        public HomeController(IIndexRepository indexRepository)
+        public HomeController(IIndexRepository indexRepository, IPublicHolidays publicHolidays)
         {
             _indexRepository = indexRepository;
+            _publicHolidays = publicHolidays;
         }
         public IActionResult Index()
         {
@@ -42,9 +44,9 @@ namespace SHAM.Controllers
                     }
                 }
             }
-            Repository.PublicHolidays.loadPublicHolidays();
 
             var model = _indexRepository.GetAdminIndex(Convert.ToInt16(id), isAdmin);
+            model.DaysSummary = _publicHolidays.GetMonthHolidays(DateTime.Now.Month, DateTime.Now.Year);
 
             return View(model);
         }

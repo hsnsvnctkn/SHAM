@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -15,11 +16,12 @@ namespace SHAM.UI.Controllers
     {
         readonly IEmployeeRepository _employeeRepository;
         readonly ITokenProvider _tokenProvider;
-
-        public EmployeeController(IEmployeeRepository employeeRepository, ITokenProvider tokenProvider)
+        readonly IPublicHolidays _publicHolidays;
+        public EmployeeController(IEmployeeRepository employeeRepository, ITokenProvider tokenProvider, IPublicHolidays publicHolidays)
         {
             _employeeRepository = employeeRepository;
             _tokenProvider = tokenProvider;
+            _publicHolidays = publicHolidays;
         }
         public IActionResult Index()
         {
@@ -104,7 +106,6 @@ namespace SHAM.UI.Controllers
         }
         public IActionResult Reports()
         {
-            Repository.PublicHolidays.loadPublicHolidays();
             var employeesId = _employeeRepository.GetEmployeesId();
 
             ViewData["month"] = DateTime.Now.Month;
@@ -113,13 +114,15 @@ namespace SHAM.UI.Controllers
             return View(employeesId);
         }
         [HttpPost]
-        public IActionResult Reports(int id, int month, int year)
+        public IActionResult Reports(List<int> id, int month, int year, List<int> projectId, bool? invoice)
         {
             try
             {
-                var reports = _employeeRepository.GetReports(id, month, year);
+                var reports = _employeeRepository.GetReports(id, month, year, projectId, invoice);
                 ViewData["month"] = month;
                 ViewData["year"] = year;
+
+                reports.DaysSummary = _publicHolidays.GetMonthHolidays(month, year);
 
                 return View(reports);
             }

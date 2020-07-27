@@ -10,9 +10,11 @@ namespace SHAM.UI.Controllers
     public class TransactionController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
-        public TransactionController(IEmployeeRepository employeeRepository)
+        private readonly IPublicHolidays _publicHolidays;
+        public TransactionController(IEmployeeRepository employeeRepository, IPublicHolidays publicHolidays)
         {
             _employeeRepository = employeeRepository;
+            _publicHolidays = publicHolidays;
         }
         public IActionResult Index()
         {
@@ -30,7 +32,7 @@ namespace SHAM.UI.Controllers
             {
                 if (employeesId.Count == 0 && isInput == true)
                     return Json(new { status = false, error = "Mail göndermek için seçim yapmalısınız.." });
-                var holidaySummary = Repository.PublicHolidays.IsPublicHoliday(DateTime.Now);
+                var holidaySummary = _publicHolidays.IsPublicHoliday(DateTime.Now);
                 if (isInput == false)
                     if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday || holidaySummary != null)
                         return Json(new { status = false, error = "Çalışanlar tatillerde aktivite girişi yapmayabilir.." });

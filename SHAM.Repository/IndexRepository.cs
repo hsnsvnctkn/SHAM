@@ -37,7 +37,7 @@ namespace SHAM.Repository
                 getIndex.customerCount = _context.Customers.Count();
             }
 
-            getIndex.wHours = GetSumActivityWhour(myActivity, DateTime.Now.Day);
+            getIndex.wHours = GetSumActivityWhour(myActivity, DateTime.Now.Day, null);
             getIndex.projectWhour = GetSumProjectWhour(myProject);
 
             return getIndex;
@@ -55,6 +55,14 @@ namespace SHAM.Repository
             }
             return projectWhour;
         }
+        public double GetSumProjectWhour(ProjectDto projects, bool? invoice)
+        {
+            if (invoice == null)
+                return projects.ACTIVITIES.Select(a => a.WHOUR).Sum();
+            else
+                return projects.ACTIVITIES.Where(a => a.INVOICE == invoice).Select(a => a.WHOUR).Sum();
+
+        }
 
         public List<ProjectDto> GetUserProjectActivity(int id, int month, int year)
         {
@@ -62,6 +70,7 @@ namespace SHAM.Repository
 
             return _context.Projects.Where(p => projectID.Contains(p.ID)).Select(p => new ProjectDto
             {
+                ID = p.ID,
                 NAME = p.PROJECT_NAME,
                 STATUS = p.PROJECT_STATUS,
                 LEVEL = p.LEVEL,
@@ -85,13 +94,17 @@ namespace SHAM.Repository
             }).ToList();
         }
 
-        public List<double> GetSumActivityWhour(List<ActivityDto> activities, int day)
+        public List<double> GetSumActivityWhour(List<ActivityDto> activities, int day, bool? invoice)
         {
             List<double> dailyWHour = new List<double>();
 
             for (int i = 1; i <= day; i++)
             {
-                var sumWHour = activities.Where(a => a.ACTIVITY_DATE.Day == i).Select(a => a.WHOUR).Sum();
+                double sumWHour = 0;
+                if (invoice == null)
+                    sumWHour = activities.Where(a => a.ACTIVITY_DATE.Day == i).Select(a => a.WHOUR).Sum();
+                else
+                    sumWHour = activities.Where(a => a.ACTIVITY_DATE.Day == i && a.INVOICE == invoice).Select(a => a.WHOUR).Sum();
 
                 dailyWHour.Add(sumWHour);
             }

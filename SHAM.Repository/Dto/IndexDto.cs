@@ -17,5 +17,6 @@ namespace SHAM.Repository.Dto
         public int myActivityCount { get; set; }
         public List<double> wHours { get; set; }
         public List<double> projectWhour { get; set; }
+        public List<string> DaysSummary { get; set; }
     }
 }
