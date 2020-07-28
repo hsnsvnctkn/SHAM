@@ -85,7 +85,7 @@ namespace SHAM.UI
                 };
             });
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddScoped<DbContext, SHAMDbContext>();
             services.AddDbContext<SHAMDbContext>(options =>
             {
