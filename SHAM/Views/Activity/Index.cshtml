@@ -65,6 +65,19 @@
     {
         return (n > 9 ? "" + n : "0" + n);
     }
+    string convertToDot(double n)
+    {
+        if (n % 1 != 0)
+        {
+            var a = n.ToString().Split(",");
+            return (a[0] + "." + a[1]);
+        }
+        else
+        {
+
+            return n.ToString();
+        }
+    }
 }
 <div class="ecommerce-widget">
     <div class="row" style="justify-content: center;">
@@ -107,7 +120,6 @@
                                 </div>
                                 <div class="form-group">
                                     <input type="submit" class="btn btn-outline-secondary" value="Aktiviteleri Getir" />
-                                    <button type="button" id="exportExcel" asp-action="ExportExcel" asp-controller="Activity">Deneme Export</button>
                                 </div>
                             </div>
                         </div>
@@ -369,7 +381,7 @@
                                         <td id="@item.ID-estStart" class="tableexport-string">@item.ACTIVITY_DATE.ToString("dd/MM/yyyy")</td>
                                         <td id="@item.ID-start" class="tableexport-string">@item.START_TIME?.ToString("hh':'mm':'ss")</td>
                                         <td id="@item.ID-end" class="tableexport-string">@item.END_TIME?.ToString("hh':'mm':'ss")</td>
-                                        <td id="@item.ID-whour" class="tableexport-string">@item.WHOUR</td>
+                                        <td id="@item.ID-whour" class="tableexport-string">@convertToDot(item.WHOUR)@*.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)*@</td>
                                         <td id="@item.ID-whour2" class="tableexport-string">@(twoDigit(Math.Floor(item.WHOUR)) + ":" + twoDigit(Math.Round((item.WHOUR * 60) % 60)))</td>
                                         <td class="tableexport-string">@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
                                         <td>
@@ -819,11 +831,14 @@
 
             return diff;
         }
-        function decimalToTime(decimal) {
-            if ((decimal % 1) === 0)
+        function decimalToTime(decimal, separator) {
+            if ((decimal % 1) === 0) {
+                decimal = parseInt(decimal);
                 return (twoDigit(decimal) + ":" + "00");
+
+            }
             else {
-                a = decimal.split(",");
+                a = decimal.split(separator);
                 var newdecimal = a[0] + "." + a[1];
                 var hour = Math.floor(newdecimal);
                 var min = Math.round((newdecimal * 60) % 60);
@@ -831,13 +846,17 @@
                 return (twoDigit(hour) + ":" + twoDigit(min));
             }
         }
-        function timeToDecimal(time) {
+        function timeToDecimal(time,separator) {
             a = time.split(":");
             var min = (a[0] * 60) + (a[1] * 1);
             var decimal = (min / 60).toFixed(2);
             a = decimal.split(".");
 
-            return (a[0] + "," + a[1]);
+            return (a[0] + separator + a[1]);
+        }
+        function commaToDot(decimal) {
+            a = decimal.split(",");
+            return (a[0] + "." + a[1]);
         }
 
 
@@ -910,25 +929,26 @@
         });
 
         var exportDate = new Date();
-        //var tableexport = $('#tb').tableExport({
-        //    headers: true,
-        //    footers: false,
-        //    formats: ["xlsx"],
-        //    filename: "Aktiviteler " + exportDate.getDate() + "." + (exportDate.getMonth() + 1) + "." + exportDate.getFullYear(),
-        //    bootstrap: true,
-        //    exportButtons: false,
-        //    position: "top",
-        //    ignoreRows: null,
-        //    ignoreCols: [0, 1, 18],
-        //    trimWhitespace: true,
-        //    RTL: false,
-        //    sheetname: "Aktiviteler " + exportDate.getDate() + "." + (exportDate.getMonth() + 1) + "." + exportDate.getFullYear(),
+        var tableexport = $('#tb').tableExport({
+            headers: true,
+            footers: false,
+            formats: ["xlsx"],
+            filename: "Aktiviteler " + exportDate.getDate() + "." + (exportDate.getMonth() + 1) + "." + exportDate.getFullYear(),
+            bootstrap: true,
+            exportButtons: false,
+            position: "top",
+            ignoreRows: null,
+            ignoreCols: [0, 1, 18],
+            trimWhitespace: true,
+            RTL: false,
+            sheetname: "Aktiviteler " + exportDate.getDate() + "." + (exportDate.getMonth() + 1) + "." + exportDate.getFullYear(),
 
-        //});
+        });
         var table = $('#tb').DataTable({
             "columnDefs": [
-                { "orderable": false, "targets": [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15,16, 18] }
+                { "orderable": false, "targets": [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 18] }
             ],
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "order": [[12, "desc"], [1, "desc"]],
             language: {
                 info: "_TOTAL_ kayıttan _START_ - _END_ kayıt gösteriliyor.",
@@ -945,20 +965,27 @@
                     last: "Son"
                 },
             },
-            dom: 'Bfrtip',
+            dom: 'Blfrtip',
             buttons: [{
                 extend: 'excelHtml5',
                 autoFilter: true,
                 sheetName: "Aktiviteler " + exportDate.getDate() + "." + (exportDate.getMonth() + 1) + "." + exportDate.getFullYear(),
-                text: "Excel İndir",
+                text: "Özel Formatta İndir",
+                className: 'btn btn-outline-secondary ml-4',
+                exportOptions: {
+                    columns: [4, 12, 2, 3, 9, 10, 15, 11]
+                }
             }],
             responsive: true,
-            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Hepsi"]],
             "fnDrawCallback": function (oSettings) {
-                //tableexport.reset();
+                tableexport.reset();
             }
         });
 
+
+        //$("#ExportExcel").click(function () {
+        //    table.button(".buttons-html5").trigger();
+        //});
         $("#filterCustomer").on("change", function () {
             var filter = $(this).children("option:selected").val();
 
@@ -1153,15 +1180,15 @@
             var dateHTML = "<td id=\"" + id + "-estStart\" class=\"tableexport-string\">" + date + "</td>";
 
             var start = $("#C_START_TIME").val();
-            var startHTML = "<td id=\"" + id + "-start\" class=\"tableexport-string\">" + start + "</td>";
+            var startHTML = "<td id=\"" + id + "-start\" class=\"tableexport-string\">" + start + ":00</td>";
 
             var end = $("#C_END_TIME").val();
-            var endHTML = "<td id=\"" + id + "-end\" class=\"tableexport-string\">" + end + "</td>";
+            var endHTML = "<td id=\"" + id + "-end\" class=\"tableexport-string\">" + end + ":00</td>";
 
             var whour = $("#c_hideWhour").val();
-            var whourHTML = "<td id=\"" + id + "-whour\" class=\"tableexport-string\">" + whour + "</td>";
+            var whourHTML = "<td id=\"" + id + "-whour\" class=\"tableexport-string\">" + commaToDot(whour)+ "</td>";
 
-            var hrMinWhour = decimalToTime(whour);
+            var hrMinWhour = decimalToTime(whour, ",");
             var hrMinWhourHTML = "<td id=\"" + id + "-whour2\" class=\"tableexport-string\">" + hrMinWhour + "</td>";
 
 
@@ -1206,7 +1233,7 @@
             var start = $("#START_TIME").val();
             var end = $("#END_TIME").val();
             var whour = $("#hideWhour").val();
-            var hrMinWhour = decimalToTime(whour);
+            var hrMinWhour = decimalToTime(whour, ",");
             var detail = $("#DETAIL").val();
             var rowIndex = table.row('#' + id).index();
 
@@ -1231,11 +1258,11 @@
 
             table.cell({ row: rowIndex, column: 14 }).data(end).draw();
 
-            table.cell({ row: rowIndex, column: 15 }).data(whour).draw();
+            table.cell({ row: rowIndex, column: 15 }).data(commaToDot(whour)).draw();
 
             table.cell({ row: rowIndex, column: 16 }).data(hrMinWhour).draw();
 
-            //tableexport.reset();
+            tableexport.reset();
         }
 
         $("body").on("click", "#tb .viewModelDel", function () {
@@ -1248,7 +1275,7 @@
             $("#BtnCreate").attr("disabled", true);
             $("#C_WHOUR").attr("disabled", false);
             var whour = $("#C_WHOUR").val();
-            var decimal = timeToDecimal(whour);
+            var decimal = timeToDecimal(whour, ",");
             $("#c_hideWhour").val(decimal);
 
 
@@ -1278,7 +1305,7 @@
                     if (result.status) {
                         table.row("#" + id).remove().draw();
                         $("#delete").modal("toggle");
-                        //tableexport.reset();
+                        tableexport.reset();
                     }
                     else
                         showAlert();
@@ -1322,7 +1349,7 @@
             document.getElementById("ACTIVITY_DATE").value = actDate;
             document.getElementById("START_TIME").value = start;
             document.getElementById("END_TIME").value = end;
-            document.getElementById("WHOUR").value = decimalToTime(whour);
+            document.getElementById("WHOUR").value = decimalToTime(whour, ".");
             document.getElementById("LOCATION").value = location;
             document.getElementById("e_selectCustomer").value = customer;
             document.getElementById("REFERENCE_NO").value = reference;
@@ -1333,7 +1360,7 @@
             $("#WHOUR").attr("disabled", false);
 
             var whour = $("#WHOUR").val();
-            var decimal = timeToDecimal(whour);
+            var decimal = timeToDecimal(whour, ",");
             $("#hideWhour").val(decimal);
 
             var selectedCustomer = $("#e_selectCustomer option:selected").prop("class");

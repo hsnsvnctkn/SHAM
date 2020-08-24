@@ -297,14 +297,14 @@ namespace SHAM.Repository
                 EMPLOYEES = p.PROJECTEMPLOYEE,
                 CUSTOMER_ID = p.CUSTOMER_NUMBER
             }).ToList();
-            var employees = _context.Employees.Select(e => new EmployeeDto
+            var employees = _context.Employees.Where(e => e.EMPLOYEE_STATUS == true).Select(e => new EmployeeDto
             {
                 ID = e.ID,
                 NAME = e.EMPLOYEE_NAME,
                 SURNAME = e.EMPLOYEE_SURNAME,
                 ROLE = e.ROLE
             }).ToList();
-            var customers = _context.Customers.Select(c => new CustomerDto
+            var customers = _context.Customers.Where(c => c.CUSTOMER_STATUS == true).Select(c => new CustomerDto
             {
                 ID = c.ID,
                 NAME = c.CUSTOMER_NAME,
@@ -315,6 +315,8 @@ namespace SHAM.Repository
         public void SendSpecialMailEmployee(List<int> id, string subject, string header, string content)
         {
             var employees = _context.Employees.Where(e => id.Contains(e.ID)).Select(e => new { e.EMPLOYEE_NAME, e.EMPLOYEE_SURNAME, e.EMPLOYEE_MAIL }).ToList();
+
+            content = content.Replace("\n", "<br>");
 
             foreach (var item in employees)
             {
@@ -330,6 +332,8 @@ namespace SHAM.Repository
         public void SendMailCustomer(List<int> customerId, string subject, string header, string content)
         {
             var customers = _context.Customers.Where(c => customerId.Contains(c.ID)).Select(c => new { c.CUSTOMER_MAIL, c.CUSTOMER_NAME });
+
+            content = content.Replace("\n", "<br>");
 
             foreach (var item in customers)
             {

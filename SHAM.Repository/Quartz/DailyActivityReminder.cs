@@ -26,45 +26,61 @@ namespace SHAM.Repository.Quartz
 
         public Task Execute(IJobExecutionContext context)
         {
-            using (var scope = _serviceProvider.CreateScope())
+            try
             {
-                var _employeeRepository = scope.ServiceProvider.GetService<IEmployeeRepository>();
-                var _activityRepository = scope.ServiceProvider.GetService<IActivityRepository>();
-                var _PublicHolidays = scope.ServiceProvider.GetService<IPublicHolidays>();
-                var date = DateTime.Now;
-                var holidaySummary = _PublicHolidays.IsPublicHoliday(date);
-                if (holidaySummary != null || (date.DayOfWeek != DayOfWeek.Saturday) || (date.DayOfWeek != DayOfWeek.Sunday))
+                using (var scope = _serviceProvider.CreateScope())
                 {
-                    var notEntryEmployees = _employeeRepository.EntryDailyActivity();
-
-                    foreach (var item in notEntryEmployees)
+                    var _employeeRepository = scope.ServiceProvider.GetService<IEmployeeRepository>();
+                    var _activityRepository = scope.ServiceProvider.GetService<IActivityRepository>();
+                    var _PublicHolidays = scope.ServiceProvider.GetService<IPublicHolidays>();
+                    var date = DateTime.Now;
+                    var holidaySummary = _PublicHolidays.IsPublicHoliday(date);
+                    if (holidaySummary != null || (date.DayOfWeek != DayOfWeek.Saturday) || (date.DayOfWeek != DayOfWeek.Sunday))
                     {
+                        var notEntryEmployees = _employeeRepository.EntryDailyActivity();
 
-                        using (var mail = new MailMessage())
+                        foreach (var item in notEntryEmployees)
                         {
-                            mail.From = new MailAddress("noreply@gmail.com");
-                            mail.Subject = "SHAM - Aktivite Girişi Hatırlatma";
-                            mail.Body = EmailContents.ReminderDailyActivity(item.NAME, item.SURNAME);
-                            mail.IsBodyHtml = true;
-                            mail.To.Add(new MailAddress(item.MAIL));
 
-
-                            var client = new SmtpClient()
+                            try
                             {
-                                Port = 587,
-                                DeliveryMethod = SmtpDeliveryMethod.Network,
-                                UseDefaultCredentials = true,
-                                Host = "smtp.gmail.com",
-                                EnableSsl = true,
-                                Credentials = new NetworkCredential("yhesap00@gmail.com", "811201hs"),
-                            };
-                            client.Send(mail);
+                                using (var mail = new MailMessage())
+                                {
+                                    mail.From = new MailAddress("noreply@gmail.com");
+                                    mail.Subject = "SHAM - Aktivite Girişi Hatırlatma";
+                                    mail.Body = EmailContents.ReminderDailyActivity(item.NAME, item.SURNAME);
+                                    mail.IsBodyHtml = true;
+                                    mail.To.Add(new MailAddress(item.MAIL));
 
+
+                                    var client = new SmtpClient()
+                                    {
+                                        Port = 587,
+                                        DeliveryMethod = SmtpDeliveryMethod.Network,
+                                        UseDefaultCredentials = true,
+                                        Host = "smtp.gmail.com",
+                                        EnableSsl = true,
+                                        Credentials = new NetworkCredential("yhesap00@gmail.com", "811201hs"),
+                                    };
+                                    client.Send(mail);
+
+                                }
+                            }
+                            catch(Exception e)
+                            {
+                                //Logging
+                                Console.WriteLine(e);
+                            }
+                            //_logger.LogInformation(item.MAIL);
                         }
-                        //_logger.LogInformation(item.MAIL);
                     }
-                }
 
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
             return Task.CompletedTask;
         }

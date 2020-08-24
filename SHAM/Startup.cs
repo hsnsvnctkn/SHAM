@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -15,6 +15,7 @@ using SHAM.Repository.Context;
 using SHAM.Repository.Contracts;
 using SHAM.Repository.Quartz;
 using System;
+using System.Globalization;
 using System.Text;
 
 namespace SHAM.UI
@@ -152,6 +153,12 @@ namespace SHAM.UI
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            //var cultureInfo = new CultureInfo("tr-TR");
+            //cultureInfo.NumberFormat.CurrencySymbol = "₺";
+
+            //CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            //CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
         }
     }
 }
