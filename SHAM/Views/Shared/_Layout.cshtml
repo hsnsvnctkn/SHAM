@@ -1,4 +1,8 @@
 ﻿<!doctype html>
+@using Microsoft.AspNetCore.Http
+@{
+    var menuList = Context.Session.GetString("menuList");
+}
 <html lang="tr">
 
 <head>
@@ -38,11 +42,16 @@
             position: fixed;
             background-color: #0e0c27;
             margin-top: 90px;
-            margin-left: 251px;
             padding-right: 5px;
+            margin-left: -10px;
             padding-top: 3px;
             padding-bottom: 3px;
             border-radius: 0px 10px 10px 0px;
+        }
+
+        #sidebarMenu {
+            margin-left: -264px;
+            position: fixed;
         }
     </style>
 
@@ -308,6 +317,7 @@
 </html>
 
 <script>
+
     $(document).ajaxError(function (xhr, result) {
         if (result.status === 403) {
             window.location.href = '/Home/Index';
@@ -317,41 +327,66 @@
         }
     });
 
+
+    $(document).ready(function () {
+            var menuList ="@menuList";
+    menuList = $.trim(menuList);
     var windowWidth = $(window).width();
-    if (windowWidth > 600) {
-        $("#sidebarMenu").animate({ "margin-left": "-264px" }, { queue: false });
-        $(".btndisplaymenu").animate({ "margin-left": "-10" }, {
-            complete: function () {
-                $("#renderbody").animate({ "margin-left": "5px" });
-            }
-        });
-
-
-
-        $(".btndisplaymenu").click(function () {
-            if ($(this).css("margin-left") == "251px") {
-                $("#sidebarMenu").animate({ "margin-left": "-264px" }, { queue: false });
-                $(".btndisplaymenu").animate({ "margin-left": "-10" }, {
+        if (windowWidth > 600) {
+            if (menuList == "") {
+                $("#sidebarMenu").animate({ "margin-left": "0px" }, { queue: false });
+                $(".btndisplaymenu").animate({ "margin-left": "251px" }, {
                     complete: function () {
-                        $("#renderbody").animate({ "margin-left": "5px" });
+                        $("#renderbody").animate({ "margin-left": "264px" });
+                    }
+                });
+                SetSessionMenuList('menuList', 'true');
+            }
+            else if (menuList == "true") {
+                $("#sidebarMenu").animate({ "margin-left": "0px" }, { queue: false });
+                $(".btndisplaymenu").animate({ "margin-left": "251px" }, {
+                    complete: function () {
+                        $("#renderbody").animate({ "margin-left": "264px" })
                     }
                 });
             }
-            else {
-                $("#renderbody").animate({ "margin-left": "264px" });
-                $(".btndisplaymenu").animate({ "margin-left": "251px" });
-                $("#sidebarMenu").animate({ "margin-left": "0px" });
+            else if (menuList == "false") {
+                $("#sidebarMenu").animate("margin-left", "-264px");
+                $(".btndisplayMenu").animate("margin-left", "-10px");
+                $("#renderbody").animate("margin-left", "5px");
             }
-        });
-    }
-    else
-        $(".btndisplaymenu").css("display", "none");
+            $(".btndisplaymenu").click(function () {
+                if ($(this).css("margin-left") == "251px") {
+                    $("#sidebarMenu").animate({ "margin-left": "-264px" }, { queue: false });
+                    $(".btndisplaymenu").animate({ "margin-left": "-10px" }, {
+                        complete: function () {
+                            $("#renderbody").animate({ "margin-left": "5px" });
+                        }
+                    });
+                    SetSessionMenuList('menuList', 'false');
+                }
+                else {
+                    $("#renderbody").animate({ "margin-left": "264px" });
+                    $(".btndisplaymenu").animate({ "margin-left": "251px" });
+                    $("#sidebarMenu").animate({ "margin-left": "0px" });
+                    SetSessionMenuList('menuList', 'true');
+                }
+            });
+        }
+        else
+            $(".btndisplaymenu").css("display", "none");
 
-    $(document).ready(function () {
+
+
         $("#danger-alert").hide();
         $("#create-success-alert").hide();
         $("#edit-success-alert").hide();
     });
+
+    function SetSessionMenuList(key,value) {
+        $.post('/Home/SetSessionMenuList',
+            { key: key, value: value });
+    };
 
     function showAlert() {
         $("#danger-alert").fadeTo(3000, 500).slideUp(500, function () {

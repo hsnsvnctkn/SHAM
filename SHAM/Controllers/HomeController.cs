@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SHAM.Repository.Authorize;
 using SHAM.Repository.Contracts;
@@ -49,6 +50,11 @@ namespace SHAM.Controllers
             model.DaysSummary = _publicHolidays.GetMonthHolidays(DateTime.Now.Month, DateTime.Now.Year);
 
             return View(model);
+        }
+        public IActionResult SetSessionMenuList(string key,string value)
+        {
+            HttpContext.Session.SetString(key, value);
+            return this.Json(new { success = true });
         }
     }
 }

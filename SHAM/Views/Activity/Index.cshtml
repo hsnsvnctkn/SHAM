@@ -5,18 +5,25 @@
 
 <style>
     .filter-div {
-        position: absolute;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        position: relative;
         display: none;
-        margin-left: 15px;
         border-right-color: rgb(89, 105, 255);
         border-bottom-color: rgb(89, 105, 255);
         border-left-color: rgb(89, 105, 255);
         border-top: none !important;
         background-color: rgb(248, 249, 250) !important;
-        padding: 20px;
         border-radius: 0px 0px .25rem .25rem;
         opacity: 0.9;
         z-index: 99;
+    }
+    .filter-th {
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle !important;
+        padding-bottom: 5px !important;
+        padding-top: 5px !important;
     }
 
     .table td {
@@ -136,7 +143,7 @@
                         <table class="table table-striped table-bordered dataTable table-hover" style="font-size: small;" role="grid" aria-describedby="example_info" id="tb" data-name="cool-table">
                             <thead class="bg-light" style="text-align: center;">
                                 <tr class="border-0">
-                                    <th class="border-0"></th>
+                                    <th class="border-0"><button class="btn btn-outline-secondary" value="Filtrele" id="theadFilters"><i class="fas fa-filter"></i></button></th>
                                     <th class="border-0" style="font-weight: bold;">#</th>
                                     <th class="border-0" style="font-weight: bold;">Müşteri</th>
                                     <th class="border-0" style="font-weight: bold;">Proje</th>
@@ -157,16 +164,16 @@
                                     <th class="border-0"></th>
                                 </tr>
                             </thead>
-                            <thead class="bg-light" style="text-align: center;" id="filterThead">
+                            <thead class="bg-light filter-div card shadow" style="text-align: center;" id="filterThead">
                                 <tr class="border-0 tableexport-ignore">
-                                    <th class="border-0" style="padding: 0px;">Düzenle</th>
-                                    <th class="border-0" style="padding: 0px;"></th>
-                                    <th class="border-0" style="padding: 0px;">
-                                        <div class="f-icon" style="padding: 0px;" id="btnCustomerFilter">
-                                            <i class="fas fa-filter"></i>
-                                        </div>
-                                        <div id="divfilterCustomer" class="filter-div card shadow">
-                                            <select class="custom-select" id="filterCustomer" style="width: auto;">
+                                    <th class="border-0 filter-th" style="padding: 0px;">Düzenle</th>
+                                    <th class="border-0 filter-th" style="padding: 0px;"></th>
+                                    <th class="border-0 filter-th" style="padding: 0px;">
+                                        @*<div class="f-icon" style="padding: 0px;" id="btnCustomerFilter">
+                <i class="fas fa-filter"></i>
+            </div>*@
+                                        <div id="divfilterCustomer">
+                                            <select class="custom-select" id="filterCustomer">
                                                 <option value="all" class="all">Hepsi</option>
                                                 @foreach (var item in Model.customerDto)
                                                 {
@@ -175,12 +182,9 @@
                                             </select>
                                         </div>
                                     </th>
-                                    <th class="border-0" style="padding: 0px;">
-                                        <div class="f-icon" style="padding: 0px;" id="btnProjectFilter">
-                                            <i class="fas fa-filter"></i>
-                                        </div>
-                                        <div id="divfilterProject" class="filter-div card shadow">
-                                            <select class="custom-select" id="filterProject" style="width: auto;">
+                                    <th class="border-0 filter-th" style="padding: 0px;">
+                                        <div id="divfilterProject">
+                                            <select class="custom-select" id="filterProject">
                                                 <option value="Hepsi" class="all">Hepsi</option>
                                                 @foreach (var item in Model.ProjectDto)
                                                 {
@@ -189,12 +193,9 @@
                                             </select>
                                         </div>
                                     </th>
-                                    <th class="border-0" style="padding: 0px;">
-                                        <div class="f-icon" style="padding: 0px;" id="btnEmployeeFilter">
-                                            <i class="fas fa-filter"></i>
-                                        </div>
-                                        <div id="divfilterEmployee" class="filter-div card shadow">
-                                            <select class="custom-select" id="filterEmployee" style="width: auto;">
+                                    <th class="border-0 filter-th" style="padding: 0px;">
+                                        <div id="divfilterEmployee">
+                                            <select class="custom-select" id="filterEmployee">
                                                 <option value="Hepsi" class="all">Hepsi</option>
                                                 @foreach (var item in Model.EmployeeDto)
                                                 {
@@ -204,12 +205,9 @@
                                         </div>
 
                                     </th>
-                                    <th class="border-0" style="padding: 0px;">
-                                        <div class="f-icon" style="padding: 0px;" id="btnCreatedEmployeeFilter">
-                                            <i class="fas fa-filter"></i>
-                                        </div>
-                                        <div id="divfilterCreatedEmployee" class="filter-div card shadow">
-                                            <select class="custom-select" id="filterCreatedEmployee" style="width: auto;">
+                                    <th class="border-0 filter-th" style="padding: 0px;">
+                                        <div id="divfilterCreatedEmployee">
+                                            <select class="custom-select" id="filterCreatedEmployee">
                                                 <option value="Hepsi">Hepsi</option>
                                                 @foreach (var item in Model.EmployeeDto)
                                                 {
@@ -218,24 +216,18 @@
                                             </select>
                                         </div>
                                     </th>
-                                    <th class="border-0" style="padding: 0px;">
-                                        <div class="f-icon" style="padding: 0px;" id="btnStatusFilter">
-                                            <i class="fas fa-filter"></i>
-                                        </div>
-                                        <div id="divfilterStatus" class="filter-div card shadow">
-                                            <select class="custom-select" id="filterStatus" style="width: auto;">
+                                    <th class="border-0 filter-th" style="padding: 0px;">
+                                        <div id="divfilterStatus">
+                                            <select class="custom-select" id="filterStatus">
                                                 <option value="Hepsi">Hepsi</option>
                                                 <option value="Aktif">Aktif</option>
                                                 <option value="Pasif">Pasif</option>
                                             </select>
                                         </div>
                                     </th>
-                                    <th class="border-0" style="padding: 0px;">
-                                        <div class="f-icon" style="padding: 0px;" id="btnPriorityFilter">
-                                            <i class="fas fa-filter"></i>
-                                        </div>
-                                        <div id="divfilterPriority" class="filter-div card shadow">
-                                            <select class="custom-select" id="filterPriority" style="width: auto;">
+                                    <th class="border-0 filter-th" style="padding: 0px;">
+                                        <div id="divfilterPriority">
+                                            <select class="custom-select" id="filterPriority">
                                                 <option value="Hepsi">Hepsi</option>
                                                 @foreach (var item in Model.PriorityDto)
                                                 {
@@ -244,24 +236,18 @@
                                             </select>
                                         </div>
                                     </th>
-                                    <th class="border-0" style="padding: 0px;">
-                                        <div class="f-icon" style="padding: 0px;" id="btnInvoiceFilter">
-                                            <i class="fas fa-filter"></i>
-                                        </div>
-                                        <div id="divfilterInvoice" class="filter-div card shadow">
-                                            <select class="custom-select" id="filterInvoice" style="width: auto;">
+                                    <th class="border-0 filter-th" style="padding: 0px;">
+                                        <div id="divfilterInvoice">
+                                            <select class="custom-select" id="filterInvoice">
                                                 <option value="Hepsi">Hepsi</option>
                                                 <option value="Evet">Evet</option>
                                                 <option value="Hayır">Hayır</option>
                                             </select>
                                         </div>
                                     </th>
-                                    <th class="border-0" style="padding: 0px;">
-                                        <div class="f-icon" style="padding: 0px;" id="btnLocationFilter">
-                                            <i class="fas fa-filter"></i>
-                                        </div>
-                                        <div id="divfilterLocation" class="filter-div card shadow">
-                                            <select class="custom-select" id="filterLocation" style="width: auto;">
+                                    <th class="border-0 filter-th" style="padding: 0px;">
+                                        <div id="divfilterLocation">
+                                            <select class="custom-select" id="filterLocation">
                                                 <option value="Hepsi">Hepsi</option>
                                                 <option value="Onsite">Onsite</option>
                                                 <option value="Remote">Remote</option>
@@ -269,70 +255,19 @@
                                             </select>
                                         </div>
                                     </th>
-                                    <th class="border-0" style="padding: 0px;">
-                                    <th class="border-0" style="padding: 0px;">
-                                        <div class="f-icon" style="padding: 0px;" id="btnDetailSearch">
-                                            <i class="fas fa-filter"></i>
-                                        </div>
-                                        <div id="divsearchDetail" class="filter-div card shadow">
-                                            <input type="text" id="searchDetail" placeholder="Ara" class="custom-control-label" style="width: auto;" />
+                                    <th class="border-0 filter-th" style="padding: 0px;">
+                                    <th class="border-0 filter-th" style="padding: 0px;">
+                                        <div id="divsearchDetail">
+                                            <input type="text" id="searchDetail" placeholder="Ara" class="custom-control-label"/>
                                         </div>
                                     </th>
-                                    <th class="border-0" style="padding: 0px; padding-right: 15px;">
-                                        <div class="f-icon" style="padding: 0px;" id="btnFilterRangeDate">
-                                            <i class="fas fa-filter"></i>
-                                        </div>
-                                        <div id="divfilterRangeDate" class="filter-div card shadow" style="padding-top:0px;">
-                                            <center>
-                                                Aralık Giriniz..
-                                                <div class="input-group date datePicker" id="mydatetimepicker2" data-target-input="nearest" style="width: 200px;">
-                                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker2" id="fromActivityDate">
-                                                    <div class="input-group-append" data-target="#mydatetimepicker2" data-toggle="datetimepicker">
-                                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
-                                                    </div>
-                                                </div>
-                                                <input type="button" class="btn" id="btnResetActivityDateFilter" value="Sıfırla" />
-                                                <i class="fas fa-arrows-alt-v"></i>
-                                                <input type="button" class="btn" id="btnFilterActivityDate" value="Filtrele" />
-                                                <div class="input-group date datePicker" id="mydatetimepicker3" data-target-input="nearest" style="width: 200px;">
-                                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker3" id="toActivityDate">
-                                                    <div class="input-group-append" data-target="#mydatetimepicker3" data-toggle="datetimepicker">
-                                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
-                                                    </div>
-                                                </div>
-                                            </center>
-                                        </div>
-                                    </th>
-                                    <th class="border-0" style="padding: 0px;"></th>
-                                    <th class="border-0" style="padding: 0px;"></th>
-                                    <th class="border-0" style="padding: 0px;">(Ondalık)</th>
-                                    <th class="border-0" style="padding: 0px;">(ss:dd)</th>
-                                    <th class="border-0" style="padding: 0px; padding-right: 15px;">
-                                        <div class="f-icon" style="padding: 0px;" id="btnFilterCreateRangeDate">
-                                            <i class="fas fa-filter"></i>
-                                        </div>
-                                        <div id="divfilterCreateRangeDate" class="filter-div card shadow" style="padding-top:0px;">
-                                            <center>
-                                                Aralık Giriniz..
-                                                <div class="input-group date datePicker" id="mydatetimepicker6" data-target-input="nearest" style="width: 200px;">
-                                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker6" id="fromCreateDate">
-                                                    <div class="input-group-append" data-target="#mydatetimepicker6" data-toggle="datetimepicker">
-                                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
-                                                    </div>
-                                                </div>
-                                                <input type="button" class="btn" id="btnResetCreateyDateFilter" value="Sıfırla" />
-                                                <i class="fas fa-arrows-alt-v"></i>
-                                                <input type="button" class="btn" id="btnFilterCreateDate" value="Filtrele" />
-                                                <div class="input-group date datePicker" id="mydatetimepicker7" data-target-input="nearest" style="width: 200px;">
-                                                    <input type="text" value="" class="form-control datetimepicker-input" data-target="#mydatetimepicker7" id="toCreateDate">
-                                                    <div class="input-group-append" data-target="#mydatetimepicker7" data-toggle="datetimepicker">
-                                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
-                                                    </div>
-                                                </div>
-                                            </center>
-                                        </div>
-                                    </th>
-                                    <th class="border-0" style="padding: 0px;">Sil</th>
+                                    <th class="border-0 filter-th" style="padding: 0px;"></th>
+                                    <th class="border-0 filter-th" style="padding: 0px;"></th>
+                                    <th class="border-0 filter-th" style="padding: 0px;"></th>
+                                    <th class="border-0 filter-th" style="padding: 0px;">(Ondalık)</th>
+                                    <th class="border-0 filter-th" style="padding: 0px;">(ss:dd)</th>
+                                    <th class="border-0 filter-th" style="padding: 0px;"></th>
+                                    <th class="border-0 filter-th" style="padding: 0px;">Sil</th>
                                 </tr>
                             </thead>
 
@@ -705,56 +640,24 @@
 
 @section scripts{
     <script>
-        $(document).click(function (e) {
-            var filterArea = $("#filterThead");
-            if (!filterArea.is(e.target) && filterArea.has(e.target).length === 0) {
-                $("#divfilterCustomer").hide("slow");
-                $("#divfilterProject").hide("slow");
-                $("#divfilterStatus").hide("slow");
-                $("#divfilterPriority").hide("slow");
-                $("#divfilterInvoice").hide("slow");
-                $("#divfilterLocation").hide("slow");
-                $("#divsearchDetail").hide("slow");
-                $("#divfilterRangeDate").hide("slow");
-                $("#divfilterEmployee").hide("slow");
-                $("#divfilterCreatedEmployee").hide("slow");
-                $("#divfilterCreateRangeDate").hide("slow");
-            }
-        });
-
-        $("#btnCustomerFilter").click(function () {
-            $("#divfilterCustomer").toggle("slow");
-        });
-
-        $("#btnProjectFilter").click(function () {
-            $("#divfilterProject").toggle("slow");
-        });
-        $("#btnStatusFilter").click(function () {
-            $("#divfilterStatus").toggle("slow");
-        });
-        $("#btnPriorityFilter").click(function () {
-            $("#divfilterPriority").toggle("slow");
-        });
-        $("#btnInvoiceFilter").click(function () {
-            $("#divfilterInvoice").toggle("slow");
-        });
-        $("#btnLocationFilter").click(function () {
-            $("#divfilterLocation").toggle("slow");
-        });
-        $("#btnDetailSearch").click(function () {
-            $("#divsearchDetail").toggle("slow");
-        });
-        $("#btnEmployeeFilter").click(function () {
-            $("#divfilterEmployee").toggle("slow");
-        });
-        $("#btnCreatedEmployeeFilter").click(function () {
-            $("#divfilterCreatedEmployee").toggle("slow");
-        });
-        $("#btnFilterRangeDate").click(function () {
-            $("#divfilterRangeDate").toggle("slow");
-        });
-        $("#btnFilterCreateRangeDate").click(function () {
-            $("#divfilterCreateRangeDate").toggle("slow");
+        //$(document).click(function (e) {
+        //    var filterArea = $("#filterThead");
+        //    if (!filterArea.is(e.target) && filterArea.has(e.target).length === 0) {
+        //        $("#divfilterCustomer").hide("slow");
+        //        $("#divfilterProject").hide("slow");
+        //        $("#divfilterStatus").hide("slow");
+        //        $("#divfilterPriority").hide("slow");
+        //        $("#divfilterInvoice").hide("slow");
+        //        $("#divfilterLocation").hide("slow");
+        //        $("#divsearchDetail").hide("slow");
+        //        $("#divfilterRangeDate").hide("slow");
+        //        $("#divfilterEmployee").hide("slow");
+        //        $("#divfilterCreatedEmployee").hide("slow");
+        //        $("#divfilterCreateRangeDate").hide("slow");
+        //    }
+        //});
+        $("#theadFilters").click(function () {
+            $("#filterThead").toggle("slow");
         });
 
 

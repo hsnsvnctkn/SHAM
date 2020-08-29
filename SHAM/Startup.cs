@@ -46,10 +46,12 @@ namespace SHAM.UI
             services.AddHostedService<QuartzHostedService>();
 
 
-            services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromMinutes(500);
-            });
+            //services.AddSession(options =>
+            //{
+            //    options.IdleTimeout = TimeSpan.FromMinutes(500);
+            //});
+
+            services.AddSession();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
