@@ -51,7 +51,9 @@
 
         #sidebarMenu {
             margin-left: -264px;
-            position: fixed;
+        }
+        #renderbody{
+            margin-left:0px;
         }
     </style>
 
@@ -373,8 +375,11 @@
                 }
             });
         }
-        else
+        else {
             $(".btndisplaymenu").css("display", "none");
+            $("#sidebarMenu").css("margin-left", "0px");
+        }
+
 
 
 
