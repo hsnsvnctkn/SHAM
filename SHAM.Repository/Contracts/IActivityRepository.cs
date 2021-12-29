@@ -17,5 +17,6 @@ namespace SHAM.Repository.Contracts
         ActivityAllDto GetMyActivity(int id);
         ActivityAllDto GetMyDateRangeActivity(int id, DateTime? from, DateTime? to);
         int GetLastActivityId();
+        int FindEmployeeId(string fullName);
     }
 }

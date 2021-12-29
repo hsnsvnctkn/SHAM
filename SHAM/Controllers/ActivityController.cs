@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ExcelDataReader;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using SHAM.Repository.Authorize;
 using SHAM.Repository.Contracts;
 using SHAM.Repository.Dto;
@@ -14,9 +18,11 @@ namespace SHAM.UI.Controllers
     public class ActivityController : Controller
     {
         readonly IActivityRepository _activityRepository;
-        public ActivityController(IActivityRepository activityRepository)
+        readonly IEmployeeRepository _employeeRepository;
+        public ActivityController(IActivityRepository activityRepository, IEmployeeRepository employeeRepository)
         {
             _activityRepository = activityRepository;
+            _employeeRepository = employeeRepository;
         }
         [Authorize(Roles.ADMIN)]
         public IActionResult Index()
@@ -101,8 +107,18 @@ namespace SHAM.UI.Controllers
                         }
                     }
                 }
-                activity.CREATOR = Convert.ToInt16(id);
-                activity.ACTIVITY_EMPLOYEE = Convert.ToInt16(id);
+                if (activity.CREATOR == 0)
+                {
+                    activity.CREATOR = Convert.ToInt16(id);
+                    activity.ACTIVITY_EMPLOYEE = Convert.ToInt16(id);
+                }
+                else
+                {
+                    activity.ACTIVITY_EMPLOYEE = activity.CREATOR;
+
+                    var emp = _employeeRepository.Get(activity.CREATOR);
+                    newName = emp.NAME + " " + emp.SURNAME;
+                }
                 activity.WHOUR = Math.Round(activity.WHOUR, 2);
 
 
@@ -220,5 +236,52 @@ namespace SHAM.UI.Controllers
                 return View(model);
             }
         }
+        //[HttpPost]
+        //public IActionResult LoadExcel(IFormCollection form)
+        //{
+        //    List<ActivityDto> ac = new List<ActivityDto>();
+        //    var fileName = "./ac.xlsx";
+
+        //    System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+        //    using (var stream = System.IO.File.Open(fileName, FileMode.Open, FileAccess.Read))
+        //    {
+        //        using (var reader = ExcelReaderFactory.CreateReader(stream))
+        //        {
+
+        //            while (reader.Read())
+        //            {
+        //                //ac.Add(new GetExcelModel
+        //                //{
+        //                //    EMPLOYEE = reader.GetValue(0).ToString(),
+        //                //    DETAIL = reader.GetValue(1).ToString(),
+        //                //    ACTIVITY_DATE = reader.GetValue(2).ToString(),
+        //                //    WHOUR = reader.GetValue(3).ToString()
+        //                //});
+        //                //_activityRepository.Create(new ActivityDto
+        //                //{
+        //                //    ACTIVITY_EMPLOYEE=_activityRepository.FindEmployeeId()
+        //                //})
+        //                var empID = _activityRepository.FindEmployeeId(reader.GetValue(0).ToString());
+        //                _activityRepository.Create(new ActivityDto
+        //                {
+        //                    INVOICE = true,
+        //                    LOCATION = "Remote",
+        //                    ACTIVITY_PRIORITY = 3,
+        //                    PROJECT_NUMBER = 14,
+        //                    ACTIVITY_DATE = DateTime.Parse(reader.GetValue(2).ToString()),
+        //                    ACTIVITY_DETAIL = reader.GetValue(1).ToString(),
+        //                    ACTIVITY_EMPLOYEE = empID,
+        //                    CREATOR = empID,
+        //                    START_TIME = new TimeSpan(12, 00, 00),
+        //                    REFERENCE_NO = "hs",
+        //                    STATUS = true,
+        //                    WHOUR = Convert.ToDouble(reader.GetValue(3).ToString()),
+        //                });
+        //            }
+        //        }
+        //    }
+        //    return View();
+        //}
     }
 }

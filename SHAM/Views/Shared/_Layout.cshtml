@@ -52,8 +52,9 @@
         #sidebarMenu {
             margin-left: -264px;
         }
-        #renderbody{
-            margin-left:0px;
+
+        #renderbody {
+            margin-left: 0px;
         }
     </style>
 
@@ -331,9 +332,9 @@
 
 
     $(document).ready(function () {
-            var menuList ="@menuList";
-    menuList = $.trim(menuList);
-    var windowWidth = $(window).width();
+        var menuList = "@menuList";
+        menuList = $.trim(menuList);
+        var windowWidth = $(window).width();
         if (windowWidth > 600) {
             if (menuList == "") {
                 $("#sidebarMenu").animate({ "margin-left": "0px" }, { queue: false });

@@ -178,7 +178,7 @@ namespace SHAM.Repository
         }
         public List<EmployeeDto> GetAllEmployeeNewMember()
         {
-            return _context.Employees.Select(e => new EmployeeDto
+            return _context.Employees.Where(e => e.EMPLOYEE_STATUS == true).Select(e => new EmployeeDto
             {
                 ID = e.ID,
                 ROLE = e.ROLE,
@@ -265,7 +265,7 @@ namespace SHAM.Repository
         {
             var employees = new List<EmployeeDto>();
             if (isInput == true)
-                employees = _context.Employees.Where(e => employeesId.Contains(e.ID)).Select(e => new EmployeeDto
+                employees = _context.Employees.Where(e => employeesId.Contains(e.ID) && e.EMPLOYEE_STATUS == true).Select(e => new EmployeeDto
                 {
                     ID = e.ID,
                     NAME = e.EMPLOYEE_NAME,
@@ -314,7 +314,7 @@ namespace SHAM.Repository
         }
         public void SendSpecialMailEmployee(List<int> id, string subject, string header, string content)
         {
-            var employees = _context.Employees.Where(e => id.Contains(e.ID)).Select(e => new { e.EMPLOYEE_NAME, e.EMPLOYEE_SURNAME, e.EMPLOYEE_MAIL }).ToList();
+            var employees = _context.Employees.Where(e => id.Contains(e.ID) && e.EMPLOYEE_STATUS == true).Select(e => new { e.EMPLOYEE_NAME, e.EMPLOYEE_SURNAME, e.EMPLOYEE_MAIL }).ToList();
 
             content = content.Replace("\n", "<br>");
 
@@ -331,7 +331,7 @@ namespace SHAM.Repository
         }
         public void SendMailCustomer(List<int> customerId, string subject, string header, string content)
         {
-            var customers = _context.Customers.Where(c => customerId.Contains(c.ID)).Select(c => new { c.CUSTOMER_MAIL, c.CUSTOMER_NAME });
+            var customers = _context.Customers.Where(c => customerId.Contains(c.ID) && c.CUSTOMER_STATUS == true).Select(c => new { c.CUSTOMER_MAIL, c.CUSTOMER_NAME });
 
             content = content.Replace("\n", "<br>");
 

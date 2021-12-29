@@ -13,6 +13,7 @@ namespace SHAM.Repository.Dto
         public string ACTIVITY_DETAIL { get; set; }
 
         public int CREATOR { get; set; }//FK--
+
         public int ACTIVITY_EMPLOYEE { get; set; }
 
         public DateTime ACTIVITY_DATE { get; set; }
@@ -30,11 +31,14 @@ namespace SHAM.Repository.Dto
         public int ACTIVITY_PRIORITY { get; set; }//FK--
 
         public bool INVOICE { get; set; }
+
         public double WHOUR { get; set; }
+
         public string LOCATION { get; set; }
+
         public string REFERENCE_NO { get; set; }
 
-
+        public string IndirectCustomerName { get; set; }
 
         public virtual Project PROJECT { get; set; }
 

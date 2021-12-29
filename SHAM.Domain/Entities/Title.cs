@@ -7,11 +7,6 @@ namespace SHAM.Domain.Entities
     [Table("TITLES")]
     public class Title
     {
-        /*public Title()
-        {
-            EMPLOYEES = new HashSet<Employee>();
-        }
-        */
         [Key]
         public int ID { get; set; } //PK
 

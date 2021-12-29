@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace SHAM.UI.Controllers
 {
-    [Authorize(Roles.NORMAL,Roles.ADMIN)]
+    [Authorize(Roles.NORMAL, Roles.ADMIN)]
     public class ProjectController : Controller
     {
         readonly IProjectRepository _projectRepository;
@@ -27,13 +27,17 @@ namespace SHAM.UI.Controllers
         {
             try
             {
+                //if (_projectRepository.checkIsHave(project))
+                //{
+                //    return Json(new { status = false, msg = "Bu proje bu müşteri üzerinde zaten bulunuyor." });
+                //}
                 _projectRepository.Update(project);
                 return Json(new { status = true });
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
-                return Json(new { status = false });
+                return Json(new { status = false, msg = e.Message });
             }
         }
         [Authorize(Roles.ADMIN)]
@@ -41,6 +45,11 @@ namespace SHAM.UI.Controllers
         {
             try
             {
+                if (_projectRepository.checkIsHave(project))
+                {
+                    return Json(new { status = false, msg = "Bu proje bu müşteri üzerinde zaten bulunuyor." });
+                }
+
                 var claimsIndentity = HttpContext.User.Identity as ClaimsIdentity;
                 var userClaims = claimsIndentity.Claims;
                 string id = "";
@@ -63,10 +72,10 @@ namespace SHAM.UI.Controllers
                 _projectRepository.Create(project);
                 return Json(new { status = true });
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
-                return Json(new { status = false });
+                return Json(new { status = false, msg = e.Message });
             }
         }
         [Authorize(Roles.ADMIN)]

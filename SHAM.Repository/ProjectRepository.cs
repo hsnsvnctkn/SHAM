@@ -44,7 +44,7 @@ namespace SHAM.Repository
         public ProjectAllDto GetList()
         {
             //var pe = _context.Projects.Include(x => x.PROJECTEMPLOYEE).ThenInclude(c => c.EmployeeID);
-            var project = _context.Projects.Include(p => p.PROJECTEMPLOYEE).ThenInclude(ep=>ep.EMPLOYEE).Select(p => new ProjectDto
+            var project = _context.Projects.Include(p => p.PROJECTEMPLOYEE).ThenInclude(ep => ep.EMPLOYEE).Select(p => new ProjectDto
             {
                 ID = p.ID,
                 NAME = p.PROJECT_NAME,
@@ -208,5 +208,33 @@ namespace SHAM.Repository
 
             return new ProjectAllDto { CustomerDto = customer, EmployeeDto = employee, LevelDto = level, ProjectDto = project, ProjectTypeDto = type };
         }
+        public bool checkIsHave(ProjectDto project)
+        {
+            if (project.ID == 0)
+            {
+                var returnProject = _context.Projects.Where(p => p.CUSTOMER_NUMBER == project.CUSTOMER_ID && p.PROJECT_NAME.ToLower() == project.NAME.ToLower()).ToList();
+                if (returnProject.Count > 0)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                var returnProject = _context.Projects.Where(p => p.CUSTOMER_NUMBER == project.CUSTOMER_ID && p.PROJECT_NAME.ToLower() == project.NAME.ToLower()).ToList();
+
+                if (returnProject.Count == 1)
+                {
+                    if (returnProject[0].ID == project.ID)
+                        return false;
+                    else
+                        return true;
+                }
+                else if (returnProject.Count > 1)
+                    return true;
+                else
+                    return false;
+            }
+        }
+
     }
 }

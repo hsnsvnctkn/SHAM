@@ -53,6 +53,7 @@ namespace SHAM.Domain.Entities
         [MaxLength(30)]
         public string REFERENCE_NO { get; set; }
 
+        public string IndirectCustomerName { get; set; }
 
         public virtual Project PROJECT { get; set; }
 

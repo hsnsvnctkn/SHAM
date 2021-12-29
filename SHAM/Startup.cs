@@ -34,16 +34,16 @@ namespace SHAM.UI
         public void ConfigureServices(IServiceCollection services)
         {
             // Add Quartz services
-            services.AddSingleton<IJobFactory, SingletonJobFactory>();
-            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+            //services.AddSingleton<IJobFactory, SingletonJobFactory>();
+            //services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 
-            // Add our job
-            services.AddSingleton<DailyActivityReminder>();
-            services.AddSingleton(new JobSchedule(
-                jobType: typeof(DailyActivityReminder),
-                cronExpression: "0 0 18 ? * MON-FRI *")); 
+            //// Add our job
+            //services.AddSingleton<DailyActivityReminder>();
+            //services.AddSingleton(new JobSchedule(
+            //    jobType: typeof(DailyActivityReminder),
+            //    cronExpression: "0 0 18 ? * MON-FRI *")); 
 
-            services.AddHostedService<QuartzHostedService>();
+            //services.AddHostedService<QuartzHostedService>();
 
 
             //services.AddSession(options =>
@@ -57,8 +57,9 @@ namespace SHAM.UI
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
+                options.MinimumSameSitePolicy = SameSiteMode.Strict;
             });
+
 
             var SecretKey = Encoding.ASCII.GetBytes("YourKey-2374-OFFKDI940NG7:56753253-tyuw-5769-0921-kfirox29zoxv");
 
@@ -131,6 +132,9 @@ namespace SHAM.UI
             app.UseHsts();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.UseRequestLocalization();
+
 
             //Addd User session - JRozario
             app.UseSession();

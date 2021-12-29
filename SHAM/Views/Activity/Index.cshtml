@@ -18,6 +18,7 @@
         opacity: 0.9;
         z-index: 99;
     }
+
     .filter-th {
         text-align: center;
         display: table-cell;
@@ -128,6 +129,10 @@
                                 <div class="form-group">
                                     <input type="submit" class="btn btn-outline-secondary" value="Aktiviteleri Getir" />
                                 </div>
+                                @*<div class="form-group">
+                                        <input type="file" class="btn btn-outline-secondary" name="file" />
+                                        <button asp-action="LoadExcel" asp-controller="Activity"> asdsda</button>
+                                    </div>*@
                             </div>
                         </div>
                     </form>
@@ -161,6 +166,7 @@
                                     <th class="border-0" style="font-weight: bold;">Çalışma Saati</th>
                                     <th class="border-0" style="font-weight: bold;">Saat : Dakika</th>
                                     <th class="border-0" style="font-weight: bold;">Oluşturma Tarihi</th>
+                                    <th class="border-0" style="font-weight: bold;">I.Müşteri Adı</th>
                                     <th class="border-0"></th>
                                 </tr>
                             </thead>
@@ -170,8 +176,8 @@
                                     <th class="border-0 filter-th" style="padding: 0px;"></th>
                                     <th class="border-0 filter-th" style="padding: 0px;">
                                         @*<div class="f-icon" style="padding: 0px;" id="btnCustomerFilter">
-                <i class="fas fa-filter"></i>
-            </div>*@
+                                                <i class="fas fa-filter"></i>
+                                            </div>*@
                                         <div id="divfilterCustomer">
                                             <select class="custom-select" id="filterCustomer">
                                                 <option value="all" class="all">Hepsi</option>
@@ -258,7 +264,7 @@
                                     <th class="border-0 filter-th" style="padding: 0px;">
                                     <th class="border-0 filter-th" style="padding: 0px;">
                                         <div id="divsearchDetail">
-                                            <input type="text" id="searchDetail" placeholder="Ara" class="custom-control-label"/>
+                                            <input type="text" id="searchDetail" placeholder="Ara" class="custom-control-label" />
                                         </div>
                                     </th>
                                     <th class="border-0 filter-th" style="padding: 0px;"></th>
@@ -266,6 +272,7 @@
                                     <th class="border-0 filter-th" style="padding: 0px;"></th>
                                     <th class="border-0 filter-th" style="padding: 0px;">(Ondalık)</th>
                                     <th class="border-0 filter-th" style="padding: 0px;">(ss:dd)</th>
+                                    <th class="border-0 filter-th" style="padding: 0px;"></th>
                                     <th class="border-0 filter-th" style="padding: 0px;"></th>
                                     <th class="border-0 filter-th" style="padding: 0px;">Sil</th>
                                 </tr>
@@ -279,7 +286,7 @@
                                         <td id="@item.ID">@item.ID </td>
                                         <td id="@item.ID-customer" data-id="@item.PROJECT.CUSTOMER.ID">@item.PROJECT.CUSTOMER.CUSTOMER_NAME </td>
                                         <td id="@item.ID-project" class="tableexport-string" data-id="@item.PROJECT.ID">@item.PROJECT.PROJECT_NAME</td>
-                                        <td id="@item.EMPLOYEE.ID" class="tableexport-string"> @item.EMPLOYEE.EMPLOYEE_NAME @item.EMPLOYEE.EMPLOYEE_SURNAME</td>
+                                        <td id="@item.ID-emp" data-id="@item.EMPLOYEE.ID" class="tableexport-string"> @item.EMPLOYEE.EMPLOYEE_NAME @item.EMPLOYEE.EMPLOYEE_SURNAME</td>
                                         <td id="@item.ID-creator" class="tableexport-string" data-id="@item.CREATED_EMPLOYEE.ID">@item.CREATED_EMPLOYEE.EMPLOYEE_NAME @item.CREATED_EMPLOYEE.EMPLOYEE_SURNAME</td>
                                         @if (item.STATUS == true)
                                         {
@@ -319,6 +326,7 @@
                                         <td id="@item.ID-whour" class="tableexport-string">@convertToDot(item.WHOUR)@*.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)*@</td>
                                         <td id="@item.ID-whour2" class="tableexport-string">@(twoDigit(Math.Floor(item.WHOUR)) + ":" + twoDigit(Math.Round((item.WHOUR * 60) % 60)))</td>
                                         <td class="tableexport-string">@item.CREATED_DATE.ToString("dd/MM/yyyy")</td>
+                                        <td id="@item.ID-iCustomerName" class="tableexport-string">@item.IndirectCustomerName</td>
                                         <td>
                                             <button type="button" class="btn btn-outline-danger viewModelDel" data-toggle="modal" data-target="#delete" data-id="@item.ID"><i class="fas fa-trash"></i></button>
                                         </td>
@@ -485,6 +493,24 @@
                                     <textarea name="ACTIVITY_DETAIL" class="form-control" autocomplete="off" data-parsley-maxlength="100" placeholder="Activite Detayı" id="c_detail" rows="3" style="margin-top: 0px; margin-bottom: 0px; height: 119px;"></textarea>
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Oluşturan Kişi</label>
+                                <div class="col-12 col-sm-6 col-lg-6">
+                                    <select class="custom-select" id="selectEmployee" name="CREATOR">
+                                        @foreach (var item in Model.EmployeeDto)
+                                        {
+                                            <option value="@item.ID">@item.NAME @item.SURNAME</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-4 col-form-label text-sm-right">İkincil Müşteri Adı</label>
+                                <div class="col-12 col-sm-6 col-lg-6">
+                                    <input name="IndirectCustomerName" id="c_iCustomerName" autocomplete="off" placeholder="İsteğe Bağlı" style="height:inherit;" maxlength="20" class="form-control">
+                                </div>
+                            </div>
+
                             <div class="form-group row text-right">
                                 <div class="col col-sm-10 col-lg-10 offset-sm-1 offset-lg-0">
                                     <button type="button" class="btn btn-space btn-success" id="BtnCreate">Ekle</button>
@@ -621,6 +647,24 @@
                                     <textarea class="form-control" autocomplete="off" data-parsley-maxlength="100" placeholder="Activite Detayı" name="ACTIVITY_DETAIL" id="DETAIL" rows="3" style="margin-top: 0px; margin-bottom: 0px; height: 119px;"></textarea>
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-4 col-form-label text-sm-right">Oluşturan Kişi</label>
+                                <div class="col-12 col-sm-6 col-lg-6">
+                                    <select class="custom-select" id="CREATOR" name="CREATOR">
+                                        @foreach (var item in Model.EmployeeDto)
+                                        {
+                                            <option value="@item.ID">@item.NAME @item.SURNAME</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-4 col-form-label text-sm-right">İkincil Müşteri Adı</label>
+                                <div class="col-12 col-sm-6 col-lg-6">
+                                    <input name="IndirectCustomerName" id="IndirectCustomerName" autocomplete="off" placeholder="İsteğe Bağlı" style="height:inherit;" maxlength="20" class="form-control">
+                                </div>
+                            </div>
+
                             <div class="form-group row text-right">
                                 <div class="col col-sm-10 col-lg-10 offset-sm-1 offset-lg-0">
                                     <button type="button" class="btn btn-space btn-success" id="BtnEdit">Kaydet</button>
@@ -841,7 +885,7 @@
             exportButtons: false,
             position: "top",
             ignoreRows: null,
-            ignoreCols: [0, 1, 18],
+            ignoreCols: [0, 1, 19],
             trimWhitespace: true,
             RTL: false,
             sheetname: "Aktiviteler " + exportDate.getDate() + "." + (exportDate.getMonth() + 1) + "." + exportDate.getFullYear(),
@@ -849,7 +893,7 @@
         });
         var table = $('#tb').DataTable({
             "columnDefs": [
-                { "orderable": false, "targets": [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 18] }
+                { "orderable": false, "targets": [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 19] }
             ],
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "order": [[12, "desc"], [1, "desc"]],
@@ -876,7 +920,7 @@
                 text: "Özel Formatta İndir",
                 className: 'btn btn-outline-secondary ml-4',
                 exportOptions: {
-                    columns: [4, 12, 2, 3, 9, 10, 15, 11]
+                    columns: [4, 12, 2, 3, 9, 10, 15, 11, 18]
                 }
             }],
             responsive: true,
@@ -1064,7 +1108,10 @@
             var projectId = $("#selectProject option:selected").val();
             var projectHTML = "<td id=\"" + id + "-project\" class=\"tableexport-string\" data-id=\"" + projectId + "\">" + project + "</td>";
 
-            var empHTML = "<td class=\"tableexport-string\">" + emp + "</td>";
+            var empId = $("#selectEmployee option:selected").val();
+            var empHTML = "<td id=\"" + id + "-emp\" data-id=\"" + empId + "\" class=\"tableexport-string\">" + emp + "</td>";
+
+            var creatorHTML = "<td id=\"" + id + "-creator\" class=\"tableexport-string\" data-id=\"" + empId + "\">" + emp + "</td>";
 
             var status = "<td id=\"" + id + "-status\" class=\"tableexport-string\">Aktif</td>";
 
@@ -1094,6 +1141,9 @@
             var hrMinWhour = decimalToTime(whour, ",");
             var hrMinWhourHTML = "<td id=\"" + id + "-whour2\" class=\"tableexport-string\">" + hrMinWhour + "</td>";
 
+            var iCustomerName = $("#c_iCustomerName").val();
+            var iCustomerNameHTML = "<td id=\"" + id + "-iCustomerName\" class=\"tableexport-string\">" + iCustomerName + "</td>";
+
 
             var detail = $("#c_detail").val();
             var detailHTML = "";
@@ -1113,8 +1163,8 @@
             var delHTML = "<td><button type=\"button\" class=\"btn btn-outline-danger viewModelDel\" data-toggle=\"modal\" data-target=\"#delete\" data-id=\"" + id + "\"><i class=\"fas fa-trash\"></i></button></td>";
             var editHTML = "<td><button type=\"button\" data-id=\"" + id + "\" data-toggle=\"modal\" data-target=\"#edit\" class=\"btn btn-outline-primary fBtnEdit\"><i class=\"far fa-edit\"></i></button></td>";
 
-            var newRow = '<tr id=\"' + id + '\">' + editHTML + '<td>' + id + '</td>' + customerHTML + projectHTML + empHTML + empHTML + status + priority +
-                invoiceHTML + locationHTML + referenceHTML + detailHTML + dateHTML + startHTML + endHTML + whourHTML + hrMinWhourHTML + createDate + delHTML + '</tr>';
+            var newRow = '<tr id=\"' + id + '\">' + editHTML + '<td>' + id + '</td>' + customerHTML + projectHTML + empHTML + creatorHTML + status + priority +
+                invoiceHTML + locationHTML + referenceHTML + detailHTML + dateHTML + startHTML + endHTML + whourHTML + hrMinWhourHTML + createDate + iCustomerNameHTML + delHTML + '</tr>';
             var rowNode = table.row.add($(newRow)[0]).draw().node();
             $(rowNode)
                 .css('color', 'green')
@@ -1127,6 +1177,8 @@
             var customerId = $("#e_selectCustomer option:selected").val();
             var project = $("#PROJECT_NUMBER option:selected").text();
             var projectId = $("#PROJECT_NUMBER option:selected").val();
+            var emp = $("#CREATOR option:selected").text();
+            var empId = $("#CREATOR option:selected").val();
             var status = "Aktif";
             var priority = "NORMAL";
             var invoice = $("#INVOICE option:selected").text();
@@ -1139,6 +1191,8 @@
             var hrMinWhour = decimalToTime(whour, ",");
             var detail = $("#DETAIL").val();
             var rowIndex = table.row('#' + id).index();
+            var iCustomerName = $("#IndirectCustomerName").val();
+
 
             table.cell({ row: rowIndex, column: 2 }).data(customer).draw();
 
@@ -1146,6 +1200,12 @@
 
             table.cell({ row: rowIndex, column: 3 }).data(project).draw();
             $("#" + id + "-project", "#tb").attr("data-id", projectId);
+
+            table.cell({ row: rowIndex, column: 4 }).data(emp).draw();
+            $("#" + id + "-emp", "#tb").attr("data-id", empId);
+
+            table.cell({ row: rowIndex, column: 5 }).data(emp).draw();
+            $("#" + id + "-creator", "#tb").attr("data-id", empId);
 
             table.cell({ row: rowIndex, column: 8 }).data(invoice).draw();
 
@@ -1164,6 +1224,8 @@
             table.cell({ row: rowIndex, column: 15 }).data(commaToDot(whour)).draw();
 
             table.cell({ row: rowIndex, column: 16 }).data(hrMinWhour).draw();
+
+            table.cell({ row: rowIndex, column: 18 }).data(iCustomerName).draw();
 
             tableexport.reset();
         }
@@ -1222,6 +1284,8 @@
             $("#BtnEdit").val(id);
             var project = $("#" + id + "-project", "#tb").data("id");
             var invoice = $("#" + id + "-invoice", "#tb").html();
+            var emp = $("#" + id + "-emp", "#tb").data("id");
+            var creator = $("#" + id + "-creator", "#tb").data("id");
             //var priority = $("#" + id + "-priority", "#tb").data("id");
             var detail = $("#" + id + "-detail", "#tb").text();
             var actDate = $("#" + id + "-estStart", "#tb").html();
@@ -1232,7 +1296,10 @@
             var location = $("#" + id + "-location", "#tb").html();
             var customer = $("#" + id + "-customer", "#tb").data("id");
             var reference = $("#" + id + "-reference", "#tb").html();
+            var iCustomerName = $("#" + id + "-iCustomerName", "#tb").html();
 
+            console.log(creator);
+            console.log(emp);
             //if (status == "Aktif")
             //    status = true;
             //else if (status == "Pasif")
@@ -1245,6 +1312,7 @@
 
             document.getElementById("activtyID").value = id;
             document.getElementById("PROJECT_NUMBER").value = project;
+            document.getElementById("CREATOR").value = creator;
             document.getElementById("INVOICE").value = invoice;
             //document.getElementById("ACTIVITY_PRIORITY").value = priority;
             document.getElementById("DETAIL").value = $.trim(detail);
@@ -1256,6 +1324,7 @@
             document.getElementById("LOCATION").value = location;
             document.getElementById("e_selectCustomer").value = customer;
             document.getElementById("REFERENCE_NO").value = reference;
+            document.getElementById("IndirectCustomerName").value = iCustomerName;
         });
 
         $("#BtnEdit").click(function () {

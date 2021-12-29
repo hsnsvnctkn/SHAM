@@ -20,6 +20,7 @@ namespace SHAM.Repository
             var notifi = _context.Notifications.Where(n => (n.END_TIME >= DateTime.Now || n.END_TIME == null) && n.START_TIME <= DateTime.Now).Select(n => new NotificationDto { TEXT_INFO = n.TEXT_INFO }).ToList();
 
             var myActivity = GetMyActivity(id, DateTime.Now.Month, DateTime.Now.Year);
+            var name = _context.Employees.Where(e => e.ID == id).Select(e => e.EMPLOYEE_NAME + " " + e.EMPLOYEE_SURNAME).FirstOrDefault();
 
             var myProject = GetUserProjectActivity(id, DateTime.Now.Month, DateTime.Now.Year);
 
